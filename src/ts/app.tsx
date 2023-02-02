@@ -1,21 +1,17 @@
-import style from './less.module.less';
-import { Routes, Route, Link} from 'react-router-dom';
-import { Test } from './testPage';
+// import { Routes, Route, Router } from 'react-router-dom';
+import style from '../less/main-page.module.less';
 import 'antd/dist/antd';
-import { Button } from 'antd';
+import { Login } from './components/Login';
+import { useState, useEffect } from 'react';
+import { MainPage } from './components/MainPage';
 
 export default function App() {
-  return (
-    <div>
-    <Routes>
-      <Route path="/" />
-      <Route path="*" element={<Test />}/>
-    </Routes>
-    <Link to="/qweqweasd">into nothingness</Link>
-    <div className={style.className} >
-      <button onClick={() => console.log(style.className)} className="test">test</button>
-      <Button>ANTDtest</Button>
-    </div>
-  </div>
-  )
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    setToken(hash.substring(1).split('&')[0].split('=')[1]);
+  }, []);
+
+  return <div className={style.mainContainer}>{token ? <MainPage token={token} /> : <Login />}</div>;
 }
