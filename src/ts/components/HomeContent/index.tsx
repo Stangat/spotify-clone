@@ -1,9 +1,25 @@
 import { Content } from 'antd/es/layout/layout';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getPlaylist } from '../../../../api';
 import { CardItem } from '../CardItem';
 
-export const HomeContent: React.FC = () => {
-  let count = 0;
+type HomeContentProps = {
+  token: string;
+}; 
+
+export const HomeContent: React.FC<HomeContentProps> = (props) => {
+  const [playlist,setPlaylists] = useState([])
+  
+  const playlists = async () => {
+   const response = await getPlaylist(props);
+   setPlaylists(response)
+   console.log(response)
+  }
+
+  useEffect(()=>{
+    playlists()
+  },[])
+  
   return (
     <Content
       style={{
@@ -16,6 +32,8 @@ export const HomeContent: React.FC = () => {
         flexWrap: 'wrap'
       }}
     >
+      <CardItem token={props.token}/>
+{/*       <CardItem />
       <CardItem />
       <CardItem />
       <CardItem />
@@ -23,9 +41,7 @@ export const HomeContent: React.FC = () => {
       <CardItem />
       <CardItem />
       <CardItem />
-      <CardItem />
-      <CardItem />
-      <CardItem />
+      <CardItem /> */}
     </Content>
   );
 };

@@ -4,9 +4,14 @@ import styles from './styles.module.less';
 
 const { Meta } = Card;
 
-export const CardItem: React.FC = () => {
+type CardItemProps = {
+  token: string;
+};
+
+
+export const CardItem: React.FC<CardItemProps> = (props) => {
   return (
-    <Card 
+    <Card
       hoverable
       style={{ maxWidth: 205, margin: '1%', background: '#181818', boxShadow: '0px 0px 5px 0px black', border: 'none' }}
       cover={
