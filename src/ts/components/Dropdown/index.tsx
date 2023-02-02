@@ -2,7 +2,7 @@ import { Avatar, Dropdown, MenuProps, message, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './styles.module.less';
 
-export const DropdownProfile = () => {
+export const DropdownProfile: React.FC = () => {
   const onClick: MenuProps['onClick'] = ({ key }) => {
     message.info(`Click on item ${key}`);
   };

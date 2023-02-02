@@ -5,7 +5,7 @@ import { HomeContent } from '../../ts/components/HomeContent';
 import { SideBar } from '../../ts/components/SideBar';
 import styles from './styles.module.less';
 
-export const HomePage = () => {
+export const HomePage: React.FC = () => {
   return (
     <Layout hasSider>
       <SideBar />

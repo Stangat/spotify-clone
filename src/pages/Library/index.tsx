@@ -1,5 +1,3 @@
-export const Library = () => {
-    return (
-<div></div>
-    );
-  };
+export const Library: React.FC = () => {
+  return <div></div>;
+};

@@ -1,5 +1,3 @@
-export const LikedSongs = () => {
-    return (
-<div></div>
-    );
-  };
+export const LikedSongs: React.FC = () => {
+  return <div></div>;
+};

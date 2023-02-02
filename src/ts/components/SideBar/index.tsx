@@ -22,6 +22,7 @@ function getItem(
     type,
   } as MenuItem;
 }
+
 const items: MenuItem[] = [
   getItem('Home', '1', <HomeFilled />),
   getItem('Search', '2', <SearchOutlined />),
@@ -30,7 +31,7 @@ const items: MenuItem[] = [
   getItem('Liked Songs', '5', <HeartFilled />),
 ];
 
-export const SideBar = () => {
+export const SideBar: React.FC = () => {
   return (
     <Sider
       style={{
@@ -41,7 +42,7 @@ export const SideBar = () => {
         left: 0,
         top: 0,
         bottom: 0,
-        backgroundColor:'black'
+        backgroundColor: 'black',
       }}
     >
       <div
@@ -65,7 +66,14 @@ export const SideBar = () => {
           Spotify Clone
         </p>
       </div>
-      <Menu defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline" theme="dark" items={items} style={{backgroundColor:'black'}}/>
+      <Menu
+        defaultSelectedKeys={['1']}
+        defaultOpenKeys={['sub1']}
+        mode="inline"
+        theme="dark"
+        items={items}
+        style={{ backgroundColor: 'black' }}
+      />
     </Sider>
   );
 };
