@@ -1,6 +1,6 @@
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
-import { getPlaylist } from '../../../../api';
+import { getPlaylist } from '../../../api';
 import { CardItem } from '../CardItem';
 
 type HomeContentProps = {

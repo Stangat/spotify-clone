@@ -1,10 +1,10 @@
 import style from './less.module.less';
 import { Routes, Route, Link } from 'react-router-dom';
 import 'antd/dist/antd';
-import { HomePage } from '../pages/HomePage';
-import { SearchPage } from '../pages/SearchPage';
+import { HomePage } from './pages/HomePage';
+import { SearchPage } from './pages/SearchPage';
 import { useState, useEffect } from 'react';
-import { Login } from '../pages/LoginPage';
+import { Login } from './pages/LoginPage';
 
 export default function App() {
   const [token, setToken] = useState('');

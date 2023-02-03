@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
 import React from 'react';
-import { HeaderHome } from '../../ts/components/Header';
-import { HomeContent } from '../../ts/components/HomeContent';
-import { SideBar } from '../../ts/components/SideBar';
+import { HeaderHome } from '../../components/Header';
+import { HomeContent } from '../../components/HomeContent';
+import { SideBar } from '../../components/SideBar';
 import styles from './styles.module.less';
 
 type HomePageProps = {

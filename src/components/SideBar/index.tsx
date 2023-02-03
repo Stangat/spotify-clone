@@ -3,7 +3,7 @@ import type { MenuProps } from 'antd';
 import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
 import React from 'react';
 import Sider from 'antd/es/layout/Sider';
-import { SpotifySvg } from '../../../assets/logo';
+import { SpotifySvg } from '../../assets/logo';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
