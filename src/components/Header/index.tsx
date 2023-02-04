@@ -3,6 +3,7 @@ import styles from './styles.module.less';
 import {} from '@ant-design/icons';
 import { DropdownProfile } from '../Dropdown';
 
+
 export const HeaderHome: React.FC = () => {
   return (
     <div className={styles.headerHome}>
