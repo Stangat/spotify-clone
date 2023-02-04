@@ -1,6 +1,6 @@
 import { Avatar, Dropdown, MenuProps, message, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import styles from './styles.module.less';
+import styles from './dropDown.module.less';
 
 export const DropdownProfile: React.FC = () => {
   const onClick: MenuProps['onClick'] = ({ key }) => {
