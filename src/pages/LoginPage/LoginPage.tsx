@@ -1,4 +1,4 @@
-import style from './styles.module.less';
+import style from './loginPage.module.less';
 
 export function Login() {
   const getAccess = async () => {

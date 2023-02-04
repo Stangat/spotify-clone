@@ -36,12 +36,12 @@ export const SideBar: React.FC = () => {
     <Sider
       style={{
         overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
+        height: '100%',
+        // position: 'fixed',
         padding: '2%',
-        left: 0,
-        top: 0,
-        bottom: 0,
+        // left: 0,
+        // top: 0,
+        // bottom: 0,
         backgroundColor: 'black',
       }}
     >

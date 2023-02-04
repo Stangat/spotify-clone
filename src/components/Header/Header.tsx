@@ -1,7 +1,10 @@
 import { Header } from 'antd/es/layout/layout';
-import styles from './styles.module.less';
+import styles from './header.module.less';
 import {} from '@ant-design/icons';
-import { DropdownProfile } from '../Dropdown';
+import { DropdownProfile } from '../Dropdown/DropDown';
+
+
+
 
 
 export const HeaderHome: React.FC = () => {

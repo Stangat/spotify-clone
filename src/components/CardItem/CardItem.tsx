@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
-import styles from './styles.module.less';
-import { AlbumType } from '../../../interface';
+import styles from './cardItem.module.less';
+import { AlbumType } from '../../../interface/interface';
 
 const { Meta } = Card;
 
