@@ -1,23 +1,16 @@
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
-import { getAlbums,/*  getPlaylist  */} from '../../../api';
+import { getAlbums} from '../../../api';
 import { AlbumType } from '../../../interface';
 import { CardItem } from '../CardItem';
 import styles from './styles.module.less';
 
 type HomeContentProps = {
   token: string;
-  //album:[]
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
-  const [playlist, setPlaylists] = useState([]);
   const [albums, setALbums] = useState<AlbumType[]>([]);
-
-/*   const playlists = async () => {
-    const response = await getPlaylist(props);
-    setPlaylists(response);
-  }; */
 
   const getAlbumsHandler = async () => {
     const response = await getAlbums(props);
@@ -25,7 +18,6 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
   };
 
   useEffect(() => {
- /*    playlists(); */
     getAlbumsHandler();
   }, []);
 
