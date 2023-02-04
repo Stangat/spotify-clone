@@ -9,7 +9,7 @@ type Props = {
 
 
   
-  export async function getPlaylist(props: Props) {
+/*   export async function getPlaylist(props: Props) {
     const res = await fetch('https://api.spotify.com/v1/me/playlists', {
       method: 'GET',
       headers: {
@@ -22,7 +22,7 @@ type Props = {
       return { name, id };
     });
     return playlists
-  }
+  } */
 
   export async function getAlbums(props: Props) {
     const res = await fetch('https://api.spotify.com/v1/browse/new-releases', {
