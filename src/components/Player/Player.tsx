@@ -1,4 +1,4 @@
-import { HeartOutlined, StepBackwardOutlined, PlayCircleOutlined, StepForwardOutlined } from '@ant-design/icons';
+import { HeartOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
 import ReactSlider from 'react-slider';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import RepeatIcon from '@mui/icons-material/Repeat';
