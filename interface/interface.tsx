@@ -59,7 +59,7 @@ export interface AlbumType {
   artists: Artist[];
 }
 
-export interface Albums {
+export interface AlbumsType {
   href: string;
   limit: number;
   next: string;
@@ -70,5 +70,5 @@ export interface Albums {
 }
 
 export interface RootObject {
-  albums: Albums;
+  albums: AlbumsType;
 }

@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-import React from 'react';
+import React, { useState } from 'react';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
 import { Player } from '../../components/Player/Player';
@@ -20,15 +20,17 @@ const footerStyle: React.CSSProperties = {
 type HomePageProps = {
   token: string;
 };
-
+const limit = 10;
 export const HomePage: React.FC<HomePageProps> = props => {
+  const [page,setPage] = useState(1);
+  
   return (
     <Layout hasSider>
       <Layout>
         <SideBar />
         <Layout>
-          <HeaderHome />
-          <HomeContent token={props.token} />
+          <HeaderHome page={page} setPage={setPage}/>
+          <HomeContent token={props.token} offset={(page-1)*limit} limit={limit}/>
         </Layout>
       </Layout>
       <Footer style={footerStyle}>

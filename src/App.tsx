@@ -17,8 +17,8 @@ export default function App() {
   return (
     <div className={style.app}>
       <Routes>
-        <Route path="/" element={token ? <HomePage token={token} /> : <Login />} />
-        <Route path="*" element={<SearchPage />} />
+        <Route path="/" element={token ? <HomePage token={token}/> : <Login />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </div>
   );

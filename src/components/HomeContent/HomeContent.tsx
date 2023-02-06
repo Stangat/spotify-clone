@@ -6,20 +6,22 @@ import { CardItem } from '../CardItem/CardItem';
 import styles from './homeContent.module.less';
 
 type HomeContentProps = {
-  token: string;
+  token:string;
+  offset: number;
+  limit:number;
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
   const [albums, setALbums] = useState<AlbumType[]>([]);
 
   const getAlbumsHandler = async () => {
-    const response = await getAlbums(props);
+    const response = await getAlbums({limit: props.limit, offset: props.offset, token: props.token});
     setALbums(response);
   };
 
   useEffect(() => {
     getAlbumsHandler();
-  }, []);
+  }, [props.offset]);
 
   return (
     <div className={styles.mainContentContainer}>
