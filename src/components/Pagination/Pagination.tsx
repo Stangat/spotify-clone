@@ -1,4 +1,5 @@
 import { Pagination } from 'antd';
+import styles from './pagination.module.less';
 
 type PaginationHeaderType = {
   page: number;
@@ -8,7 +9,7 @@ type PaginationHeaderType = {
 export const PaginationHeader: React.FC<PaginationHeaderType> = props => {
   return (
     <div>
-      <Pagination simple defaultCurrent={1} current={props.page} total={props.totalAlbums} onChange={props.setPage} />
+      <Pagination className={styles.paginationContainer} simple defaultCurrent={1} current={props.page} total={props.totalAlbums} onChange={props.setPage} />
     </div>
   );
 };

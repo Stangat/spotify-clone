@@ -4,6 +4,7 @@ import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleF
 import React from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
+import styles from './sideBar.module.less';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -46,6 +47,7 @@ export const SideBar: React.FC = () => {
       }}
     >
       <div
+      className={styles.titleBlock}
         style={{
           height: 34,
           margin: 16,
