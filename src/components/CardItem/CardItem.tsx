@@ -11,7 +11,6 @@ type CardItemProps = {
 };
 
 export const CardItem: React.FC<CardItemProps> = props => {
-  console.log("render card item")
   return (
     <Card
       hoverable

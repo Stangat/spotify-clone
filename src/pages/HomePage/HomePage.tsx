@@ -14,7 +14,7 @@ const footerStyle: React.CSSProperties = {
   padding: '15px',
   color: '#fff',
   backgroundColor: '#1c1b1b',
-  borderTop: '1px solid #302f2f'
+  borderTop: '1px solid #302f2f',
 };
 
 type HomePageProps = {
@@ -22,19 +22,26 @@ type HomePageProps = {
 };
 const limit = 10;
 export const HomePage: React.FC<HomePageProps> = props => {
-  const [page,setPage] = useState(1);
-  
+  const [page, setPage] = useState(1);
+  const [totalAlbums, setTotalAlbums] = useState(0);
+
   return (
     <Layout hasSider>
       <Layout>
         <SideBar />
         <Layout>
-          <HeaderHome page={page} setPage={setPage}/>
-          <HomeContent token={props.token} offset={(page-1)*limit} limit={limit}/>
+          <HeaderHome page={page} setPage={setPage} totalAlbums={totalAlbums} />
+          <HomeContent
+            token={props.token}
+            offset={(page - 1) * limit}
+            limit={limit}
+            totalAlbums={totalAlbums}
+            setTotalAlbums={setTotalAlbums}
+          />
         </Layout>
       </Layout>
       <Footer style={footerStyle}>
-        <Player token={props.token}/>
+        <Player token={props.token} />
       </Footer>
     </Layout>
   );

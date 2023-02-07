@@ -6,17 +6,20 @@ import { CardItem } from '../CardItem/CardItem';
 import styles from './homeContent.module.less';
 
 type HomeContentProps = {
-  token:string;
+  token: string;
   offset: number;
-  limit:number;
+  limit: number;
+  totalAlbums: number;
+  setTotalAlbums: (totalAlbums: number) => void;
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
   const [albums, setALbums] = useState<AlbumType[]>([]);
 
   const getAlbumsHandler = async () => {
-    const response = await getAlbums({limit: props.limit, offset: props.offset, token: props.token});
-    setALbums(response);
+    const response = await getAlbums({ limit: props.limit, offset: props.offset, token: props.token });
+    setALbums(response.albums.items);
+    props.setTotalAlbums(response.albums.total);
   };
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
           fontWeight: 600,
           display: 'flex',
           flexWrap: 'wrap',
-          marginBottom: '10%'
+          marginBottom: '10%',
         }}
       >
         {albums.map(album => {

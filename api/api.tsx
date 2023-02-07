@@ -1,4 +1,4 @@
-import { AlbumType } from '../interface/interface';
+import { IResponseAlbumsType } from '../interface/interface';
 
 type Props = {
   token: string;
@@ -13,20 +13,17 @@ type getAlbumsPropsType = {
   limit:number;
 }
 
-export async function getAlbums(props: getAlbumsPropsType) {
-  const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?offset=${props.offset}&limit=${props.limit}`, {
+export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbumsType> {
+  const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?offset=${data.offset}&limit=${data.limit}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${data.token}`,
       'Content-Type': 'application/json',
     },
   });
 
   const response = await res.json();
-  const albums = response.albums.items.map((item: AlbumType) => {
-    return item;
-  });
-  return albums;
+  return response;
 }
 
 export async function getPlaylist(props: Props) {

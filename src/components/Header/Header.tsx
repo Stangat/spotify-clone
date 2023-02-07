@@ -7,6 +7,7 @@ import { PaginationHeader } from '../Pagination/Pagination';
 type HeaderHomeProps = {
   page: number;
   setPage: (page: number) => void;
+  totalAlbums: number;
 };
 
 export const HeaderHome: React.FC<HeaderHomeProps> = props => {
@@ -21,7 +22,7 @@ export const HeaderHome: React.FC<HeaderHomeProps> = props => {
           justifyContent: 'space-between',
         }}
       >
-        <PaginationHeader page={props.page} setPage={props.setPage} />
+        <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
         <DropdownProfile />
       </Header>
     </div>

@@ -69,6 +69,6 @@ export interface AlbumsType {
   items: AlbumType[];
 }
 
-export interface RootObject {
+export interface IResponseAlbumsType {
   albums: AlbumsType;
 }
