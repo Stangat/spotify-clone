@@ -59,7 +59,7 @@ export interface AlbumType {
   artists: Artist[];
 }
 
-export interface Albums {
+export interface AlbumsType {
   href: string;
   limit: number;
   next: string;
@@ -69,6 +69,6 @@ export interface Albums {
   items: AlbumType[];
 }
 
-export interface RootObject {
-  albums: Albums;
+export interface IResponseAlbumsType {
+  albums: AlbumsType;
 }
