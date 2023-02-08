@@ -13,6 +13,7 @@ const devServer = (isDev) => !isDev ? {} : {
     static: {
       directory: path.join(__dirname, "public")
     },
+    historyApiFallback: true,
   },
 };
 

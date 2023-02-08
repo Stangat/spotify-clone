@@ -42,7 +42,7 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
         }}
       >
         {albums.map(album => {
-          return <CardItem key={album.id} album={album} />;
+          return <CardItem key={album.id} album={album}/>;
         })}
       </Content>
     </div>

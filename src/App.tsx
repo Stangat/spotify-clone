@@ -5,6 +5,7 @@ import { HomePage } from './pages/HomePage/HomePage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
+import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -13,12 +14,13 @@ export default function App() {
     const hash = window.location.hash;
     setToken(hash.substring(1).split('&')[0].split('=')[1]);
   }, []);
-  
+
   return (
     <div className={style.app}>
       <Routes>
-        <Route path="/" element={token ? <HomePage token={token}/> : <Login />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/" element={token ? <HomePage token={token} /> : <Login />} />
+        <Route path="album/:id" element={<DetailsAlbumPage />} />
+        <Route path="search" element={<SearchPage />} />
       </Routes>
     </div>
   );
