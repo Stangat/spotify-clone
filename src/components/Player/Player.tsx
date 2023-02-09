@@ -18,7 +18,6 @@ import {
 import style from './player.module.less';
 import './sliders.css';
 import { Slider } from 'antd';
-import SpotifyPlayer from 'react-spotify-web-playback';
 
 type Token = {
   token: string;
@@ -76,8 +75,6 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({ onClick, isPlaying, dur
             style={{ fontSize: '2.5rem' }}
             onClick={() => {
               onClick();
-              // getData();
-              // source.start(0);
             }}
           />
         )}
@@ -129,61 +126,12 @@ export const Player: React.FC<Token> = ({ token }) => {
   // await getCurrentlyPlayingTrackInfo();
   // };
 
-  // const playHandler = async () => {
-  const audioCtx = new window.AudioContext();
-  let source: AudioBufferSourceNode;
-  function getData() {
-    source = audioCtx.createBufferSource();
-    const request = new XMLHttpRequest();
-    request.open(
-      'GET',
-      'https://p.scdn.co/mp3-preview/bb33431965d270fbf0440480e64633e2dc0fad60?cid=774b29d4f13844c495f206cafdad9c86',
-      true
-    );
-    request.responseType = 'arraybuffer';
-    request.onload = () => {
-      const audioData = request.response;
-      audioCtx.decodeAudioData(
-        audioData,
-        buffer => {
-          source.buffer = buffer;
-          source.connect(audioCtx.destination);
-          source.loop = true;
-        },
-        err => console.error(`Error with decoding audio data: ${err}`)
-      );
-    };
-    request.send();
+  function play() {
+    const player = new Audio();
+    player.src =
+      'https://p.scdn.co/mp3-preview/bb33431965d270fbf0440480e64633e2dc0fad60?cid=774b29d4f13844c495f206cafdad9c86';
+    player.play();
   }
-  // getTrack({ token })
-  //   .then(stream => {
-  //     console.log(stream);
-  //     const audioCtx = new AudioContext();
-  //     audioCtx.decodeAudioData(stream, audioBuffer => {
-  //       const source = audioCtx.createBufferSource();
-  //       source.buffer = audioBuffer;
-  //       source.connect(audioCtx.destination);
-  //       source.start();
-  //     });
-
-  //   })
-  //   .catch(error => {
-  //     console.error(error);
-  //   });
-  // };
-
-  const getDeviceId = async () => {
-    // try {
-    const { devices } = await getAvailableDevices({ token });
-    const id = devices[0].id;
-    setDeviceId(id);
-    console.log(id);
-    // } catch {
-    //   if (confirm('Please, go to https://open.spotify.com/ and press play')) {
-    //     window.location.reload();
-    //   }
-    // }
-  };
 
   const getCurrentlyPlayingTrackInfo = async () => {
     // try {
@@ -229,8 +177,7 @@ export const Player: React.FC<Token> = ({ token }) => {
       <SongBlock url={url} artistName={artistName} songName={songName} />
       <PlayerControls
         onClick={() => {
-          getData();
-          source.start(0);
+          play();
         }}
         isPlaying={isPlaying}
         duration={trackDuration}
