@@ -11,14 +11,16 @@ type HomeContentProps = {
   limit: number;
   totalAlbums: number;
   setTotalAlbums: (totalAlbums: number) => void;
+  albums: AlbumType[];
+  setALbums: (albums: AlbumType[]) => void;
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
-  const [albums, setALbums] = useState<AlbumType[]>([]);
+/*   const [albums, setALbums] = useState<AlbumType[]>([]); */
 
   const getAlbumsHandler = async () => {
     const response = await getAlbums({ limit: props.limit, offset: props.offset, token: props.token });
-    setALbums(response.albums.items);
+    props.setALbums(response.albums.items);
     props.setTotalAlbums(response.albums.total);
   };
 
@@ -41,7 +43,7 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
           marginBottom: '10%',
         }}
       >
-        {albums.map(album => {
+        {props.albums.map(album => {
           return <CardItem key={album.id} album={album}/>;
         })}
       </Content>
