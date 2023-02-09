@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import React, { useState } from 'react';
+import { AlbumType } from '../../../interface/interface';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
 import { Player } from '../../components/Player/Player';
@@ -19,6 +20,8 @@ const footerStyle: React.CSSProperties = {
 
 type HomePageProps = {
   token: string;
+  albums: AlbumType[];
+  setALbums: (albums: AlbumType[]) => void;
 };
 const limit = 10;
 export const HomePage: React.FC<HomePageProps> = props => {
@@ -37,6 +40,8 @@ export const HomePage: React.FC<HomePageProps> = props => {
             limit={limit}
             totalAlbums={totalAlbums}
             setTotalAlbums={setTotalAlbums}
+            albums={props.albums} 
+            setALbums={props.setALbums}
           />
         </Layout>
       </Layout>
