@@ -7,19 +7,26 @@ import styles from './homeContent.module.less';
 
 type HomeContentProps = {
   token: string;
+  offset: number;
+  limit: number;
+  totalAlbums: number;
+  setTotalAlbums: (totalAlbums: number) => void;
+  albums: AlbumType[];
+  setALbums: (albums: AlbumType[]) => void;
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
-  const [albums, setALbums] = useState<AlbumType[]>([]);
+/*   const [albums, setALbums] = useState<AlbumType[]>([]); */
 
   const getAlbumsHandler = async () => {
-    const response = await getAlbums(props);
-    setALbums(response);
+    const response = await getAlbums({ limit: props.limit, offset: props.offset, token: props.token });
+    props.setALbums(response.albums.items);
+    props.setTotalAlbums(response.albums.total);
   };
 
   useEffect(() => {
     getAlbumsHandler();
-  }, []);
+  }, [props.offset]);
 
   return (
     <div className={styles.mainContentContainer}>
@@ -33,11 +40,11 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
           fontWeight: 600,
           display: 'flex',
           flexWrap: 'wrap',
-          marginBottom: '10%'
+          marginBottom: '10%',
         }}
       >
-        {albums.map(album => {
-          return <CardItem key={album.id} album={album} />;
+        {props.albums.map(album => {
+          return <CardItem key={album.id} album={album}/>;
         })}
       </Content>
     </div>

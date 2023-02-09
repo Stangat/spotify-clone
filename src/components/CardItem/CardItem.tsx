@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import styles from './cardItem.module.less';
 import { AlbumType } from '../../../interface/interface';
+import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -11,6 +12,7 @@ type CardItemProps = {
 };
 
 export const CardItem: React.FC<CardItemProps> = props => {
+  const navigate = useNavigate();
   return (
     <Card
       hoverable
@@ -25,6 +27,9 @@ export const CardItem: React.FC<CardItemProps> = props => {
       cover={
         <img alt={props.album.label} src={props.album.images[0].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />
       }
+      onClick={() => {
+        navigate(`/album/${props.album.id}`);
+      }}
     >
       <Meta
         title={<div style={{ color: 'white' }}>{props.album.name}</div>}
