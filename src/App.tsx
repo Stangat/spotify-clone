@@ -19,7 +19,7 @@ export default function App() {
     <div className={style.app}>
       <Routes>
         <Route path="/" element={token ? <HomePage token={token} /> : <Login />} />
-        <Route path="album/:id" element={<DetailsAlbumPage />} />
+        <Route path="album/:id" element={<DetailsAlbumPage token={token}/>} />
         <Route path="search" element={<SearchPage />} />
       </Routes>
     </div>
