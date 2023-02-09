@@ -5,36 +5,39 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import PictureInPictureAltIcon from '@mui/icons-material/PictureInPictureAlt';
 import LyricsIcon from '@mui/icons-material/Lyrics';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import { VolumeUp, VolumeOff, OpenInFull, PlayCircleFilled } from '@mui/icons-material';
+import { VolumeUp, VolumeOff, OpenInFull, PlayCircleFilled, PauseCircleFilled } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
-import { getCurrentlyPlayingTrack } from '../../../api/api';
+import {
+  getAvailableDevices,
+  getCurrentlyPlayingTrack,
+  getPlaybackState,
+  getTrack,
+  pausePlayback,
+  startPlayback,
+} from '../../../api/api';
 import style from './player.module.less';
 import './sliders.css';
+import { Slider } from 'antd';
+import SpotifyPlayer from 'react-spotify-web-playback';
 
-type Props = {
+type Token = {
   token: string;
 };
 
-const SongBlock = (props: Props) => {
-  const [url, setUrl] = useState('');
-  const [artistName, setArtistName] = useState('');
-  const [songName, setSongName] = useState('');
+type SongBlockProps = {
+  url: string;
+  artistName: string;
+  songName: string;
+};
 
-  useEffect(() => {
-    const getCurrentlyPlayingTrackInfo = async () => {
-      const track = await getCurrentlyPlayingTrack(props);
-      const { url } = track.album.images[2];
-      const artistName = track.artists[0].name;
-      const songName = track.name;
+type PlayerControlsProps = {
+  // onClick: () => Promise<void>;
+  onClick: () => void;
+  isPlaying: boolean;
+  duration: string;
+};
 
-      setUrl(url);
-      setArtistName(artistName);
-      setSongName(songName);
-    };
-
-    getCurrentlyPlayingTrackInfo();
-  }, []);
-
+const SongBlock: React.FC<SongBlockProps> = ({ url, artistName, songName }) => {
   return (
     <div className={style.songBlockContainer}>
       <div className={style.coverContainer}>
@@ -60,20 +63,32 @@ const SongBlock = (props: Props) => {
   );
 };
 
-const PlayerControls = () => {
+const PlayerControls: React.FC<PlayerControlsProps> = ({ onClick, isPlaying, duration }) => {
   return (
     <div className={style.controlsContainer}>
       <div className={style.buttonsContainer}>
         <ShuffleIcon />
         <StepBackwardOutlined style={{ fontSize: '1.5rem' }} />
-        <PlayCircleFilled style={{ fontSize: '2.5rem' }} />
+        {isPlaying ? (
+          <PauseCircleFilled style={{ fontSize: '2.5rem' }} />
+        ) : (
+          <PlayCircleFilled
+            style={{ fontSize: '2.5rem' }}
+            onClick={() => {
+              onClick();
+              // getData();
+              // source.start(0);
+            }}
+          />
+        )}
+
         <StepForwardOutlined style={{ fontSize: '1.5rem' }} />
         <RepeatIcon />
       </div>
       <div className={style.sliderContainer}>
         <span className={style.start}>00:00</span>
         <ReactSlider className="slider" trackClassName="slider-track" thumbClassName="slider-thumb" />
-        <span className={style.duration}>00:00</span>
+        <span className={style.duration}>{duration}</span>
       </div>
     </div>
   );
@@ -83,7 +98,7 @@ const VolumeBlock = () => {
   return (
     <div className={style.volumeBlockContainer}>
       <LyricsIcon style={{ fontSize: '20px' }} />
-      <QueueMusicIcon style={{ fontSize: '25px' }}/>
+      <QueueMusicIcon style={{ fontSize: '25px' }} />
       <VolumeUp />
       <div className={style.volumeSliderContainer}>
         <ReactSlider className="slider" trackClassName="slider-track" thumbClassName="slider-thumb" />
@@ -93,11 +108,133 @@ const VolumeBlock = () => {
   );
 };
 
-export const Player = (props: Props) => {
+export const Player: React.FC<Token> = ({ token }) => {
+  const [url, setUrl] = useState('');
+  const [artistName, setArtistName] = useState('');
+  const [songName, setSongName] = useState('');
+  const [id, setDeviceId] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [trackDuration, setTrackDuration] = useState('');
+
+  // const playHandler = async () => {
+  // if (id) {
+  //   if (!isPlaying) {
+  //     await startPlayback({ token }, id);
+  //     setIsPlaying(true);
+  //   } else {
+  //     await pausePlayback({ token }, id);
+  //     setIsPlaying(false);
+  //   }
+  // }
+  // await getCurrentlyPlayingTrackInfo();
+  // };
+
+  // const playHandler = async () => {
+  const audioCtx = new window.AudioContext();
+  let source: AudioBufferSourceNode;
+  function getData() {
+    source = audioCtx.createBufferSource();
+    const request = new XMLHttpRequest();
+    request.open(
+      'GET',
+      'https://p.scdn.co/mp3-preview/bb33431965d270fbf0440480e64633e2dc0fad60?cid=774b29d4f13844c495f206cafdad9c86',
+      true
+    );
+    request.responseType = 'arraybuffer';
+    request.onload = () => {
+      const audioData = request.response;
+      audioCtx.decodeAudioData(
+        audioData,
+        buffer => {
+          source.buffer = buffer;
+          source.connect(audioCtx.destination);
+          source.loop = true;
+        },
+        err => console.error(`Error with decoding audio data: ${err}`)
+      );
+    };
+    request.send();
+  }
+  // getTrack({ token })
+  //   .then(stream => {
+  //     console.log(stream);
+  //     const audioCtx = new AudioContext();
+  //     audioCtx.decodeAudioData(stream, audioBuffer => {
+  //       const source = audioCtx.createBufferSource();
+  //       source.buffer = audioBuffer;
+  //       source.connect(audioCtx.destination);
+  //       source.start();
+  //     });
+
+  //   })
+  //   .catch(error => {
+  //     console.error(error);
+  //   });
+  // };
+
+  const getDeviceId = async () => {
+    // try {
+    const { devices } = await getAvailableDevices({ token });
+    const id = devices[0].id;
+    setDeviceId(id);
+    console.log(id);
+    // } catch {
+    //   if (confirm('Please, go to https://open.spotify.com/ and press play')) {
+    //     window.location.reload();
+    //   }
+    // }
+  };
+
+  const getCurrentlyPlayingTrackInfo = async () => {
+    // try {
+    const MILLISECOND_TO_SECOND = 0.001;
+    const SECONDS_IN_MINUTE = 60;
+
+    const track = await getCurrentlyPlayingTrack({ token });
+    const { url } = track.album.images[2];
+    const artistName = track.artists[0].name;
+    const songName = track.name;
+    const minutes = Math.trunc((+track.duration_ms * MILLISECOND_TO_SECOND) / SECONDS_IN_MINUTE);
+    const seconds = Math.trunc(
+      (((track.duration_ms * MILLISECOND_TO_SECOND) / SECONDS_IN_MINUTE) % 1) * SECONDS_IN_MINUTE
+    );
+    const duration = `${minutes}:${seconds}`;
+    setTrackDuration(duration);
+    setUrl(url);
+    setArtistName(artistName);
+    setSongName(songName);
+    // } catch {
+    //   console.error('Please, go to https://open.spotify.com/ and press play');
+    // }
+  };
+
+  const playbackStateHandler = async () => {
+    try {
+      const track = await getPlaybackState({ token });
+      const result = track.is_playing;
+      setIsPlaying(result);
+    } catch {}
+  };
+
+  useEffect(() => {
+    // getDeviceId();
+    getTrack({ token });
+    // getCurrentlyPlayingTrackInfo();
+    // playbackStateHandler();
+  }, []);
+
+  // return <SpotifyPlayer token={token} uris={'spotify:track:11dFghVXANMlKmJXsNCbNl'} />;
   return (
     <div className={style.playerContainer}>
-      <SongBlock token={props.token} />
-      <PlayerControls />
+      <SongBlock url={url} artistName={artistName} songName={songName} />
+      <PlayerControls
+        onClick={() => {
+          getData();
+          source.start(0);
+        }}
+        isPlaying={isPlaying}
+        duration={trackDuration}
+      />
       <VolumeBlock />
     </div>
   );

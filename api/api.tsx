@@ -1,33 +1,33 @@
-import { AlbumType } from "../interface/interface";
+import { AlbumType } from '../interface/interface';
 
-type Props = {
-    token: string;
-  };
-  type Playlists = {
-    name: string;
-    id: string;
-  };
-  
-  export async function getAlbums(props: Props) {
-    const res = await fetch('https://api.spotify.com/v1/browse/new-releases', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${props.token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    const response = await res.json();
-    const albums = response.albums.items.map((item:AlbumType) => {
-      return item
-    });
-    return albums
-  }
+type Token = {
+  token: string;
+};
+type Playlists = {
+  name: string;
+  id: string;
+};
 
-export async function getPlaylist(props: Props) {
+export async function getAlbums({ token }: Token) {
+  const res = await fetch('https://api.spotify.com/v1/browse/new-releases', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const response = await res.json();
+  const albums = response.albums.items.map((item: AlbumType) => {
+    return item;
+  });
+  return albums;
+}
+
+export async function getPlaylist({ token }: Token) {
   const res = await fetch('https://api.spotify.com/v1/me/playlists', {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
@@ -38,14 +38,84 @@ export async function getPlaylist(props: Props) {
   return playlists;
 }
 
-export async function getCurrentlyPlayingTrack(props: Props) {
+export async function getCurrentlyPlayingTrack({ token }: Token) {
   const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
   const { item } = await res.json();
   return item;
+}
+
+export async function getPlaybackState({ token }: Token) {
+  const res = await fetch('https://api.spotify.com/v1/me/player', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const result = await res.json();
+  return result;
+}
+
+export async function getAvailableDevices({ token }: Token) {
+  const res = await fetch('https://api.spotify.com/v1/me/player/devices', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const result = await res.json();
+  return result;
+}
+
+export async function getTrack({ token }: Token) {
+  const res = await fetch('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl?market=ES', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  // const rs = res.arrayBuffer();
+  // return rs
+  // const reader = rs?.getReader();
+  const track = await res.json();
+  console.log(track);
+ 
+  // if (reader) {
+  //   return reader.read().then(result => {
+  //     return result;
+  //   });
+  // }
+}
+
+export async function startPlayback({ token }: Token, id: string) {
+  const body = {
+    position_ms: 0,
+  };
+
+  await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+}
+
+export async function pausePlayback({ token }: Token, id: string) {
+  await fetch(`https://api.spotify.com/v1/me/player/pause?device_id=${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
 }
