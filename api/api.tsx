@@ -1,13 +1,15 @@
 import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface';
 import { AlbumType } from '../interface/interface';
 
-type Props = {
+type Token = {
   token: string;
 };
+
 type Playlists = {
   name: string;
   id: string;
 };
+
 type getAlbumsPropsType = {
   token: string;
   offset: number;
@@ -42,28 +44,6 @@ export async function getAlbumTracks(data: getTracksType): Promise<IResponseTrac
 
   const response = await res.json();
   return response;
-}
-type Token = {
-  token: string;
-};
-type Playlists = {
-  name: string;
-  id: string;
-};
-
-export async function getAlbums({ token }: Token) {
-  const res = await fetch('https://api.spotify.com/v1/browse/new-releases', {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const response = await res.json();
-  const albums = response.albums.items.map((item: AlbumType) => {
-    return item;
-  });
-  return albums;
 }
 
 export async function getPlaylist({ token }: Token) {
@@ -130,7 +110,7 @@ export async function getTrack({ token }: Token) {
   // const reader = rs?.getReader();
   const track = await res.json();
   console.log(track);
- 
+
   // if (reader) {
   //   return reader.read().then(result => {
   //     return result;
