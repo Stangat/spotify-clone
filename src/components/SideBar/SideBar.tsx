@@ -28,45 +28,16 @@ const items: MenuItem[] = [
   getItem('Home', '1', <HomeFilled />),
   getItem('Search', '2', <SearchOutlined />),
   getItem('Your library', '3', <ContainerOutlined />),
-  getItem('Create playlist', '4', <PlusCircleFilled />),
+  getItem('Create playlist', '4', <PlusCircleFilled/>),
   getItem('Liked Songs', '5', <HeartFilled />),
 ];
 
 export const SideBar: React.FC = () => {
   return (
-    <Sider
-      style={{
-        overflow: 'auto',
-        height: '100%',
-        // position: 'fixed',
-        padding: '2%',
-        // left: 0,
-        // top: 0,
-        // bottom: 0,
-        backgroundColor: 'black',
-      }}
-    >
-      <div
-      className={styles.titleBlock}
-        style={{
-          height: 34,
-          margin: 16,
-          background: '#black',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {<SpotifySvg />}
-        <p
-          style={{
-            color: 'white',
-            fontSize: '22px',
-            fontWeight: 'bold',
-          }}
-        >
-          Spotify Clone
-        </p>
+    <Sider>
+      <div  className={styles.titleBlock}>
+        <SpotifySvg />
+        <p>Spotify Clone</p>
       </div>
       <Menu
         defaultSelectedKeys={['1']}

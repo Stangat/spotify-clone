@@ -69,3 +69,15 @@ export async function getCurrentlyPlayingTrack(props: Props) {
   const { item } = await res.json();
   return item;
 }
+
+export async function getCategories(props: Props) {
+  const res = await fetch('https://api.spotify.com/v1/browse/categories', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${props.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const { item } = await res.json();
+  return item;
+}

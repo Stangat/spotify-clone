@@ -22,7 +22,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={token ? <HomePage token={token} albums={albums} setALbums={setALbums}/> : <Login />} />
         <Route path="album/:id" element={<DetailsAlbumPage token={token} albums={albums} setALbums={setALbums}/>} />
-        <Route path="search" element={<SearchPage />} />
+        <Route path="search" element={<SearchPage token={token}/>} />
       </Routes>
     </div>
   );

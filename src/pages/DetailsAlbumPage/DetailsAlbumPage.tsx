@@ -7,17 +7,6 @@ import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import { Player } from '../../components/Player/Player';
 import { SideBar } from '../../components/SideBar/SideBar';
 
-const footerStyle: React.CSSProperties = {
-  position: 'fixed',
-  left: '0',
-  right: '0',
-  bottom: '0',
-  padding: '15px',
-  color: '#fff',
-  backgroundColor: '#1c1b1b',
-  borderTop: '1px solid #302f2f',
-};
-
 type DetailsAlbumPageProps = {
   token: string;
   albums: AlbumType[];
@@ -36,7 +25,7 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
             <DetailsAlbumContent token={props.token} id={params.id} albums={props.albums} setALbums={props.setALbums}/>
           </Layout>
         </Layout>
-        <Footer style={footerStyle}>
+        <Footer>
           <Player token={props.token} />
         </Footer>
       </Layout>
