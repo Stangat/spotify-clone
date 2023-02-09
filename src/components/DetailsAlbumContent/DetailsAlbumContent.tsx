@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getAlbumTracks } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import styles from './details.module.less';
+import { PlayCircleFilled } from '@ant-design/icons';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -10,10 +11,15 @@ type DetailsAlbumContentProps = {
   setALbums: (albums: AlbumType[]) => void;
 };
 
+const playingTrack = (url: string) => {
+  var audio = new Audio(); // Создаём новый элемент Audio
+  audio.src = url; // Указываем путь к звуку "клика"
+  audio.play(); // Автоматически запускаем
+};
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
-  console.log(props.albums);
+  //console.log(props.albums);
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  console.log(tracks);
+  // console.log(tracks);
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
@@ -65,9 +71,30 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           }
         })}
       </div>
-      {tracks.map(track => {
-        return <div>{track.name}</div>;
-      })}
+      <div className={styles.tracksBlock}>
+        {tracks.map(track => {
+          return (
+            <div className={styles.trackBlock} key={track.id}>
+              <div className={styles.artistDesc}>
+                <PlayCircleFilled
+                  style={{ color: '#1ad760', fontSize: '32px' }}
+                  onClick={() => playingTrack(track.preview_url)}
+                />
+                <div >
+                  <p>{track.name}</p>
+                  <p style={{ color: '#a0a0a0' }}>
+                    {track.artists.map(artist => {
+                      return artist.name;
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              <p>{(track.duration_ms / 60000).toFixed(2)} min</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
