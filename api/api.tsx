@@ -34,7 +34,7 @@ export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbu
 }
 
 export async function getAlbumTracks(data: getTracksType): Promise<IResponseTracksType> {
-  const res = await fetch(`https://api.spotify.com/v1/albums/${data.id}/tracks`, {
+  const res = await fetch(`https://api.spotify.com/v1/albums/${data.id}/tracks?market=ES`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
