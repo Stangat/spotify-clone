@@ -13,7 +13,7 @@ type DetailsAlbumContentProps = {
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
   console.log(props.albums);
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  console.log(tracks)
+  console.log(tracks);
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
@@ -24,50 +24,49 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   }, []);
   return (
     <div className={styles.detailsContentContainer}>
-      {tracks.map(track => {
-        return (
-          <div key={track.id}>
-            {props.albums.map(album => {
-              if (album.id === props.id) {
-                return (
-                  <div
-                    key={props.id}
-                    className={styles.blockImage}
-                    style={{
-                      backgroundImage: `url(${album.images[0].url})`,
-                      backgroundSize: 'cover',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                    }}
-                  >
-                    <div className={styles.boxBlur}>
-                      <img
-                        className={styles.imageAlbum}
-                        key={album.id}
-                        alt={album.label}
-                        src={album.images[1].url}
-                        style={{ boxShadow: '0px 0px 5px 0px black' }}
-                      />
-                      <div className={styles.descriptionAlbumTracks}>
-                        <p className={styles.typeAlbum}>{album.type}</p>
-                        <p className={styles.albumName}>{album.name}</p>
-                        <div className={styles.descriptionBottom}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          {track.artists.map(artist => {
-                            return <p key={artist.id}> {artist.name} · </p>;
-                          })}
-                        </div>
-                        <p>{(album.release_date).slice(0,4)} · </p>
-                        <p>{album.total_tracks} songs,{(track.duration_ms / 60000).toFixed(2)} min  </p>
-                        </div>
+      <div key={props.id}>
+        {props.albums.map(album => {
+          if (album.id === props.id) {
+            return (
+              <div
+                key={props.id}
+                className={styles.blockImage}
+                style={{
+                  backgroundImage: `url(${album.images[0].url})`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <div className={styles.boxBlur}>
+                  <img
+                    className={styles.imageAlbum}
+                    key={album.id}
+                    alt={album.label}
+                    src={album.images[1].url}
+                    style={{ boxShadow: '0px 0px 5px 0px black' }}
+                  />
+                  <div className={styles.descriptionAlbumTracks}>
+                    <p className={styles.typeAlbum}>{album.type}</p>
+                    <p className={styles.albumName}>{album.name}</p>
+                    <div className={styles.descriptionBottom}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {album.artists.map(artist => {
+                          return <p key={artist.id}> {artist.name} · </p>;
+                        })}
                       </div>
+                      <p>{album.release_date.slice(0, 4)} · </p>
+                      <p>{album.total_tracks} songs</p>
                     </div>
                   </div>
-                );
-              }
-            })}
-          </div>
-        );
+                </div>
+              </div>
+            );
+          }
+        })}
+      </div>
+      {tracks.map(track => {
+        return <div>{track.name}</div>;
       })}
     </div>
   );
