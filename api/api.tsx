@@ -1,12 +1,15 @@
 import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface';
+import { AlbumType } from '../interface/interface';
 
-type Props = {
+type Token = {
   token: string;
 };
+
 type Playlists = {
   name: string;
   id: string;
 };
+
 type getAlbumsPropsType = {
   token: string;
   offset: number;
@@ -31,7 +34,7 @@ export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbu
 }
 
 export async function getAlbumTracks(data: getTracksType): Promise<IResponseTracksType> {
-  const res = await fetch(`https://api.spotify.com/v1/albums/${data.id}/tracks`, {
+  const res = await fetch(`https://api.spotify.com/v1/albums/${data.id}/tracks?market=ES`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
@@ -43,11 +46,11 @@ export async function getAlbumTracks(data: getTracksType): Promise<IResponseTrac
   return response;
 }
 
-export async function getPlaylist(props: Props) {
+export async function getPlaylist({ token }: Token) {
   const res = await fetch('https://api.spotify.com/v1/me/playlists', {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
@@ -58,14 +61,14 @@ export async function getPlaylist(props: Props) {
   return playlists;
 }
 
-export async function getCurrentlyPlayingTrack(props: Props) {
-  const res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+export async function getTrack(token: string, id: string) {
+  const res = await fetch(`https://api.spotify.com/v1/tracks/${id}?market=ES`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${props.token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
-  const { item } = await res.json();
-  return item;
+  const track = await res.json();
+  return track;
 }
