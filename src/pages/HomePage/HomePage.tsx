@@ -22,7 +22,17 @@ type HomePageProps = {
   token: string;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  songName: string;
+  artistName: string;
+  setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
+  coverUrl: string;
+  setCoverUrl: (coverUrl: string) => void;
 };
+
 const limit = 10;
 export const HomePage: React.FC<HomePageProps> = props => {
   const [page, setPage] = useState(1);
@@ -40,13 +50,23 @@ export const HomePage: React.FC<HomePageProps> = props => {
             limit={limit}
             totalAlbums={totalAlbums}
             setTotalAlbums={setTotalAlbums}
-            albums={props.albums} 
+            albums={props.albums}
             setALbums={props.setALbums}
           />
         </Layout>
       </Layout>
       <Footer style={footerStyle}>
-        <Player token={props.token} />
+        <Player
+          token={props.token}
+          setIsPlaying={props.setIsPlaying}
+          isPlaying={props.isPlaying}
+          player={props.player}
+          songName={props.songName}
+          artistName={props.artistName}
+          setSongName={props.setSongName}
+          setArtistName={props.setArtistName}
+          coverUrl={props.coverUrl}
+        />
       </Footer>
     </Layout>
   );

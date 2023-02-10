@@ -1,25 +1,37 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks } from '../../../api/api';
+import { getAlbumTracks, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import styles from './details.module.less';
-import { PlayCircleFilled } from '@ant-design/icons';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 
 type DetailsAlbumContentProps = {
   token: string;
   id: string;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
+  setCoverUrl: (coverUrl: string) => void;
 };
 
-const playingTrack = (url: string) => {
-  var audio = new Audio(); // Создаём новый элемент Audio
-  audio.src = url; // Указываем путь к звуку "клика"
-  audio.play(); // Автоматически запускаем
-};
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
-  //console.log(props.albums);
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  // console.log(tracks);
+  const [buttonKey, setButtonKey] = useState(-1);
+
+  const playingTrackHandler = (url: string) => {
+    if (!props.isPlaying) {
+      props.player.src = url;
+      props.player.play();
+      props.setIsPlaying(true);
+    } else {
+      props.player.pause();
+      props.setIsPlaying(false);
+    }
+  };
+
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
@@ -72,15 +84,35 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
         })}
       </div>
       <div className={styles.tracksBlock}>
-        {tracks.map(track => {
+        {tracks.map((track, index) => {
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                <PlayCircleFilled
-                  style={{ color: '#1ad760', fontSize: '32px' }}
-                  onClick={() => playingTrack(track.preview_url)}
-                />
-                <div >
+                {props.isPlaying && index === buttonKey ? (
+                  <PauseCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={() => {
+                      playingTrackHandler(track.preview_url);
+                    }}
+                  />
+                ) : (
+                  <PlayCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={async () => {
+                      playingTrackHandler(track.preview_url);
+                      setButtonKey(index);
+                      props.setSongName(track.name);
+                      props.setArtistName(track.artists[0].name);
+                      const currentTrack = await getTrack(props.token, track.id);
+                      const url = await currentTrack.album.images[0].url;
+                      props.setCoverUrl(url);
+                    }}
+                  />
+                )}
+
+                <div>
                   <p>{track.name}</p>
                   <p style={{ color: '#a0a0a0' }}>
                     {track.artists.map(artist => {

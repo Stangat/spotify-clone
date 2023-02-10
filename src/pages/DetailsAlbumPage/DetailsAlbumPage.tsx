@@ -22,22 +22,52 @@ type DetailsAlbumPageProps = {
   token: string;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  songName: string;
+  artistName: string;
+  setSongName: (songName: string) => void;
+  setArtistName: (artistName: string) => void;
+  coverUrl: string;
+  setCoverUrl: (coverUrl: string) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
-  let params: any = useParams();
+  const params: any = useParams();
   return (
     <div>
-      <Layout hasSider >
+      <Layout hasSider>
         <Layout>
-          <SideBar/>
+          <SideBar />
           <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
             <DropdownProfile />
-            <DetailsAlbumContent token={props.token} id={params.id} albums={props.albums} setALbums={props.setALbums}/>
+            <DetailsAlbumContent
+              token={props.token}
+              id={params.id}
+              albums={props.albums}
+              setALbums={props.setALbums}
+              setIsPlaying={props.setIsPlaying}
+              isPlaying={props.isPlaying}
+              player={props.player}
+              setSongName={props.setSongName}
+              setArtistName={props.setArtistName}
+              setCoverUrl={props.setCoverUrl}
+            />
           </Layout>
         </Layout>
         <Footer style={footerStyle}>
-          <Player token={props.token} />
+          <Player
+            token={props.token}
+            setIsPlaying={props.setIsPlaying}
+            isPlaying={props.isPlaying}
+            player={props.player}
+            songName={props.songName}
+            artistName={props.artistName}
+            setSongName={props.setSongName}
+            setArtistName={props.setArtistName}
+            coverUrl={props.coverUrl}
+          />
         </Footer>
       </Layout>
     </div>
