@@ -17,7 +17,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
 
   return (
     <div>
-      <HeaderHome page={page} setPage={setPage} totalAlbums={totalAlbums} />
+      <HeaderHome page={page} setPage={setPage} totalAlbums={totalAlbums}/>
       <HomeContent
         token={props.token}
         offset={(page - 1) * LIMIT}

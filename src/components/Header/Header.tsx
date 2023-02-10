@@ -1,8 +1,9 @@
 import { Header } from 'antd/es/layout/layout';
-import styles from './header.module.less';
 import {} from '@ant-design/icons';
 import { DropdownProfile } from '../Dropdown/DropDown';
 import { PaginationHeader } from '../Pagination/Pagination';
+import { FC } from 'react';
+import style from './header.module.less';
 
 type HeaderHomeProps = {
   page: number;
@@ -10,21 +11,11 @@ type HeaderHomeProps = {
   totalAlbums: number;
 };
 
-export const HeaderHome: React.FC<HeaderHomeProps> = props => {
+export const HeaderHome: FC<HeaderHomeProps> = props => {
   return (
-    <div className={styles.headerHome}>
-      <Header
-        style={{
-          padding: 0,
-          backgroundColor: '#1e1e1e',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Header className={style.header}>
         <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
         <DropdownProfile />
       </Header>
-    </div>
   );
 };

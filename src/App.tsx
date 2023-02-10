@@ -25,6 +25,7 @@ export default function App() {
   if (!token) {
     return <Login />;
   }
+
   return (
     <div className={style.app}>
       <Layout hasSider>

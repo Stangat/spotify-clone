@@ -78,6 +78,6 @@ export async function getCategories(props: Props) {
       'Content-Type': 'application/json',
     },
   });
-  const { item } = await res.json();
-  return item;
+  const { categories } = await res.json();
+  return categories;
 }
