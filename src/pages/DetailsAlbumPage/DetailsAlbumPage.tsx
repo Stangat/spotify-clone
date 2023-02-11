@@ -33,6 +33,8 @@ type DetailsAlbumPageProps = {
   setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
@@ -57,6 +59,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
               setCoverUrl={props.setCoverUrl}
               trackDuration={props.trackDuration}
               setTrackDuration={props.setTrackDuration}
+              trackId={props.trackId}
+              setTrackId={props.setTrackId}
             />
           </Layout>
         </Layout>

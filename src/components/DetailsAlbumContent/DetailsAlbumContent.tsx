@@ -17,6 +17,8 @@ type DetailsAlbumContentProps = {
   setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -95,7 +97,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {props.isPlaying && index === buttonKey ? (
+                {props.isPlaying && index === buttonKey || props.isPlaying && track.id === props.trackId ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -119,6 +121,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       props.player.onloadedmetadata = () => {
                         props.setTrackDuration(props.player.duration);
                       };
+                     props.setTrackId(track.id)
                     }}
                   />
                 )}

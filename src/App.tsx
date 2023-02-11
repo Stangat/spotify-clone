@@ -17,6 +17,7 @@ export default function App() {
   const [songName, setSongName] = useState('');
   const [coverUrl, setCoverURL] = useState('');
   const [trackDuration, setTrackDuration] = useState(0);
+  const [trackId, setTrackId] = useState('');
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -69,6 +70,8 @@ export default function App() {
               setCoverUrl={setCoverURL}
               trackDuration={trackDuration}
               setTrackDuration={setTrackDuration}
+              trackId={trackId}
+              setTrackId={setTrackId}
             />
           }
         />
