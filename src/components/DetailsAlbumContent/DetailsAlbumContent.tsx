@@ -15,6 +15,8 @@ type DetailsAlbumContentProps = {
   setSongName: (songName: string) => void;
   setArtistName: (ArtistName: string) => void;
   setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -113,6 +115,10 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       const currentTrack = await getTrack(props.token, track.id);
                       const url = await currentTrack.album.images[0].url;
                       props.setCoverUrl(url);
+                      props.player.preload = 'metadata';
+                      props.player.onloadedmetadata = () => {
+                        props.setTrackDuration(props.player.duration);
+                      };
                     }}
                   />
                 )}

@@ -31,6 +31,8 @@ type DetailsAlbumPageProps = {
   setArtistName: (artistName: string) => void;
   coverUrl: string;
   setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
@@ -53,6 +55,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
               setSongName={props.setSongName}
               setArtistName={props.setArtistName}
               setCoverUrl={props.setCoverUrl}
+              trackDuration={props.trackDuration}
+              setTrackDuration={props.setTrackDuration}
             />
           </Layout>
         </Layout>
@@ -67,6 +71,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
             setSongName={props.setSongName}
             setArtistName={props.setArtistName}
             coverUrl={props.coverUrl}
+            trackDuration={props.trackDuration}
+            setTrackDuration={props.setTrackDuration}
           />
         </Footer>
       </Layout>

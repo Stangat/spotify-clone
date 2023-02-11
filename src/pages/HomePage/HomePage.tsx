@@ -31,6 +31,8 @@ type HomePageProps = {
   setArtistName: (ArtistName: string) => void;
   coverUrl: string;
   setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
 };
 
 const limit = 10;
@@ -66,6 +68,8 @@ export const HomePage: React.FC<HomePageProps> = props => {
           setSongName={props.setSongName}
           setArtistName={props.setArtistName}
           coverUrl={props.coverUrl}
+          trackDuration={props.trackDuration}
+          setTrackDuration={props.setTrackDuration}
         />
       </Footer>
     </Layout>
