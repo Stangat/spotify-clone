@@ -27,8 +27,13 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
       props.player.play();
       props.setIsPlaying(true);
     } else {
-      props.player.pause();
-      props.setIsPlaying(false);
+      if (props.player.src !== url) {
+        props.player.src = url;
+        props.player.play();
+      } else {
+        props.player.pause();
+        props.setIsPlaying(false);
+      }
     }
   };
 
