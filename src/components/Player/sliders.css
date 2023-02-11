@@ -5,8 +5,7 @@
 }
 
 .slider-track {
-  /* top: 5px; */
-  height: 5px;
+  height: 4px;
   background: gray;
   border-radius: 10px;
 }
