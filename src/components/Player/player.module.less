@@ -1,4 +1,5 @@
 .songBlockContainer {
+  width: 300px;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -18,7 +19,7 @@
 .playerContainer{
   display: flex;
   justify-content: space-between;
-  gap: 15%;
+  gap: 10px;
 }
 
 .songInteractionContainer {
@@ -27,14 +28,19 @@
   align-items: center;
 }
 
-.sliderContainer {
+.progressBarWrapper {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
+.progressBarContainer {
+  width: 100%;
+  cursor: pointer;
+}
+
 .controlsContainer {
-  flex: 1;
+  width: 550px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,6 +49,8 @@
 .start,
 .duration {
   font-size: 0.7rem;
+  padding-bottom: 5px;
+  
 }
 
 .buttonsContainer {
@@ -53,6 +61,7 @@
 }
 
 .volumeBlockContainer {
+  width: 250px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -70,4 +79,8 @@
 
 .playPauseButton:active {
   transform: translateY(2px);
+}
+
+.progressBar:hover {
+  cursor: pointer;
 }

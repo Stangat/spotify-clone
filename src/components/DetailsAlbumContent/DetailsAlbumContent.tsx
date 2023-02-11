@@ -15,6 +15,10 @@ type DetailsAlbumContentProps = {
   setSongName: (songName: string) => void;
   setArtistName: (ArtistName: string) => void;
   setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -27,8 +31,13 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
       props.player.play();
       props.setIsPlaying(true);
     } else {
-      props.player.pause();
-      props.setIsPlaying(false);
+      if (props.player.src !== url) {
+        props.player.src = url;
+        props.player.play();
+      } else {
+        props.player.pause();
+        props.setIsPlaying(false);
+      }
     }
   };
 
@@ -39,6 +48,9 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
+    props.player.addEventListener('ended', () => {
+      props.setIsPlaying(false);
+    });
   }, []);
   return (
     <div className={styles.detailsContentContainer}>
@@ -88,7 +100,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {props.isPlaying && index === buttonKey ? (
+                {(props.isPlaying && index === buttonKey) || (props.isPlaying && track.id === props.trackId) ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -108,6 +120,11 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       const currentTrack = await getTrack(props.token, track.id);
                       const url = await currentTrack.album.images[0].url;
                       props.setCoverUrl(url);
+                      props.player.preload = 'metadata';
+                      props.player.onloadedmetadata = () => {
+                        props.setTrackDuration(props.player.duration);
+                      };
+                      props.setTrackId(track.id);
                     }}
                   />
                 )}

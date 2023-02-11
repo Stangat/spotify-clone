@@ -14,9 +14,11 @@ type PlayerProps = {
   setSongName: (songName: string) => void;
   setArtistName: (ArtistName: string) => void;
   coverUrl: string;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
 };
 
-export const Player: React.FC<PlayerProps> = ({ isPlaying, setIsPlaying, player, songName, artistName, coverUrl }) => {
+export const Player: React.FC<PlayerProps> = ({ isPlaying, setIsPlaying, player, songName, artistName, coverUrl, trackDuration }) => {
   const playHandler = () => {
     if (!isPlaying && coverUrl !== '') {
       player.play();
@@ -36,7 +38,7 @@ export const Player: React.FC<PlayerProps> = ({ isPlaying, setIsPlaying, player,
           playHandler();
         }}
         isPlaying={isPlaying}
-        trackDuration={30}
+        trackDuration={trackDuration}
       />
       <VolumeBlock />
     </div>
