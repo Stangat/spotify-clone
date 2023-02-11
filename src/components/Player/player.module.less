@@ -28,14 +28,18 @@
   align-items: center;
 }
 
-.sliderContainer {
+.progressBarWrapper {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
+.progressBarContainer {
+  width: 100%;
+  cursor: pointer;
+}
+
 .controlsContainer {
-  // flex: 1;
   width: 550px;
   display: flex;
   flex-direction: column;
@@ -73,4 +77,8 @@
 
 .playPauseButton:active {
   transform: translateY(2px);
+}
+
+.progressBar:hover {
+  cursor: pointer;
 }

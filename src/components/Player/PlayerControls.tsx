@@ -1,9 +1,8 @@
 import style from './player.module.less';
 import { StepBackwardOutlined, StepForwardOutlined, PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { Progress } from 'antd';
-import ReactSlider from 'react-slider';
 import { Repeat, Shuffle } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 
 type PlayerControlsProps = {
   onClick: () => void;
@@ -16,6 +15,9 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ onClick, isPlayi
   const [currentTime, setCurrentTime] = useState('00:00');
   const [totalTime, setTotalTime] = useState('00:00');
   const [progress, setProgress] = useState(0);
+  const [width, setWidth] = useState(0);
+
+  const ref = useRef<HTMLDivElement>(null);
 
   const updateTime = () => {
     let currentMinutes, currentSeconds, totalMinutes, totalSeconds;
@@ -48,6 +50,26 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ onClick, isPlayi
     });
   };
 
+  useLayoutEffect(() => {
+    if (ref.current) {
+      setWidth(ref.current.clientWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    function handleWindowResize() {
+      if (ref.current) {
+        setWidth(ref.current.clientWidth);
+      }
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
   updateTime();
   updateProgress();
 
@@ -74,9 +96,25 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ onClick, isPlayi
         <StepForwardOutlined style={{ fontSize: '1.5rem' }} />
         <Repeat />
       </div>
-      <div className={style.sliderContainer}>
+      <div className={style.progressBarWrapper}>
         <span className={style.start}>{currentTime}</span>
-        <Progress percent={progress} showInfo={false} strokeColor="#1ad760" size="small" trailColor="gray" />
+        <div
+          ref={ref}
+          className={style.progressBarContainer}
+          onClick={e => {
+            const clickX = e.nativeEvent.offsetX;
+            player.currentTime = (clickX / width) * trackDuration;
+          }}
+        >
+          <Progress
+            className={style.progressBar}
+            percent={progress}
+            showInfo={false}
+            strokeColor="#1ad760"
+            size="small"
+            trailColor="gray"
+          />
+        </div>
         <span className={style.duration}>{totalTime}</span>
       </div>
     </div>
