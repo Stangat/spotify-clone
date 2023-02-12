@@ -151,7 +151,6 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
         <Shuffle />
         <StepBackwardOutlined
           className={style.nextPrevButton}
-          // style={{ fontSize: '1.5rem' }}
           onClick={() => {
             skipToPrevious();
           }}
@@ -173,7 +172,6 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
         )}
         <StepForwardOutlined
           className={style.nextPrevButton}
-          // style={{ fontSize: '1.5rem' }}
           onClick={() => {
             skipToNext();
           }}
