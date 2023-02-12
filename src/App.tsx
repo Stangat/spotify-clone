@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
 import { AlbumType } from '../interface/interface';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
+import { Settings } from './pages/Settings/Settings';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -76,6 +78,8 @@ export default function App() {
           }
         />
         <Route path="search" element={<SearchPage />} />
+        <Route path="profile/:id" element={<ProfilePage />} />
+        <Route path="settings" element={<Settings />} />
       </Routes>
     </div>
   );

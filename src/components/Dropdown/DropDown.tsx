@@ -4,11 +4,13 @@ import styles from './dropDown.module.less';
 import { useEffect, useState } from 'react';
 import { getProfile } from '../../../api/api';
 import { ProfileType } from '../../../interface/interface';
+import { useNavigate } from 'react-router-dom';
 
 type DropdownProfileType = {
   token: string;
 };
 export const DropdownProfile: React.FC<DropdownProfileType> = props => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<ProfileType>();
   const getProfileHandler = async () => {
     const response = await getProfile(props.token);
@@ -19,8 +21,22 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
     getProfileHandler();
   }, []);
 
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    message.info(`Click on item ${key}`);
+  const onClick: MenuProps['onClick'] = e => {
+    console.log('click ', e);
+    console.log(profile);
+    switch (e.key) {
+      case '1':
+        navigate(`/profile/${profile?.id}`);
+        break;
+      case '2':
+        navigate(`/settings`);
+        break;
+      case '3':
+        console.log('logout');
+        break;
+      default:
+        break;
+    }
   };
 
   const items: MenuProps['items'] = [

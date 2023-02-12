@@ -1,3 +1,3 @@
 export const SearchPage: React.FC = () => {
-  return <div></div>;
+  return <div style={{color:'red'}}>Search Page</div>;
 };
