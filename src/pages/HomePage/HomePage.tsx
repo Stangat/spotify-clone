@@ -1,7 +1,8 @@
 import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import React, { useState } from 'react';
-import { AlbumType, ITrackTypes } from '../../../interface/interface';
+// import { AlbumType, ITrackTypes } from '../../../interface/interface';
+import { AlbumType, ProfileType, ITrackTypes } from '../../../interface/interface';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
 import { Player } from '../../components/Player/Player';
@@ -37,6 +38,8 @@ type HomePageProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
 };
 
 const limit = 10;
@@ -49,7 +52,14 @@ export const HomePage: React.FC<HomePageProps> = props => {
       <Layout>
         <SideBar />
         <Layout>
-          <HeaderHome page={page} setPage={setPage} totalAlbums={totalAlbums} />
+          <HeaderHome
+            profile={props.profile}
+            setProfile={props.setProfile}
+            token={props.token}
+            page={page}
+            setPage={setPage}
+            totalAlbums={totalAlbums}
+          />
           <HomeContent
             token={props.token}
             offset={(page - 1) * limit}

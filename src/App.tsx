@@ -6,7 +6,10 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, ITrackTypes } from '../interface/interface';
+// import { AlbumType, ITrackTypes } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes } from '../interface/interface';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
+import { Settings } from './pages/Settings/Settings';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -19,6 +22,8 @@ export default function App() {
   const [trackDuration, setTrackDuration] = useState(0);
   const [trackId, setTrackId] = useState('');
   const [albumTracks, setAlbumTracks] = useState<ITrackTypes[]>([]);
+  const [profile, setProfile] = useState<ProfileType>();
+  const [playlists, setPlaylists] =useState<PlaylistsType>();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -33,6 +38,8 @@ export default function App() {
           element={
             token ? (
               <HomePage
+                profile={profile}
+                setProfile={setProfile}
                 token={token}
                 albums={albums}
                 setALbums={setALbums}
@@ -61,6 +68,8 @@ export default function App() {
           path="album/:id"
           element={
             <DetailsAlbumPage
+              profile={profile}
+              setProfile={setProfile}
               token={token}
               albums={albums}
               setALbums={setALbums}
@@ -83,6 +92,30 @@ export default function App() {
           }
         />
         <Route path="search" element={<SearchPage />} />
+        <Route
+          path="profile/:id"
+          element={
+            <ProfilePage
+              profile={profile}
+              setProfile={setProfile}
+              playlists={playlists}
+              setPlaylists={setPlaylists}
+              token={token}
+              setIsPlaying={setIsPlaying}
+              isPlaying={isPlaying}
+              player={player}
+              songName={songName}
+              artistName={artistName}
+              setSongName={setSongName}
+              setArtistName={setArtistName}
+              coverUrl={coverUrl}
+              setCoverUrl={setCoverURL}
+              trackDuration={trackDuration}
+              setTrackDuration={setTrackDuration}
+            />
+          }
+        />
+        <Route path="settings" element={<Settings />} />
       </Routes>
     </div>
   );

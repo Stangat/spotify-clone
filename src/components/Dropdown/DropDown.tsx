@@ -1,10 +1,43 @@
 import { Avatar, Dropdown, MenuProps, message, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './dropDown.module.less';
+import { useEffect, useState } from 'react';
+import { getProfile } from '../../../api/api';
+import { ProfileType } from '../../../interface/interface';
+import { useNavigate } from 'react-router-dom';
 
-export const DropdownProfile: React.FC = () => {
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    message.info(`Click on item ${key}`);
+type DropdownProfileType = {
+  token: string;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
+};
+export const DropdownProfile: React.FC<DropdownProfileType> = props => {
+  const navigate = useNavigate();
+
+  const getProfileHandler = async () => {
+    const response = await getProfile(props.token);
+    props.setProfile(response);
+  };
+
+  useEffect(() => {
+    getProfileHandler();
+  }, []);
+
+  const onClick: MenuProps['onClick'] = e => {
+    //console.log('click ', e);
+    switch (e.key) {
+      case '1':
+        navigate(`/profile/${props.profile?.id}`);
+        break;
+      case '2':
+        navigate(`/settings`);
+        break;
+      case '3':
+        console.log('logout');
+        break;
+      default:
+        break;
+    }
   };
 
   const items: MenuProps['items'] = [
@@ -22,16 +55,16 @@ export const DropdownProfile: React.FC = () => {
     },
   ];
   return (
-    <Dropdown menu={{ items, onClick }}>
+    <Dropdown menu={{ items, onClick }} className={styles.dropDownContainer}>
       <a onClick={e => e.preventDefault()}>
-        <Avatar size="large" icon={<UserOutlined />} />
+        <Avatar size="large" icon={<UserOutlined />}/>
         <Space
           style={{
             color: 'white',
             fontWeight: '600',
           }}
         >
-          Name User
+          {props.profile?.display_name}
           <DownOutlined />
         </Space>
       </a>
