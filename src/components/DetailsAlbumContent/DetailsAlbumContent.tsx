@@ -46,7 +46,6 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
-    props.setAlbumTracks(response.items);
   };
 
   useEffect(() => {
@@ -129,6 +128,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                         props.setTrackDuration(props.player.duration);
                       };
                       props.setTrackId(track.id);
+                      const response = await getAlbumTracks({ id: props.id, token: props.token });
+                      props.setAlbumTracks(response.items);
                     }}
                   />
                 )}
