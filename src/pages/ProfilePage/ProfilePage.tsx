@@ -33,18 +33,23 @@ type ProfilePageProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
   playlists: PlaylistsType | undefined;
-  setPlaylists:(playlist: PlaylistsType) => void;
+  setPlaylists: (playlist: PlaylistsType) => void;
 };
 
 export const ProfilePage: React.FC<ProfilePageProps> = props => {
   return (
-    <div>
-      <Layout hasSider>
-        <Layout>
+    <div style={{ background: '#1e1e1e' }}>
+      <Layout hasSider style={{ background: 'rgb(30, 30, 30)', marginBottom: '10%' }}>
+        <Layout style={{ background: '#1e1e1e' }}>
           <SideBar />
-          <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
+          <Layout style={{ background: '#1e1e1e', display: 'flex' }}>
             <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
-            <DetailsProfilePage profile={props.profile} playlists={props.playlists} setPlaylists={props.setPlaylists} token={props.token}  />
+            <DetailsProfilePage
+              profile={props.profile}
+              playlists={props.playlists}
+              setPlaylists={props.setPlaylists}
+              token={props.token}
+            />
           </Layout>
         </Layout>
         <Footer style={footerStyle}>
