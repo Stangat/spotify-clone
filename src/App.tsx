@@ -83,7 +83,27 @@ export default function App() {
           }
         />
         <Route path="search" element={<SearchPage />} />
-        <Route path="profile/:id" element={<ProfilePage />} />
+        <Route
+          path="profile/:id"
+          element={
+            <ProfilePage
+              profile={profile}
+              setProfile={setProfile}
+              token={token}
+              setIsPlaying={setIsPlaying}
+              isPlaying={isPlaying}
+              player={player}
+              songName={songName}
+              artistName={artistName}
+              setSongName={setSongName}
+              setArtistName={setArtistName}
+              coverUrl={coverUrl}
+              setCoverUrl={setCoverURL}
+              trackDuration={trackDuration}
+              setTrackDuration={setTrackDuration}
+            />
+          }
+        />
         <Route path="settings" element={<Settings />} />
       </Routes>
     </div>

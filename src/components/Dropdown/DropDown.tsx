@@ -24,8 +24,7 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
   }, []);
 
   const onClick: MenuProps['onClick'] = e => {
-    console.log('click ', e);
-    console.log(props.profile);
+    //console.log('click ', e);
     switch (e.key) {
       case '1':
         navigate(`/profile/${props.profile?.id}`);
@@ -56,9 +55,9 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
     },
   ];
   return (
-    <Dropdown menu={{ items, onClick }}>
+    <Dropdown menu={{ items, onClick }} className={styles.dropDownContainer}>
       <a onClick={e => e.preventDefault()}>
-        <Avatar size="large" icon={<UserOutlined />} />
+        <Avatar size="large" icon={<UserOutlined />}/>
         <Space
           style={{
             color: 'white',
