@@ -23,7 +23,7 @@ export default function App() {
   const [trackId, setTrackId] = useState('');
   const [albumTracks, setAlbumTracks] = useState<ITrackTypes[]>([]);
   const [profile, setProfile] = useState<ProfileType>();
-  const [playlists, setPlaylists] =useState<PlaylistsType>();
+  const [playlists, setPlaylists] = useState<PlaylistsType>();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -112,6 +112,11 @@ export default function App() {
               setCoverUrl={setCoverURL}
               trackDuration={trackDuration}
               setTrackDuration={setTrackDuration}
+              albums={albums}
+              albumTracks={albumTracks}
+              setAlbumTracks={setAlbumTracks}
+              trackId={trackId}
+              setTrackId={setTrackId}
             />
           }
         />
