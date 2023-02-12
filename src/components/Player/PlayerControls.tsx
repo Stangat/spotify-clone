@@ -40,29 +40,24 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const updateTime = () => {
-    let currentMinutes, currentSeconds, totalMinutes, totalSeconds;
+    let currentMinutes, currentSeconds;
     player.addEventListener('timeupdate', () => {
       currentMinutes = Math.floor(player.currentTime / 60);
       currentSeconds = Math.floor(player.currentTime % 60);
-      totalMinutes = Math.floor(trackDuration / 60);
-      totalSeconds = Math.floor(trackDuration % 60);
 
       if (currentSeconds < 10) {
         currentSeconds = '0' + currentSeconds;
       }
-      if (totalSeconds < 10) {
-        totalSeconds = '0' + totalSeconds;
-      }
+
       if (currentMinutes < 10) {
         currentMinutes = '0' + currentMinutes;
       }
-      if (totalMinutes < 10) {
-        totalMinutes = '0' + totalMinutes;
-      }
+
       setCurrentTime(`${currentMinutes}:${currentSeconds}`);
-      setTotalTime(`${totalMinutes}:${totalSeconds}`);
     });
   };
+
+ 
 
   const updateProgress = () => {
     setProgress((player.currentTime / player.duration) * 100);
@@ -197,7 +192,7 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
             trailColor="gray"
           />
         </div>
-        <span className={style.duration}>{totalTime}</span>
+        <span className={style.duration}>{player.src === '' ? '00:00' : '00:30'}</span>
       </div>
     </div>
   );
