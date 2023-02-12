@@ -3,12 +3,15 @@ import styles from './header.module.less';
 import {} from '@ant-design/icons';
 import { DropdownProfile } from '../Dropdown/DropDown';
 import { PaginationHeader } from '../Pagination/Pagination';
+import { ProfileType } from '../../../interface/interface';
 
 type HeaderHomeProps = {
   token: string;
   page: number;
   setPage: (page: number) => void;
   totalAlbums: number;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
 };
 
 export const HeaderHome: React.FC<HeaderHomeProps> = props => {
@@ -24,7 +27,7 @@ export const HeaderHome: React.FC<HeaderHomeProps> = props => {
         }}
       >
         <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
-        <DropdownProfile token={props.token}/>
+        <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
       </Header>
     </div>
   );

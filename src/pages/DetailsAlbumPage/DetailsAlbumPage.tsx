@@ -2,7 +2,7 @@ import { Layout } from 'antd';
 import { Footer, Header } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
 import { getProfile } from '../../../api/api';
-import { AlbumType } from '../../../interface/interface';
+import { AlbumType, ProfileType } from '../../../interface/interface';
 import { DetailsAlbumContent } from '../../components/DetailsAlbumContent/DetailsAlbumContent';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import { Player } from '../../components/Player/Player';
@@ -20,6 +20,8 @@ const footerStyle: React.CSSProperties = {
 };
 
 type DetailsAlbumPageProps = {
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
   token: string;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
@@ -46,7 +48,7 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
         <Layout>
           <SideBar />
           <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
-            <DropdownProfile token={props.token}/>
+            <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
             <DetailsAlbumContent
               token={props.token}
               id={params.id}

@@ -8,13 +8,15 @@ import { useNavigate } from 'react-router-dom';
 
 type DropdownProfileType = {
   token: string;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
 };
 export const DropdownProfile: React.FC<DropdownProfileType> = props => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<ProfileType>();
+
   const getProfileHandler = async () => {
     const response = await getProfile(props.token);
-    setProfile(response);
+    props.setProfile(response);
   };
 
   useEffect(() => {
@@ -23,10 +25,10 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
 
   const onClick: MenuProps['onClick'] = e => {
     console.log('click ', e);
-    console.log(profile);
+    console.log(props.profile);
     switch (e.key) {
       case '1':
-        navigate(`/profile/${profile?.id}`);
+        navigate(`/profile/${props.profile?.id}`);
         break;
       case '2':
         navigate(`/settings`);
@@ -63,7 +65,7 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
             fontWeight: '600',
           }}
         >
-          {profile?.display_name}
+          {props.profile?.display_name}
           <DownOutlined />
         </Space>
       </a>

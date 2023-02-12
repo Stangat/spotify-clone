@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType } from '../interface/interface';
+import { AlbumType, ProfileType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -20,6 +20,7 @@ export default function App() {
   const [coverUrl, setCoverURL] = useState('');
   const [trackDuration, setTrackDuration] = useState(0);
   const [trackId, setTrackId] = useState('');
+  const [profile, setProfile] = useState<ProfileType>();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -34,6 +35,8 @@ export default function App() {
           element={
             token ? (
               <HomePage
+                profile={profile}
+                setProfile={setProfile}
                 token={token}
                 albums={albums}
                 setALbums={setALbums}
@@ -58,6 +61,8 @@ export default function App() {
           path="album/:id"
           element={
             <DetailsAlbumPage
+              profile={profile}
+              setProfile={setProfile}
               token={token}
               albums={albums}
               setALbums={setALbums}
