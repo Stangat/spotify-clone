@@ -72,3 +72,15 @@ export async function getTrack(token: string, id: string) {
   const track = await res.json();
   return track;
 }
+
+export async function getProfile(token: string) {
+  const res = await fetch(`https://api.spotify.com/v1/me`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const user = await res.json();
+  return user;
+}

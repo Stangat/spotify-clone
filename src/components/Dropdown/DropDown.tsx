@@ -1,8 +1,24 @@
 import { Avatar, Dropdown, MenuProps, message, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './dropDown.module.less';
+import { useEffect, useState } from 'react';
+import { getProfile } from '../../../api/api';
+import { ProfileType } from '../../../interface/interface';
 
-export const DropdownProfile: React.FC = () => {
+type DropdownProfileType = {
+  token: string;
+};
+export const DropdownProfile: React.FC<DropdownProfileType> = props => {
+  const [profile, setProfile] = useState<ProfileType>();
+  const getProfileHandler = async () => {
+    const response = await getProfile(props.token);
+    setProfile(response);
+  };
+
+  useEffect(() => {
+    getProfileHandler();
+  }, []);
+
   const onClick: MenuProps['onClick'] = ({ key }) => {
     message.info(`Click on item ${key}`);
   };
@@ -31,7 +47,7 @@ export const DropdownProfile: React.FC = () => {
             fontWeight: '600',
           }}
         >
-          Name User
+          {profile?.display_name}
           <DownOutlined />
         </Space>
       </a>

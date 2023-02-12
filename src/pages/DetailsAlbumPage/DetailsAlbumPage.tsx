@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
 import { Footer, Header } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
+import { getProfile } from '../../../api/api';
 import { AlbumType } from '../../../interface/interface';
 import { DetailsAlbumContent } from '../../components/DetailsAlbumContent/DetailsAlbumContent';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
@@ -45,7 +46,7 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
         <Layout>
           <SideBar />
           <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
-            <DropdownProfile />
+            <DropdownProfile token={props.token}/>
             <DetailsAlbumContent
               token={props.token}
               id={params.id}

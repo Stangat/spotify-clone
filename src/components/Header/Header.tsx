@@ -5,6 +5,7 @@ import { DropdownProfile } from '../Dropdown/DropDown';
 import { PaginationHeader } from '../Pagination/Pagination';
 
 type HeaderHomeProps = {
+  token: string;
   page: number;
   setPage: (page: number) => void;
   totalAlbums: number;
@@ -23,7 +24,7 @@ export const HeaderHome: React.FC<HeaderHomeProps> = props => {
         }}
       >
         <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
-        <DropdownProfile />
+        <DropdownProfile token={props.token}/>
       </Header>
     </div>
   );
