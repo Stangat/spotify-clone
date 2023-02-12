@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
-import { ProfileType } from '../../../interface/interface';
+import { PlaylistsType, ProfileType } from '../../../interface/interface';
 import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsProfilePage';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import { Player } from '../../components/Player/Player';
@@ -32,9 +32,11 @@ type ProfilePageProps = {
   setTrackDuration: (trackDuration: number) => void;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
+  playlists: PlaylistsType | undefined;
+  setPlaylists:(playlist: PlaylistsType) => void;
 };
 
-export const ProfilePage: React.FC<ProfilePageProps> = (props) => {
+export const ProfilePage: React.FC<ProfilePageProps> = props => {
   return (
     <div>
       <Layout hasSider>
@@ -42,7 +44,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = (props) => {
           <SideBar />
           <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
             <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
-            <DetailsProfilePage profile={props.profile} />
+            <DetailsProfilePage profile={props.profile} playlists={props.playlists} setPlaylists={props.setPlaylists} token={props.token}  />
           </Layout>
         </Layout>
         <Footer style={footerStyle}>

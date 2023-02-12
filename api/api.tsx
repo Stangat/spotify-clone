@@ -1,13 +1,16 @@
 import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface';
 import { AlbumType } from '../interface/interface';
 
-type Token = {
-  token: string;
+export const copyToClipboard = () => {
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    console.log("copied successfully!")
+  }, function(err) {
+    console.log('Failed to copy');
+  });
 };
 
-type Playlists = {
-  name: string;
-  id: string;
+type getPlaylistsType = {
+  token: string;
 };
 
 type getAlbumsPropsType = {
@@ -46,19 +49,16 @@ export async function getAlbumTracks(data: getTracksType): Promise<IResponseTrac
   return response;
 }
 
-export async function getPlaylist({ token }: Token) {
+export async function getUserPlaylists(data : getPlaylistsType) {
   const res = await fetch('https://api.spotify.com/v1/me/playlists', {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${data.token}`,
       'Content-Type': 'application/json',
     },
   });
-  const { items } = await res.json();
-  const playlists = items.map(({ name, id }: Playlists) => {
-    return { name, id };
-  });
-  return playlists;
+  const playlist = await res.json();
+  return playlist;
 }
 
 export async function getTrack(token: string, id: string) {

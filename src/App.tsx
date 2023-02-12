@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, ProfileType } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -21,6 +21,7 @@ export default function App() {
   const [trackDuration, setTrackDuration] = useState(0);
   const [trackId, setTrackId] = useState('');
   const [profile, setProfile] = useState<ProfileType>();
+  const [playlists, setPlaylists] =useState<PlaylistsType>();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -89,6 +90,8 @@ export default function App() {
             <ProfilePage
               profile={profile}
               setProfile={setProfile}
+              playlists={playlists}
+              setPlaylists={setPlaylists}
               token={token}
               setIsPlaying={setIsPlaying}
               isPlaying={isPlaying}
