@@ -1,8 +1,6 @@
 import { Layout } from 'antd';
 import { Footer, Header } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
-// import { AlbumType, ITrackTypes } from '../../../interface/interface';
-import { getProfile } from '../../../api/api';
 import { AlbumType, ProfileType, ITrackTypes } from '../../../interface/interface';
 import { DetailsAlbumContent } from '../../components/DetailsAlbumContent/DetailsAlbumContent';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
