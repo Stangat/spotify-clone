@@ -1,12 +1,11 @@
 import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface';
-import { AlbumType } from '../interface/interface';
 
 type getPlaylistsType = {
   token: string;
 };
 type getUserTopArtistType = {
   token: string;
-}
+};
 type getAlbumsPropsType = {
   token: string;
   offset: number;
@@ -18,12 +17,19 @@ type getTracksType = {
   id: string;
 };
 
+type getUserTopTracksType = {
+  token: string;
+};
+
 export const copyToClipboard = () => {
-  navigator.clipboard.writeText(window.location.href).then(function() {
-    console.log("copied successfully!")
-  }, function(err) {
-    console.log('Failed to copy');
-  });
+  navigator.clipboard.writeText(window.location.href).then(
+    function () {
+      console.log('copied successfully!');
+    },
+    function (err) {
+      console.log('Failed to copy');
+    }
+  );
 };
 
 export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbumsType> {
@@ -90,6 +96,18 @@ export async function getProfile(token: string) {
 
 export async function getUserTopArtist(data: getUserTopArtistType) {
   const res = await fetch(`https://api.spotify.com/v1/me/top/artists`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topArtist = await res.json();
+  return topArtist;
+}
+
+export async function getUserTopTracks(data: getUserTopTracksType) {
+  const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=4`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,

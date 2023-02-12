@@ -182,6 +182,7 @@ export type TopArtistsType = {
   total: number;
   items: Array<ArtistTopUserType>;
 };
+
 export type ArtistTopUserType ={
     external_urls: {
       spotify: string;
