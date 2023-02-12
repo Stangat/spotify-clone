@@ -52,6 +52,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
       props.setIsPlaying(false);
     });
   }, []);
+  
   return (
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>

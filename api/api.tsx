@@ -1,15 +1,11 @@
 import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface';
-import { AlbumType } from '../interface/interface';
 
-type Token = {
+type getPlaylistsType = {
   token: string;
 };
-
-type Playlists = {
-  name: string;
-  id: string;
+type getUserTopArtistType = {
+  token: string;
 };
-
 type getAlbumsPropsType = {
   token: string;
   offset: number;
@@ -20,6 +16,22 @@ type getTracksType = {
   token: string;
   id: string;
 };
+
+type getUserTopTracksType = {
+  token: string;
+};
+
+export const copyToClipboard = () => {
+  navigator.clipboard.writeText(window.location.href).then(
+    function () {
+      console.log('copied successfully!');
+    },
+    function (err) {
+      console.log('Failed to copy');
+    }
+  );
+};
+
 export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbumsType> {
   const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?offset=${data.offset}&limit=${data.limit}`, {
     method: 'GET',
@@ -46,19 +58,16 @@ export async function getAlbumTracks(data: getTracksType): Promise<IResponseTrac
   return response;
 }
 
-export async function getPlaylist({ token }: Token) {
+export async function getUserPlaylists(data: getPlaylistsType) {
   const res = await fetch('https://api.spotify.com/v1/me/playlists', {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${data.token}`,
       'Content-Type': 'application/json',
     },
   });
-  const { items } = await res.json();
-  const playlists = items.map(({ name, id }: Playlists) => {
-    return { name, id };
-  });
-  return playlists;
+  const playlist = await res.json();
+  return playlist;
 }
 
 export async function getTrack(token: string, id: string) {
@@ -71,4 +80,40 @@ export async function getTrack(token: string, id: string) {
   });
   const track = await res.json();
   return track;
+}
+
+export async function getProfile(token: string) {
+  const res = await fetch(`https://api.spotify.com/v1/me`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const user = await res.json();
+  return user;
+}
+
+export async function getUserTopArtist(data: getUserTopArtistType) {
+  const res = await fetch(`https://api.spotify.com/v1/me/top/artists`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topArtist = await res.json();
+  return topArtist;
+}
+
+export async function getUserTopTracks(data: getUserTopTracksType) {
+  const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=4`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topArtist = await res.json();
+  return topArtist;
 }

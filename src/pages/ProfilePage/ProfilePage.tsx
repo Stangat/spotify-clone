@@ -1,9 +1,7 @@
 import { Layout } from 'antd';
-import { Footer, Header } from 'antd/es/layout/layout';
-import { useParams } from 'react-router-dom';
-import { getProfile } from '../../../api/api';
-import { AlbumType, ProfileType } from '../../../interface/interface';
-import { DetailsAlbumContent } from '../../components/DetailsAlbumContent/DetailsAlbumContent';
+import { Footer } from 'antd/es/layout/layout';
+import { PlaylistsType, ProfileType } from '../../../interface/interface';
+import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsProfilePage';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import { Player } from '../../components/Player/Player';
 import { SideBar } from '../../components/SideBar/SideBar';
@@ -19,51 +17,38 @@ const footerStyle: React.CSSProperties = {
   borderTop: '1px solid #302f2f',
 };
 
-type DetailsAlbumPageProps = {
-  profile: ProfileType | undefined;
-  setProfile: (profile: ProfileType) => void;
+type ProfilePageProps = {
   token: string;
-  albums: AlbumType[];
-  setALbums: (albums: AlbumType[]) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
   songName: string;
   artistName: string;
   setSongName: (songName: string) => void;
-  setArtistName: (artistName: string) => void;
+  setArtistName: (ArtistName: string) => void;
   coverUrl: string;
   setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
-  trackId: string;
-  setTrackId: (trackId: string) => void;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
+  playlists: PlaylistsType | undefined;
+  setPlaylists: (playlist: PlaylistsType) => void;
 };
 
-export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
-  const params: any = useParams();
+export const ProfilePage: React.FC<ProfilePageProps> = props => {
   return (
-    <div>
-      <Layout hasSider>
-        <Layout>
+    <div style={{ background: '#1e1e1e' }}>
+      <Layout hasSider style={{ background: 'rgb(30, 30, 30)', marginBottom: '10%' }}>
+        <Layout style={{ background: '#1e1e1e' }}>
           <SideBar />
-          <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
+          <Layout style={{ background: '#1e1e1e', display: 'flex' }}>
             <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
-            <DetailsAlbumContent
+            <DetailsProfilePage
+              profile={props.profile}
+              playlists={props.playlists}
+              setPlaylists={props.setPlaylists}
               token={props.token}
-              id={params.id}
-              albums={props.albums}
-              setALbums={props.setALbums}
-              setIsPlaying={props.setIsPlaying}
-              isPlaying={props.isPlaying}
-              player={props.player}
-              setSongName={props.setSongName}
-              setArtistName={props.setArtistName}
-              setCoverUrl={props.setCoverUrl}
-              trackDuration={props.trackDuration}
-              setTrackDuration={props.setTrackDuration}
-              trackId={props.trackId}
-              setTrackId={props.setTrackId}
             />
           </Layout>
         </Layout>
