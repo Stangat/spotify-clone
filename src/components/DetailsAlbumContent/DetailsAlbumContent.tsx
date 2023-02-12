@@ -19,6 +19,8 @@ type DetailsAlbumContentProps = {
   setTrackDuration: (trackDuration: number) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -44,6 +46,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
+    props.setAlbumTracks(response.items);
   };
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {(props.isPlaying && index === buttonKey) || (props.isPlaying && track.id === props.trackId) ? (
+                {(props.isPlaying && track.id === props.trackId) ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -147,3 +150,4 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     </div>
   );
 };
+``;

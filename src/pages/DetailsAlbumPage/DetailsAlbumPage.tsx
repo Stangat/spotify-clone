@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { Footer, Header } from 'antd/es/layout/layout';
 import { useParams } from 'react-router-dom';
-import { AlbumType } from '../../../interface/interface';
+import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { DetailsAlbumContent } from '../../components/DetailsAlbumContent/DetailsAlbumContent';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import { Player } from '../../components/Player/Player';
@@ -35,6 +35,8 @@ type DetailsAlbumPageProps = {
   setTrackDuration: (trackDuration: number) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
@@ -61,6 +63,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
               setTrackDuration={props.setTrackDuration}
               trackId={props.trackId}
               setTrackId={props.setTrackId}
+              albumTracks={props.albumTracks}
+              setAlbumTracks={props.setAlbumTracks}
             />
           </Layout>
         </Layout>
@@ -75,8 +79,14 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
             setSongName={props.setSongName}
             setArtistName={props.setArtistName}
             coverUrl={props.coverUrl}
+            setCoverUrl={props.setCoverUrl}
             trackDuration={props.trackDuration}
             setTrackDuration={props.setTrackDuration}
+            albums={props.albums}
+            albumTracks={props.albumTracks}
+            setAlbumTracks={props.setAlbumTracks}
+            trackId={props.trackId}
+            setTrackId={props.setTrackId}
           />
         </Footer>
       </Layout>

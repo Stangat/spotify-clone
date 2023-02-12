@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import React, { useState } from 'react';
-import { AlbumType } from '../../../interface/interface';
+import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
 import { Player } from '../../components/Player/Player';
@@ -33,6 +33,10 @@ type HomePageProps = {
   setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
 const limit = 10;
@@ -68,8 +72,14 @@ export const HomePage: React.FC<HomePageProps> = props => {
           setSongName={props.setSongName}
           setArtistName={props.setArtistName}
           coverUrl={props.coverUrl}
+          setCoverUrl={props.setCoverUrl}
           trackDuration={props.trackDuration}
           setTrackDuration={props.setTrackDuration}
+          albums={props.albums}
+          albumTracks={props.albumTracks}
+          setAlbumTracks={props.setAlbumTracks}
+          trackId={props.trackId}
+          setTrackId={props.setTrackId}
         />
       </Footer>
     </Layout>
