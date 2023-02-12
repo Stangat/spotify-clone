@@ -25,7 +25,6 @@ type DetailsAlbumContentProps = {
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  const [buttonKey, setButtonKey] = useState(-1);
 
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
@@ -117,7 +116,6 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                     key={index}
                     onClick={async () => {
                       playingTrackHandler(track.preview_url);
-                      setButtonKey(index);
                       props.setSongName(track.name);
                       props.setArtistName(track.artists[0].name);
                       const currentTrack = await getTrack(props.token, track.id);
