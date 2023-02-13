@@ -8,6 +8,7 @@ type DetailsAlbumPageProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
   token: string;
+  setToken: (token:string)=>void
   albums: AlbumType[];
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
@@ -29,7 +30,7 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
   let params: any = useParams(); // TODO
   return (
     <div className={style.wrapper}>
-      <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
+      <DropdownProfile setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} token={props.token} />
       <DetailsAlbumContent
         token={props.token}
         id={params.id}

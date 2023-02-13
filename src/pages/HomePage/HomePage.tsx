@@ -6,6 +6,7 @@ import { HomeContent } from '../../components/HomeContent/HomeContent';
 
 type HomePageProps = {
   token: string;
+  setToken: (token:string)=>void
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
   profile: ProfileType | undefined;
@@ -24,6 +25,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
             profile={props.profile}
             setProfile={props.setProfile}
             token={props.token}
+            setToken={props.setToken}
             page={page}
             setPage={setPage}
             totalAlbums={totalAlbums}

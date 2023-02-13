@@ -10,8 +10,14 @@ type DropdownProfileType = {
   token: string;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
+  setToken: (token:string)=>void
 };
+
 export const DropdownProfile: React.FC<DropdownProfileType> = props => {
+  const logout = () => {
+    props.setToken("")
+    window.localStorage.removeItem("token")
+  }
   const navigate = useNavigate();
 
   const getProfileHandler = async () => {
@@ -33,7 +39,7 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
         navigate(`/settings`);
         break;
       case '3':
-        console.log('logout');
+        {logout()}
         break;
       default:
         break;

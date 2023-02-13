@@ -1,6 +1,7 @@
 import { Avatar, Card } from 'antd';
 import {
   ArtistTopUserType,
+  ITrackTypes,
   PlaylistsType,
   ProfileType,
   TopArtistsType,
@@ -8,16 +9,29 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
+import { getTrack, getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
 import { useEffect, useState } from 'react';
 import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import Meta from 'antd/es/card/Meta';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 
 type DetailsProfilePageProps = {
   token: string;
   profile: ProfileType | undefined;
   playlists: PlaylistsType | undefined;
   setPlaylists: (playlist: PlaylistsType) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
+  setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
 };
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
@@ -39,12 +53,28 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
     setTopTracks(response);
   };
 
+  const playingTrackHandler = (url: string) => {
+    if (!props.isPlaying) {
+      props.player.src = url;
+      props.player.play();
+      props.setIsPlaying(true);
+    } else {
+      if (props.player.src !== url) {
+        props.player.src = url;
+        props.player.play();
+      } else {
+        props.player.pause();
+        props.setIsPlaying(false);
+      }
+    }
+  };
+
   useEffect(() => {
     getTopTracksUserHandler();
     getTopArtistsUserHandler();
     getPlaylistHandler();
   }, []);
-  //console.log(topTracks);
+  // console.log(topTracks);
   return (
     <div className={styles.detailsProfileContainer}>
       <div className={styles.blockProfileDescription} key={props.profile?.id}>
@@ -94,10 +124,47 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
           <p className={styles.descriptionTopArtist} /* onClick={} */> SHOW ALL</p>
         </div>
         <div>
-          {topTracks?.items.map((track: ArtistTopUserType) => {
+          {topTracks?.items.map((track: ArtistTopUserType, index: number) => {
+            //console.log(track);
             return (
               <div className={styles.trackBlock} key={track.id}>
-                <p>{track.name}</p>
+                {props.isPlaying && track.id === props.trackId ? (
+                  <PauseCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={() => {
+                      playingTrackHandler(track.preview_url);
+                    }}
+                  />
+                ) : (
+                  <PlayCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={async () => {
+                      playingTrackHandler(track.preview_url);
+                      const currentTrack = await getTrack(props.token, track.id);
+                      props.setSongName(track.name);
+                      props.setArtistName(track.artists[0].name);
+                      const url = await currentTrack.album.images[0].url;
+                      props.setCoverUrl(url);
+                      props.player.preload = 'metadata';
+                      props.player.onloadedmetadata = () => {
+                        props.setTrackDuration(props.player.duration);
+                      };
+                      props.setTrackId(track.id);
+                      const response = await getUserTopTracks({ token: props.token });
+                      props.setAlbumTracks(response.items);
+                    }}
+                  />
+                )}
+                <div>
+                  <p>{track.name}</p>
+                  <p className={styles.descriptionTopArtist}>
+                    {track.artists.map(artist => {
+                      return artist.name;
+                    })}
+                  </p>
+                </div>
               </div>
             );
           })}
@@ -110,6 +177,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </p>
         <div className={styles.playlistsUser}>
           {props.playlists?.items.map((playlist: UserCurrentPlaylist) => {
+            //console.log(playlist)
             return (
               <Card
                 key={playlist.id}
@@ -122,7 +190,13 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                   border: 'none',
                   padding: '2%',
                 }}
-                cover={<img alt="example" /* src */ style={{ boxShadow: '0px 0px 5px 0px black' }} />}
+                cover={
+                  <img
+                    alt="example"
+                    src="https://w7.pngwing.com/pngs/65/131/png-transparent-musical-note-eighth-notes-angle-monochrome-silhouette.png"
+                    style={{ boxShadow: '0px 0px 5px 0px black' }}
+                  />
+                }
               >
                 <Meta title={playlist.name} />
               </Card>

@@ -30,8 +30,21 @@ export default function App() {
   const [playlists, setPlaylists] = useState<PlaylistsType>();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    setToken(hash.substring(1).split('&')[0].split('=')[1]);
+    const hash: any = window.location.hash;
+    let token: any = window.localStorage.getItem('token');
+
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split('&')
+        .find((elem: any) => elem.startsWith('access_token'))
+        .split('=')[1];
+
+      window.location.hash = '';
+      window.localStorage.setItem('token', token);
+    }
+
+    setToken(token);
   }, []);
 
   if (!token) {
@@ -48,6 +61,7 @@ export default function App() {
             element={
               token ? (
                 <HomePage
+                  setToken={setToken}
                   profile={profile}
                   setProfile={setProfile}
                   token={token}
@@ -63,6 +77,7 @@ export default function App() {
             path="album/:id"
             element={
               <DetailsAlbumPage
+                setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
                 token={token}
@@ -88,11 +103,28 @@ export default function App() {
             path="profile/:id"
             element={
               <ProfilePage
+                setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
                 playlists={playlists}
                 setPlaylists={setPlaylists}
                 token={token}
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}
+                songName={songName}
+                artistName={artistName}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                coverUrl={coverUrl}
+                setCoverUrl={setCoverURL}
+                albums={albums}
+                trackDuration={trackDuration}
+                setTrackDuration={setTrackDuration}
+                albumTracks={albumTracks}
+                setAlbumTracks={setAlbumTracks}
+                trackId={trackId}
+                setTrackId={setTrackId}
               />
             }
           />
