@@ -121,8 +121,31 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
     }
   };
 
-  const handlePlayingEnding = () => {
+  const handlePlayingEnding = async () => {
     setIsPlaying(false);
+    const currAlbumTracks = localStorage.getItem('albumTracks');
+    if (currAlbumTracks) {
+      const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
+      const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
+      if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
+        const nextTrackIndex = currentTrackIndex + 1;
+        const nextTrackUrl = currAlbumTracksParsed[nextTrackIndex].preview_url;
+        const nextTrackId = currAlbumTracksParsed[nextTrackIndex].id;
+        const nextTrackSongName = currAlbumTracksParsed[nextTrackIndex].name;
+        const nextTrackArtistName = currAlbumTracksParsed[nextTrackIndex].artists[0].name;
+        setSongName(nextTrackSongName);
+        setArtistName(nextTrackArtistName);
+        const currentTrack = await getTrack(token, nextTrackId);
+        const url = await currentTrack.album.images[0].url;
+        setTrackId(nextTrackId);
+        setCoverUrl(url);
+        player.src = nextTrackUrl;
+        if (!isPlaying) {
+          setIsPlaying(true);
+        }
+        player.play();
+      }
+    }
   };
 
   useLayoutEffect(() => {
