@@ -1,21 +1,8 @@
 import { Layout } from 'antd';
-import { Footer } from 'antd/es/layout/layout';
 import { AlbumType, ITrackTypes, PlaylistsType, ProfileType } from '../../../interface/interface';
 import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsProfilePage';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import { Player } from '../../components/Player/Player';
 import { SideBar } from '../../components/SideBar/SideBar';
-
-const footerStyle: React.CSSProperties = {
-  position: 'fixed',
-  left: '0',
-  right: '0',
-  bottom: '0',
-  padding: '15px',
-  color: '#fff',
-  backgroundColor: '#1c1b1b',
-  borderTop: '1px solid #302f2f',
-};
 
 type ProfilePageProps = {
   token: string;
@@ -44,12 +31,10 @@ type ProfilePageProps = {
 
 export const ProfilePage: React.FC<ProfilePageProps> = props => {
   return (
-    <div style={{ background: '#1e1e1e' }}>
+    <div style={{ background: '#1e1e1e', width: '100%'}}>
       <Layout hasSider style={{ background: 'rgb(30, 30, 30)', marginBottom: '10%' }}>
-        <Layout style={{ background: '#1e1e1e' }}>
-          <SideBar />
           <Layout style={{ background: '#1e1e1e', display: 'flex' }}>
-            <DropdownProfile setToken={props.setToken}profile={props.profile} setProfile={props.setProfile} token={props.token} />
+            <DropdownProfile setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} token={props.token} />
             <DetailsProfilePage
               profile={props.profile}
               playlists={props.playlists}
@@ -70,28 +55,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
             />
           </Layout>
         </Layout>
-        <Footer style={footerStyle}>
-          <Player
-            token={props.token}
-            setIsPlaying={props.setIsPlaying}
-            isPlaying={props.isPlaying}
-            player={props.player}
-            songName={props.songName}
-            artistName={props.artistName}
-            setSongName={props.setSongName}
-            setArtistName={props.setArtistName}
-            coverUrl={props.coverUrl}
-            setCoverUrl={props.setCoverUrl}
-            trackDuration={props.trackDuration}
-            setTrackDuration={props.setTrackDuration}
-            albums={props.albums}
-            albumTracks={props.albumTracks}
-            setAlbumTracks={props.setAlbumTracks}
-            trackId={props.trackId}
-            setTrackId={props.setTrackId}
-          />
-        </Footer>
-      </Layout>
     </div>
   );
 };

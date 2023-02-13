@@ -117,3 +117,15 @@ export async function getUserTopTracks(data: getUserTopTracksType) {
   const topArtist = await res.json();
   return topArtist;
 }
+
+export async function getCategories(props: {token: string}): Promise<SpotifyApi.MultipleCategoriesResponse>{
+  const res = await fetch('https://api.spotify.com/v1/browse/categories', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${props.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const { categories } = await res.json();
+  return categories;
+}

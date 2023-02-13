@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from 'antd';
-import styles from './cardItem.module.less';
 import { AlbumType } from '../../../interface/interface';
 import { useNavigate } from 'react-router-dom';
 

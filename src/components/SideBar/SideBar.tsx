@@ -5,6 +5,7 @@ import React from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
+import { useNavigate } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -13,7 +14,7 @@ function getItem(
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: 'group'
+  type?: 'group',
 ): MenuItem {
   return {
     key,
@@ -25,48 +26,21 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Home', '1', <HomeFilled />),
-  getItem('Search', '2', <SearchOutlined />),
-  getItem('Your library', '3', <ContainerOutlined />),
-  getItem('Create playlist', '4', <PlusCircleFilled />),
-  getItem('Liked Songs', '5', <HeartFilled />),
+  getItem('Home', '', <HomeFilled/>),
+  getItem('Search', 'search', <SearchOutlined/>),
+  getItem('Your library', 'library', <ContainerOutlined />),
+  getItem('Create playlist', 'playlists', <PlusCircleFilled/>),
+  getItem('Liked Songs', 'likes', <HeartFilled />),
 ];
 
 export const SideBar: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <Sider
-      style={{
-        overflow: 'auto',
-        height: '100%',
-        // position: 'fixed',
-        padding: '2%',
-        // left: 0,
-        // top: 0,
-        // bottom: 0,
-        backgroundColor: 'black',
-      }}
-    >
-      <div
-      className={styles.titleBlock}
-        style={{
-          height: 34,
-          margin: 16,
-          background: '#black',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {<SpotifySvg />}
-        <p
-          style={{
-            color: 'white',
-            fontSize: '22px',
-            fontWeight: 'bold',
-          }}
-        >
-          Spotify Clone
-        </p>
+    <Sider>
+      <div  className={styles.titleBlock}>
+        <SpotifySvg />
+        <p>Spotify Clone</p>
       </div>
       <Menu
         defaultSelectedKeys={['1']}
@@ -74,6 +48,9 @@ export const SideBar: React.FC = () => {
         mode="inline"
         theme="dark"
         items={items}
+        onClick={({key}) => {
+          navigate(key);
+        }}
         style={{ backgroundColor: 'black' }}
       />
     </Sider>
