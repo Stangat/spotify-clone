@@ -45,6 +45,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@types/spotify-api": "^0.0.20",
     "axios": "^1.3.0"
   }
 }

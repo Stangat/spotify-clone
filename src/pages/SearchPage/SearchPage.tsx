@@ -10,7 +10,7 @@ const searchIcon = () => {
 
 export const SearchPage = ({token} : {token: string}) => {
   
-  const [categories, setCategories] = useState(); 
+  const [categories, setCategories] : [categories: any, setCategories: any] = useState(); 
 
   const getBrowseByCategories = async () => {
     const res = await getCategories({token});
@@ -21,11 +21,11 @@ export const SearchPage = ({token} : {token: string}) => {
     getBrowseByCategories();
   }, []);
 
-  /*let a;
+  let a;
   if(categories) {
-    a = categories.items[0];
+    a = categories.items[1];
   } 
-  console.log(a);*/ // TODO typeof item -> interface of res -> clg
+  console.log(a); // TODO typeof item -> interface of res -> clg
 
   return (
     <div className={style.wrapper}>

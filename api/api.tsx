@@ -70,7 +70,7 @@ export async function getCurrentlyPlayingTrack(props: Props) {
   return item;
 }
 
-export async function getCategories(props: Props) {
+export async function getCategories(props: Props): Promise<SpotifyApi.MultipleCategoriesResponse>{
   const res = await fetch('https://api.spotify.com/v1/browse/categories', {
     method: 'GET',
     headers: {
