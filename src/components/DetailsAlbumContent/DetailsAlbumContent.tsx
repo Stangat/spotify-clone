@@ -1,25 +1,46 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks } from '../../../api/api';
+import { getAlbumTracks, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import styles from './details.module.less';
-import { PlayCircleFilled } from '@ant-design/icons';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 
 type DetailsAlbumContentProps = {
   token: string;
   id: string;
   albums: AlbumType[];
-  setALbums: (albums: AlbumType[]) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
+  setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
 };
 
-const playingTrack = (url: string) => {
-  var audio = new Audio(); // Создаём новый элемент Audio
-  audio.src = url; // Указываем путь к звуку "клика"
-  audio.play(); // Автоматически запускаем
-};
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
-  //console.log(props.albums);
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  // console.log(tracks);
+
+  const playingTrackHandler = (url: string) => {
+    if (!props.isPlaying) {
+      props.player.src = url;
+      props.player.play();
+      props.setIsPlaying(true);
+    } else {
+      if (props.player.src !== url) {
+        props.player.src = url;
+        props.player.play();
+      } else {
+        props.player.pause();
+        props.setIsPlaying(false);
+      }
+    }
+  };
+
   const getTracksHandler = async () => {
     const response = await getAlbumTracks({ id: props.id, token: props.token });
     setTracks(response.items);
@@ -27,7 +48,11 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
+    props.player.addEventListener('ended', () => {
+      props.setIsPlaying(false);
+    });
   }, []);
+  
   return (
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
@@ -72,15 +97,41 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
         })}
       </div>
       <div className={styles.tracksBlock}>
-        {tracks.map(track => {
+        {tracks.map((track, index) => {
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                <PlayCircleFilled
-                  style={{ color: '#1ad760', fontSize: '32px' }}
-                  onClick={() => playingTrack(track.preview_url)}
-                />
-                <div >
+                {(props.isPlaying && track.id === props.trackId) ? (
+                  <PauseCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={() => {
+                      playingTrackHandler(track.preview_url);
+                    }}
+                  />
+                ) : (
+                  <PlayCircleFilled
+                    className={styles.playPauseButton}
+                    key={index}
+                    onClick={async () => {
+                      playingTrackHandler(track.preview_url);
+                      props.setSongName(track.name);
+                      props.setArtistName(track.artists[0].name);
+                      const currentTrack = await getTrack(props.token, track.id);
+                      const url = await currentTrack.album.images[0].url;
+                      props.setCoverUrl(url);
+                      props.player.preload = 'metadata';
+                      props.player.onloadedmetadata = () => {
+                        props.setTrackDuration(props.player.duration);
+                      };
+                      props.setTrackId(track.id);
+                      const response = await getAlbumTracks({ id: props.id, token: props.token });
+                      props.setAlbumTracks(response.items);
+                    }}
+                  />
+                )}
+
+                <div>
                   <p>{track.name}</p>
                   <p style={{ color: '#a0a0a0' }}>
                     {track.artists.map(artist => {
@@ -98,3 +149,4 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     </div>
   );
 };
+``;

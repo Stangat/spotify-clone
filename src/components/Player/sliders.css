@@ -1,0 +1,27 @@
+/*main slider*/
+
+.slider {
+  width: 100%;
+}
+
+.slider-track {
+  height: 4px;
+  background: gray;
+  border-radius: 10px;
+}
+
+.slider-track.slider-track-0 {
+  background: green;
+}
+
+.slider-thumb {
+  cursor: pointer;
+  background: white;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  outline: none;
+  bottom: -10px;
+}
+
+/*volume slider*/

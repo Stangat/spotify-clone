@@ -1,62 +1,62 @@
-import { HeartOutlined } from '@ant-design/icons';
-import { PicRightOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
-import { getCurrentlyPlayingTrack } from '../../../api/api';
 import style from './player.module.less';
+import './sliders.css';
+import { SongBlock } from './SongBlock';
+import { PlayerControls } from './PlayerControls';
+import { VolumeBlock } from './VolumeBlock';
+import { AlbumType, ITrackTypes } from '../../../interface/interface';
 
-type Props = {
+type PlayerProps = {
   token: string;
+  setIsPlaying: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+  player: HTMLAudioElement;
+  songName: string;
+  artistName: string;
+  setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
+  coverUrl: string;
+  setCoverUrl: (coverUrl: string) => void;
+  trackDuration: number;
+  setTrackDuration: (trackDuration: number) => void;
+  albums: AlbumType[];
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
-const SongBlock = (props: Props) => {
-  const [url, setUrl] = useState('');
-  const [artistName, setArtistName] = useState('');
-  const [songName, setSongName] = useState('');
-
-  useEffect(() => {
-    const getCurrentlyPlayingTrackInfo = async () => {
-      const track = await getCurrentlyPlayingTrack(props);
-      const { url } = track.album.images[2];
-      const artistName = track.artists[0].name;
-      const songName = track.name;
-
-      setUrl(url);
-      setArtistName(artistName);
-      setSongName(songName);
-    };
-
-    getCurrentlyPlayingTrackInfo();
-  }, []);
-
-  return (
-    <div className={style.songBlockContainer}>
-      <div className={style.coverContainer}>
-        <img
-          className={style.albumCover}
-          width="64"
-          height="64"
-          alt="cover"
-          src={
-            url ? url : 'https://www.pngfind.com/pngs/m/461-4611544_vinyl-record-png-record-vinyl-transparent-png.png'
-          }
-        />
-      </div>
-      <div className={style.songNameAndArtistContainer}>
-        <p className={style.songName}>{songName}</p>
-        <p className={style.artistName}>{artistName}</p>
-      </div>
-      <div className={style.songInteractionContainer}>
-        <HeartOutlined style={{padding: '5px', fontSize: '18px'}} />
-        <PicRightOutlined style={{padding: '5px', fontSize: '18px'}} />
-      </div>
-    </div>
-  );
-};
-
-export const Player = (props: Props) => {
+export const Player: React.FC<PlayerProps> = ({
+  token,
+  isPlaying,
+  setIsPlaying,
+  player,
+  songName,
+  artistName,
+  coverUrl,
+  setCoverUrl,
+  trackDuration,
+  albumTracks,
+  setAlbumTracks,
+  setTrackId,
+  setSongName,
+}) => {
   return (
     <div className={style.playerContainer}>
-      <SongBlock token={props.token} />
+      <SongBlock coverUrl={coverUrl} artistName={artistName} songName={songName} />
+      <PlayerControls
+        token={token}
+        player={player}
+        setIsPlaying={setIsPlaying}
+        isPlaying={isPlaying}
+        trackDuration={trackDuration}
+        albumTracks={albumTracks}
+        setAlbumTracks={setAlbumTracks}
+        coverUrl={coverUrl}
+        setCoverUrl={setCoverUrl}
+        setTrackId={setTrackId}
+        setSongName={setSongName}
+      />
+      <VolumeBlock />
     </div>
   );
 };
