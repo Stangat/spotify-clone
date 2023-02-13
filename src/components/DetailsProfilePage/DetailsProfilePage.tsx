@@ -110,6 +110,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </p>
         <div className={styles.playlistsUser}>
           {props.playlists?.items.map((playlist: UserCurrentPlaylist) => {
+            console.log(playlist)
             return (
               <Card
                 key={playlist.id}
@@ -122,7 +123,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                   border: 'none',
                   padding: '2%',
                 }}
-                cover={<img alt="example" /* src */ style={{ boxShadow: '0px 0px 5px 0px black' }} />}
+                cover={<img alt="example" src='https://w7.pngwing.com/pngs/65/131/png-transparent-musical-note-eighth-notes-angle-monochrome-silhouette.png' style={{ boxShadow: '0px 0px 5px 0px black' }} />}
               >
                 <Meta title={playlist.name} />
               </Card>
