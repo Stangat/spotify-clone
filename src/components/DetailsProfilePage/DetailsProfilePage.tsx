@@ -1,6 +1,5 @@
 import { Avatar, Card } from 'antd';
 import {
-  AlbumType,
   ArtistTopUserType,
   ITrackTypes,
   PlaylistsType,
@@ -10,7 +9,7 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getAlbumTracks, getTrack, getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
+import { getTrack, getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
 import { useEffect, useState } from 'react';
 import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import Meta from 'antd/es/card/Meta';
@@ -126,6 +125,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </div>
         <div>
           {topTracks?.items.map((track: ArtistTopUserType, index: number) => {
+            //console.log(track);
             return (
               <div className={styles.trackBlock} key={track.id}>
                 {props.isPlaying && track.id === props.trackId ? (
@@ -157,7 +157,14 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                     }}
                   />
                 )}
-                <p>{track.name}</p>
+                <div>
+                  <p>{track.name}</p>
+                  <p className={styles.descriptionTopArtist}>
+                    {track.artists.map(artist => {
+                      return artist.name;
+                    })}
+                  </p>
+                </div>
               </div>
             );
           })}
@@ -170,6 +177,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </p>
         <div className={styles.playlistsUser}>
           {props.playlists?.items.map((playlist: UserCurrentPlaylist) => {
+            //console.log(playlist)
             return (
               <Card
                 key={playlist.id}
@@ -182,7 +190,13 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                   border: 'none',
                   padding: '2%',
                 }}
-                cover={<img alt="example" /* src */ style={{ boxShadow: '0px 0px 5px 0px black' }} />}
+                cover={
+                  <img
+                    alt="example"
+                    src="https://w7.pngwing.com/pngs/65/131/png-transparent-musical-note-eighth-notes-angle-monochrome-silhouette.png"
+                    style={{ boxShadow: '0px 0px 5px 0px black' }}
+                  />
+                }
               >
                 <Meta title={playlist.name} />
               </Card>

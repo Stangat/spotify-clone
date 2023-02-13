@@ -7,6 +7,7 @@ import { ProfileType } from '../../../interface/interface';
 
 type HeaderHomeProps = {
   token: string;
+  setToken: (token:string)=>void
   page: number;
   setPage: (page: number) => void;
   totalAlbums: number;
@@ -27,7 +28,7 @@ export const HeaderHome: React.FC<HeaderHomeProps> = props => {
         }}
       >
         <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
-        <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
+        <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken}/>
       </Header>
     </div>
   );

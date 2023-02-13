@@ -21,6 +21,7 @@ const footerStyle: React.CSSProperties = {
 
 type HomePageProps = {
   token: string;
+  setToken: (token:string)=>void
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
   setIsPlaying: (isPlaying: boolean) => void;
@@ -56,6 +57,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
             profile={props.profile}
             setProfile={props.setProfile}
             token={props.token}
+            setToken={props.setToken}
             page={page}
             setPage={setPage}
             totalAlbums={totalAlbums}

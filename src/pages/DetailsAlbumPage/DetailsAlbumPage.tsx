@@ -22,6 +22,7 @@ type DetailsAlbumPageProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
   token: string;
+  setToken: (token:string)=>void
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
   setIsPlaying: (isPlaying: boolean) => void;
@@ -49,7 +50,7 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
         <Layout>
           <SideBar />
           <Layout style={{ background: 'rgb(30, 30, 30)', height: '100vh', display: 'flex' }}>
-            <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
+            <DropdownProfile setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} token={props.token} />
             <DetailsAlbumContent
               token={props.token}
               id={params.id}

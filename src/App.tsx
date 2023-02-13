@@ -26,8 +26,21 @@ export default function App() {
   const [playlists, setPlaylists] = useState<PlaylistsType>();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    setToken(hash.substring(1).split('&')[0].split('=')[1]);
+    const hash: any = window.location.hash;
+    let token: any = window.localStorage.getItem('token');
+
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split('&')
+        .find((elem: any) => elem.startsWith('access_token'))
+        .split('=')[1];
+
+      window.location.hash = '';
+      window.localStorage.setItem('token', token);
+    }
+
+    setToken(token);
   }, []);
 
   return (
@@ -38,6 +51,7 @@ export default function App() {
           element={
             token ? (
               <HomePage
+                setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
                 token={token}
@@ -67,7 +81,8 @@ export default function App() {
         <Route
           path="album/:id"
           element={
-            <DetailsAlbumPage
+            token ? (<DetailsAlbumPage
+              setToken={setToken}
               profile={profile}
               setProfile={setProfile}
               token={token}
@@ -88,14 +103,17 @@ export default function App() {
               setTrackId={setTrackId}
               albumTracks={albumTracks}
               setAlbumTracks={setAlbumTracks}
-            />
+            />) : (
+              <Login />
+            )
           }
         />
         <Route path="search" element={<SearchPage />} />
         <Route
           path="profile/:id"
           element={
-            <ProfilePage
+            token ? (<ProfilePage
+              setToken={setToken}
               profile={profile}
               setProfile={setProfile}
               playlists={playlists}
@@ -117,7 +135,9 @@ export default function App() {
               setAlbumTracks={setAlbumTracks}
               trackId={trackId}
               setTrackId={setTrackId}
-            />
+            />) : (
+              <Login />
+            )
           }
         />
         <Route path="settings" element={<Settings />} />
