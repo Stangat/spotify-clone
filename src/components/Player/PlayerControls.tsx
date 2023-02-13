@@ -121,6 +121,10 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
     }
   };
 
+  const handlePlayingEnding = () => {
+    setIsPlaying(false);
+  };
+
   useLayoutEffect(() => {
     if (ref.current) {
       setWidth(ref.current.clientWidth);
@@ -136,9 +140,11 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
 
     window.addEventListener('resize', handleWindowResize);
     player.addEventListener('timeupdate', updateProgress);
+    player.addEventListener('ended', handlePlayingEnding);
 
     return () => {
       window.removeEventListener('resize', handleWindowResize);
+      player.removeEventListener('ended', handlePlayingEnding);
     };
   }, []);
 

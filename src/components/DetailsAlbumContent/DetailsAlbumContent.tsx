@@ -49,9 +49,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
-    props.player.addEventListener('ended', () => {
-      props.setIsPlaying(false);
-    });
+    
   }, []);
   
   return (
