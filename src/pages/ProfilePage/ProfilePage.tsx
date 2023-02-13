@@ -54,6 +54,18 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
               playlists={props.playlists}
               setPlaylists={props.setPlaylists}
               token={props.token}
+              setIsPlaying={props.setIsPlaying}
+              isPlaying={props.isPlaying}
+              player={props.player}
+              setSongName={props.setSongName}
+              setArtistName={props.setArtistName}
+              setCoverUrl={props.setCoverUrl}
+              trackDuration={props.trackDuration}
+              setTrackDuration={props.setTrackDuration}
+              trackId={props.trackId}
+              setTrackId={props.setTrackId}
+              albumTracks={props.albumTracks}
+              setAlbumTracks={props.setAlbumTracks}
             />
           </Layout>
         </Layout>

@@ -183,27 +183,29 @@ export type TopArtistsType = {
   items: Array<ArtistTopUserType>;
 };
 
-export type ArtistTopUserType ={
-    external_urls: {
-      spotify: string;
-    };
-    followers: {
-      href: string;
-      total: number;
-    };
-    genres: Array<string>;
+export type ArtistTopUserType = {
+  artists: Artist[];
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
     href: string;
-    id: string;
-    images: Array<{
-      url: string;
-      height: number;
-      width: number;
-    }>;
-    name: string;
-    popularity: number;
-    type: string;
-    uri: string;
-} 
+    total: number;
+  };
+  genres: Array<string>;
+  href: string;
+  id: string;
+  images: Array<{
+    url: string;
+    height: number;
+    width: number;
+  }>;
+  name: string;
+  popularity: number;
+  type: string;
+  uri: string;
+  preview_url: string;
+};
 export type UserCurrentPlaylist = {
   collaborative: boolean;
   description: string;
@@ -240,4 +242,4 @@ export type UserCurrentPlaylist = {
   };
   type: string;
   uri: string;
-}
+};
