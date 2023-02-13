@@ -8,7 +8,6 @@ type DetailsAlbumContentProps = {
   token: string;
   id: string;
   albums: AlbumType[];
-  setALbums: (albums: AlbumType[]) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
