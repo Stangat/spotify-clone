@@ -19,11 +19,12 @@ type DetailsAlbumContentProps = {
   setTrackDuration: (trackDuration: number) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
-  const [buttonKey, setButtonKey] = useState(-1);
 
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
@@ -101,7 +102,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {(props.isPlaying && index === buttonKey) || (props.isPlaying && track.id === props.trackId) ? (
+                {(props.isPlaying && track.id === props.trackId) ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -115,7 +116,6 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                     key={index}
                     onClick={async () => {
                       playingTrackHandler(track.preview_url);
-                      setButtonKey(index);
                       props.setSongName(track.name);
                       props.setArtistName(track.artists[0].name);
                       const currentTrack = await getTrack(props.token, track.id);
@@ -126,6 +126,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                         props.setTrackDuration(props.player.duration);
                       };
                       props.setTrackId(track.id);
+                      const response = await getAlbumTracks({ id: props.id, token: props.token });
+                      props.setAlbumTracks(response.items);
                     }}
                   />
                 )}
@@ -148,3 +150,4 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     </div>
   );
 };
+``;

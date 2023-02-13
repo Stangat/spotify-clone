@@ -3,6 +3,7 @@ import './sliders.css';
 import { SongBlock } from './SongBlock';
 import { PlayerControls } from './PlayerControls';
 import { VolumeBlock } from './VolumeBlock';
+import { AlbumType, ITrackTypes } from '../../../interface/interface';
 
 type PlayerProps = {
   token: string;
@@ -14,31 +15,46 @@ type PlayerProps = {
   setSongName: (songName: string) => void;
   setArtistName: (ArtistName: string) => void;
   coverUrl: string;
+  setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
+  albums: AlbumType[];
+  albumTracks: ITrackTypes[];
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
 };
 
-export const Player: React.FC<PlayerProps> = ({ isPlaying, setIsPlaying, player, songName, artistName, coverUrl, trackDuration }) => {
-  const playHandler = () => {
-    if (!isPlaying && coverUrl !== '') {
-      player.play();
-      setIsPlaying(true);
-    } else {
-      player.pause();
-      setIsPlaying(false);
-    }
-  };
-
+export const Player: React.FC<PlayerProps> = ({
+  token,
+  isPlaying,
+  setIsPlaying,
+  player,
+  songName,
+  artistName,
+  coverUrl,
+  setCoverUrl,
+  trackDuration,
+  albumTracks,
+  setAlbumTracks,
+  setTrackId,
+  setSongName,
+}) => {
   return (
     <div className={style.playerContainer}>
       <SongBlock coverUrl={coverUrl} artistName={artistName} songName={songName} />
       <PlayerControls
+        token={token}
         player={player}
-        onClick={() => {
-          playHandler();
-        }}
+        setIsPlaying={setIsPlaying}
         isPlaying={isPlaying}
         trackDuration={trackDuration}
+        albumTracks={albumTracks}
+        setAlbumTracks={setAlbumTracks}
+        coverUrl={coverUrl}
+        setCoverUrl={setCoverUrl}
+        setTrackId={setTrackId}
+        setSongName={setSongName}
       />
       <VolumeBlock />
     </div>
