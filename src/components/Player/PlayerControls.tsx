@@ -18,6 +18,7 @@ type PlayerControlsProps = {
   setCoverUrl: (coverUrl: string) => void;
   setTrackId: (trackId: string) => void;
   setSongName: (songName: string) => void;
+  setArtistName: (ArtistName: string) => void;
 };
 
 export const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -31,9 +32,10 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   setCoverUrl,
   setTrackId,
   setSongName,
+  setArtistName,
 }) => {
   const [currentTime, setCurrentTime] = useState('00:00');
-  const [totalTime, setTotalTime] = useState('00:00');
+  // const [totalTime, setTotalTime] = useState('00:00');
   const [progress, setProgress] = useState(0);
   const [width, setWidth] = useState(0);
 
@@ -57,8 +59,6 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
     });
   };
 
- 
-
   const updateProgress = () => {
     setProgress((player.currentTime / player.duration) * 100);
   };
@@ -81,7 +81,9 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
         const nextTrackUrl = albumTracks[nextTrackIndex].preview_url;
         const nextTrackId = albumTracks[nextTrackIndex].id;
         const nextTrackSongName = albumTracks[nextTrackIndex].name;
+        const nextTrackArtistName = albumTracks[nextTrackIndex].artists[0].name;
         setSongName(nextTrackSongName);
+        setArtistName(nextTrackArtistName);
         const currentTrack = await getTrack(token, nextTrackId);
         const url = await currentTrack.album.images[0].url;
         setTrackId(nextTrackId);
@@ -103,6 +105,8 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
         const previousTrackUrl = albumTracks[previousTrackIndex].preview_url;
         const previousTrackId = albumTracks[previousTrackIndex].id;
         const previousTrackSongName = albumTracks[previousTrackIndex].name;
+        const previousTrackArtistName = albumTracks[previousTrackIndex].artists[0].name;
+        setArtistName(previousTrackArtistName);
         setSongName(previousTrackSongName);
         const currentTrack = await getTrack(token, previousTrackId);
         const url = await currentTrack.album.images[0].url;
