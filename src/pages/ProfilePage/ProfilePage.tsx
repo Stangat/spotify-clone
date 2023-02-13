@@ -19,6 +19,7 @@ const footerStyle: React.CSSProperties = {
 
 type ProfilePageProps = {
   token: string;
+  setToken: (token:string)=>void
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
@@ -48,7 +49,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
         <Layout style={{ background: '#1e1e1e' }}>
           <SideBar />
           <Layout style={{ background: '#1e1e1e', display: 'flex' }}>
-            <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} />
+            <DropdownProfile setToken={props.setToken}profile={props.profile} setProfile={props.setProfile} token={props.token} />
             <DetailsProfilePage
               profile={props.profile}
               playlists={props.playlists}
