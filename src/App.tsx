@@ -129,7 +129,7 @@ export default function App() {
             }
           />
           <Route path="settings" element={<Settings />} />
-          <Route path="search" element={<SearchPage token={token}/>} />
+          <Route path="search/*" element={<SearchPage token={token}/>} />
       </Routes>
         <Footer>
           <Player

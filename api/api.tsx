@@ -118,14 +118,26 @@ export async function getUserTopTracks(data: getUserTopTracksType) {
   return topArtist;
 }
 
-export async function getCategories(props: {token: string}): Promise<SpotifyApi.MultipleCategoriesResponse>{
-  const res = await fetch('https://api.spotify.com/v1/browse/categories', {
+export async function getCategories(token: string): Promise<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>{
+  const res = await fetch('https://api.spotify.com/v1/browse/categories?limit=50', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const { categories } = await res.json();
+  return categories;
+}
+
+export async function getSingleCategory(props: {token: string, id: string | undefined}): Promise<SpotifyApi.CategoryPlaylistsResponse>{
+  const res = await fetch(`https://api.spotify.com/v1/browse/categories/${props.id}/playlists`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${props.token}`,
       'Content-Type': 'application/json',
     },
   });
-  const { categories } = await res.json();
-  return categories;
+  const { playlists } = await res.json();
+  return playlists;
 }
