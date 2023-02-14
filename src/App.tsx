@@ -15,6 +15,7 @@ import { Footer } from 'antd/es/layout/layout';
 import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
+import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -30,6 +31,7 @@ export default function App() {
   const [profile, setProfile] = useState<ProfileType>();
   const [playlists, setPlaylists] = useState<PlaylistsType>();
   const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
+  const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
 
   useEffect(() => {
     const hash: any = window.location.hash;
@@ -105,6 +107,8 @@ export default function App() {
             path="profile/:id"
             element={
               <ProfilePage
+                topTracks={topTracks}
+                setTopTracks={setTopTracks}
                 topArtists={topArtists}
                 setTopArtists={setTopArtists}
                 setToken={setToken}
@@ -137,6 +141,36 @@ export default function App() {
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route path="settings" element={<Settings />} />
+          <Route
+            path="top_tracks"
+            element={
+              <TopTracksUserPage
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+                setTopTracks={setTopTracks}
+
+                topTracks={topTracks}
+                topArtists={topArtists}
+                setTopArtists={setTopArtists}
+                playlists={playlists}
+                setPlaylists={setPlaylists}
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                trackDuration={trackDuration}
+                setTrackDuration={setTrackDuration}
+                albumTracks={albumTracks}
+                setAlbumTracks={setAlbumTracks}
+                trackId={trackId}
+                setTrackId={setTrackId}
+              />
+            }
+          />
           <Route path="search" element={<SearchPage token={token} />} />
         </Routes>
         <Footer>

@@ -29,6 +29,8 @@ type ProfilePageProps = {
   setTrackId: (trackId: string) => void;
   topArtists: TopArtistsType | undefined;
   setTopArtists: (topArtists: TopArtistsType | undefined) => void;
+  topTracks: TopArtistsType | undefined 
+  setTopTracks:(topTracks:TopArtistsType | undefined ) => void
 };
 
 export const ProfilePage: React.FC<ProfilePageProps> = props => {
@@ -43,6 +45,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
             token={props.token}
           />
           <DetailsProfilePage
+            topTracks={props.topTracks}
+            setTopTracks={props.setTopTracks}
             topArtists={props.topArtists}
             setTopArtists={props.setTopArtists}
             profile={props.profile}
