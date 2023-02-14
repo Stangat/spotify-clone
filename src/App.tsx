@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, PlaylistsType, ProfileType, ITrackTypes } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -14,6 +14,7 @@ import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
+import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -28,6 +29,7 @@ export default function App() {
   const [albumTracks, setAlbumTracks] = useState<ITrackTypes[]>([]);
   const [profile, setProfile] = useState<ProfileType>();
   const [playlists, setPlaylists] = useState<PlaylistsType>();
+  const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
 
   useEffect(() => {
     const hash: any = window.location.hash;
@@ -54,7 +56,7 @@ export default function App() {
   return (
     <div className={style.app}>
       <Layout hasSider>
-        <SideBar/>
+        <SideBar />
         <Routes>
           <Route
             path="/"
@@ -103,6 +105,8 @@ export default function App() {
             path="profile/:id"
             element={
               <ProfilePage
+                topArtists={topArtists}
+                setTopArtists={setTopArtists}
                 setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
@@ -128,9 +132,13 @@ export default function App() {
               />
             }
           />
+          <Route
+            path="artist/:id"
+            element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
           <Route path="settings" element={<Settings />} />
-          <Route path="search" element={<SearchPage token={token}/>} />
-      </Routes>
+          <Route path="search" element={<SearchPage token={token} />} />
+        </Routes>
         <Footer>
           <Player
             token={token}

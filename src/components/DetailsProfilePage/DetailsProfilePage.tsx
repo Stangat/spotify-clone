@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import Meta from 'antd/es/card/Meta';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -32,10 +33,12 @@ type DetailsProfilePageProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  topArtists: TopArtistsType | undefined;
+  setTopArtists: (topArtists: TopArtistsType | undefined) => void;
 };
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
-  const [topArtists, setTopArtists] = useState<TopArtistsType>();
+
   const [topTracks, setTopTracks] = useState<TopArtistsType>();
 
   const getPlaylistHandler = async () => {
@@ -45,7 +48,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   const getTopArtistsUserHandler = async () => {
     const response = await getUserTopArtist({ token: props.token });
-    setTopArtists(response);
+    props.setTopArtists(response);
   };
 
   const getTopTracksUserHandler = async () => {
@@ -89,31 +92,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </div>
       </div>
       <DropDownProfile />
-      <div className={styles.topArtistUser}>
-        <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>Top artists this month</p>
-        <p className={styles.descriptionTopArtist}>Only visible to you</p>
-        <div>
-          {topArtists?.items.map((artist: ArtistTopUserType) => {
-            return (
-              <Card
-                key={artist.id}
-                hoverable
-                style={{
-                  maxWidth: 205,
-                  margin: '1%',
-                  background: '#181818',
-                  boxShadow: '0px 0px 5px 0px black',
-                  border: 'none',
-                  padding: '2%',
-                }}
-                cover={<img alt="example" src={artist.images[2].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />}
-              >
-                <Meta title={artist.name} description={artist.type} />
-              </Card>
-            );
-          })}
-        </div>
-      </div>
+      <TopArtistBlock topArtists={props.topArtists} />
 
       <div className={styles.topArtistUser}>
         <div className={styles.topTracksDescription}>
