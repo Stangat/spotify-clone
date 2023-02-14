@@ -31,6 +31,7 @@ type getArtistTrackType = {
 };
 type getUserTopTracksType = {
   token: string;
+  limit: number
 };
 
 export const copyToClipboard = () => {
@@ -119,15 +120,15 @@ export async function getUserTopArtist(data: getUserTopArtistType) {
 }
 
 export async function getUserTopTracks(data: getUserTopTracksType) {
-  const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=4`, {
+  const res = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${data.limit}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
       'Content-Type': 'application/json',
     },
   });
-  const topArtist = await res.json();
-  return topArtist;
+  const topTrack = await res.json();
+  return topTrack;
 }
 
 export async function getCategories(props: { token: string }): Promise<SpotifyApi.MultipleCategoriesResponse> {
@@ -153,6 +154,7 @@ export async function getArtist(data: getArtistType) {
   const artist = await res.json();
   return artist;
 }
+
 export async function getArtistAlbum(data: getArtistAlbumType) {
   const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums`, {
     method: 'GET',
