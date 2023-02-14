@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getArtist, getArtistAlbum } from '../../../api/api';
+import { getArtist, getArtistAlbum} from '../../../api/api';
 import { ArtistAlbums, ArtistType, ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './artistPage.module.less';
@@ -24,9 +24,9 @@ export const ArtistPage: React.FC<ArtistPageProps> = props => {
   };
   const getArtistAlbumsHandler = async () => {
     const response = await getArtistAlbum({ id: params.id, token: props.token });
-    console.log(response);
     setArtistAlbum(response);
   };
+
 
   useEffect(() => {
     getArtistHandler();

@@ -25,6 +25,10 @@ type getArtistAlbumType = {
   token: string;
   id: string;
 };
+type getArtistTrackType = {
+  token: string;
+  id: string;
+};
 type getUserTopTracksType = {
   token: string;
 };
@@ -150,7 +154,7 @@ export async function getArtist(data: getArtistType) {
   return artist;
 }
 export async function getArtistAlbum(data: getArtistAlbumType) {
-  const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums?limit=10`, {
+  const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
@@ -160,3 +164,4 @@ export async function getArtistAlbum(data: getArtistAlbumType) {
   const artistAlbums = await res.json();
   return artistAlbums;
 }
+
