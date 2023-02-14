@@ -130,7 +130,7 @@ export async function getCategories(token: string): Promise<SpotifyApi.PagingObj
   return categories;
 }
 
-export async function getSingleCategory(props: {token: string, id: string | undefined}): Promise<SpotifyApi.CategoryPlaylistsResponse>{
+export async function getSingleCategory(props: {token: string, id: string | undefined}): Promise<SpotifyApi.PagingObject<SpotifyApi.PlaylistObjectSimplified>>{
   const res = await fetch(`https://api.spotify.com/v1/browse/categories/${props.id}/playlists`, {
     method: 'GET',
     headers: {
@@ -140,4 +140,17 @@ export async function getSingleCategory(props: {token: string, id: string | unde
   });
   const { playlists } = await res.json();
   return playlists;
+}
+
+export async function getPlaylistTracksLikeAlbum(data: getTracksType): Promise<{items: {track: IResponseTracksType}[]}> {
+  const res = await fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks?fields=items(track)&market=ES&limit=50`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const response = await res.json();
+  return response;
 }

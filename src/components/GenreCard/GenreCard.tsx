@@ -5,7 +5,7 @@ export const GenreCard: React.FC<{item: SpotifyApi.CategoryObject}> = (props) =>
   const navigate = useNavigate();
 
   function changeUrl() {
-    navigate(`category/${props.item.id}`);
+    navigate(`/genre/${props.item.id}`);
   }
 
   return (

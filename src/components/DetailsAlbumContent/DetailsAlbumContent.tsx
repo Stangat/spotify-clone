@@ -42,8 +42,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   };
 
   const getTracksHandler = async () => {
-    const response = await getAlbumTracks({ id: props.id, token: props.token });
-    setTracks(response.items);
+    const response = await (await getAlbumTracks({ id: props.id, token: props.token })).items;
+    setTracks(response);
   };
 
   useEffect(() => {
