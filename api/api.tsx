@@ -17,6 +17,18 @@ type getTracksType = {
   id: string;
 };
 
+type getArtistType = {
+  token: string;
+  id: string;
+};
+type getArtistAlbumType = {
+  token: string;
+  id: string;
+};
+type getArtistTrackType = {
+  token: string;
+  id: string;
+};
 type getUserTopTracksType = {
   token: string;
 };
@@ -118,7 +130,7 @@ export async function getUserTopTracks(data: getUserTopTracksType) {
   return topArtist;
 }
 
-export async function getCategories(props: {token: string}): Promise<SpotifyApi.MultipleCategoriesResponse>{
+export async function getCategories(props: { token: string }): Promise<SpotifyApi.MultipleCategoriesResponse> {
   const res = await fetch('https://api.spotify.com/v1/browse/categories', {
     method: 'GET',
     headers: {
@@ -129,3 +141,27 @@ export async function getCategories(props: {token: string}): Promise<SpotifyApi.
   const { categories } = await res.json();
   return categories;
 }
+
+export async function getArtist(data: getArtistType) {
+  const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const artist = await res.json();
+  return artist;
+}
+export async function getArtistAlbum(data: getArtistAlbumType) {
+  const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}/albums`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const artistAlbums = await res.json();
+  return artistAlbums;
+}
+
