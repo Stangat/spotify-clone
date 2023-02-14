@@ -48,11 +48,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
-    props.player.addEventListener('ended', () => {
-      props.setIsPlaying(false);
-    });
   }, []);
-  
+
   return (
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
@@ -101,7 +98,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {(props.isPlaying && track.id === props.trackId) ? (
+                {props.isPlaying && track.id === props.trackId ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -127,6 +124,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       props.setTrackId(track.id);
                       const response = await getAlbumTracks({ id: props.id, token: props.token });
                       props.setAlbumTracks(response.items);
+                      localStorage.setItem('albumTracks', JSON.stringify(response.items));
                     }}
                   />
                 )}

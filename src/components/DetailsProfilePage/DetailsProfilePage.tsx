@@ -133,6 +133,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                       props.setTrackId(track.id);
                       const response = await getUserTopTracks({ token: props.token });
                       props.setAlbumTracks(response.items);
+                      localStorage.setItem('albumTracks', JSON.stringify(response.items));
                     }}
                   />
                 )}
