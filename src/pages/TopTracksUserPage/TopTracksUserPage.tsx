@@ -10,8 +10,7 @@ import {
   TopArtistsType,
 } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import styles from '../../components/DetailsProfilePage/detailsProfilePage.module.less';
-import { style } from '@mui/system';
+import styles from './topTracksUserPage.module.less';
 type TopTracksUserPageProps = {
   token: string;
   profile: ProfileType | undefined;
@@ -74,7 +73,6 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
           />
           <div className={styles.topTracksUserPageContainer}>
             {props.topTracks?.items.map((track: ArtistTopUserType, index: number) => {
-              //console.log(track);
               return (
                 <div className={styles.trackBlock} key={track.id}>
                   {props.isPlaying && track.id === props.trackId ? (
