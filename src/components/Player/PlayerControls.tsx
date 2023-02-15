@@ -1,10 +1,11 @@
 import style from './player.module.less';
 import { StepBackwardOutlined, StepForwardOutlined, PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { Progress } from 'antd';
-import { Repeat, Shuffle } from '@mui/icons-material';
+import { Repeat, RepeatOne, Shuffle } from '@mui/icons-material';
 import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { getTrack } from '../../../api/api';
+import { RepeatComponent } from './Repeat';
 
 type PlayerControlsProps = {
   token: string;
@@ -72,26 +73,34 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
     }
   };
 
+  const handleTrackDataAndPlayer = async (index: number) => {
+    const currAlbumTracks = localStorage.getItem('albumTracks');
+    if (currAlbumTracks) {
+      const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
+      const trackUrl = currAlbumTracksParsed[index].preview_url;
+      const trackId = currAlbumTracksParsed[index].id;
+      const trackSongName = currAlbumTracksParsed[index].name;
+      const trackArtistName = currAlbumTracksParsed[index].artists[0].name;
+      setSongName(trackSongName);
+      setArtistName(trackArtistName);
+      const currentTrack = await getTrack(token, trackId);
+      const url = await currentTrack.album.images[0].url;
+      setTrackId(trackId);
+      setCoverUrl(url);
+      player.src = trackUrl;
+      if (!isPlaying) {
+        setIsPlaying(true);
+      }
+      player.play();
+    }
+  };
+
   const skipToNext = async () => {
     if (player.src !== '') {
       const currentTrackIndex = albumTracks.findIndex(track => track.preview_url === player.src);
       if (currentTrackIndex < albumTracks.length - 1) {
         const nextTrackIndex = currentTrackIndex + 1;
-        const nextTrackUrl = albumTracks[nextTrackIndex].preview_url;
-        const nextTrackId = albumTracks[nextTrackIndex].id;
-        const nextTrackSongName = albumTracks[nextTrackIndex].name;
-        const nextTrackArtistName = albumTracks[nextTrackIndex].artists[0].name;
-        setSongName(nextTrackSongName);
-        setArtistName(nextTrackArtistName);
-        const currentTrack = await getTrack(token, nextTrackId);
-        const url = await currentTrack.album.images[0].url;
-        setTrackId(nextTrackId);
-        setCoverUrl(url);
-        player.src = nextTrackUrl;
-        if (!isPlaying) {
-          setIsPlaying(true);
-        }
-        player.play();
+        handleTrackDataAndPlayer(nextTrackIndex);
       }
     }
   };
@@ -101,48 +110,33 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
       const currentTrackIndex = albumTracks.findIndex(track => track.preview_url === player.src);
       if (currentTrackIndex > 0) {
         const previousTrackIndex = currentTrackIndex - 1;
-        const previousTrackUrl = albumTracks[previousTrackIndex].preview_url;
-        const previousTrackId = albumTracks[previousTrackIndex].id;
-        const previousTrackSongName = albumTracks[previousTrackIndex].name;
-        const previousTrackArtistName = albumTracks[previousTrackIndex].artists[0].name;
-        setArtistName(previousTrackArtistName);
-        setSongName(previousTrackSongName);
-        const currentTrack = await getTrack(token, previousTrackId);
-        const url = await currentTrack.album.images[0].url;
-        setTrackId(previousTrackId);
-        setCoverUrl(url);
-        player.src = previousTrackUrl;
-        if (!isPlaying) {
-          setIsPlaying(true);
-        }
-        player.play();
+        handleTrackDataAndPlayer(previousTrackIndex);
       }
     }
   };
 
   const handlePlayingEnding = async () => {
-    setIsPlaying(false);
+    const repeat = localStorage.getItem('repeat');
     const currAlbumTracks = localStorage.getItem('albumTracks');
     if (currAlbumTracks) {
       const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
       const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
       if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
-        const nextTrackIndex = currentTrackIndex + 1;
-        const nextTrackUrl = currAlbumTracksParsed[nextTrackIndex].preview_url;
-        const nextTrackId = currAlbumTracksParsed[nextTrackIndex].id;
-        const nextTrackSongName = currAlbumTracksParsed[nextTrackIndex].name;
-        const nextTrackArtistName = currAlbumTracksParsed[nextTrackIndex].artists[0].name;
-        setSongName(nextTrackSongName);
-        setArtistName(nextTrackArtistName);
-        const currentTrack = await getTrack(token, nextTrackId);
-        const url = await currentTrack.album.images[0].url;
-        setTrackId(nextTrackId);
-        setCoverUrl(url);
-        player.src = nextTrackUrl;
-        if (!isPlaying) {
-          setIsPlaying(true);
+        if (repeat === 'one') {
+          handleTrackDataAndPlayer(currentTrackIndex);
+        } else {
+          const nextTrackIndex = currentTrackIndex + 1;
+          handleTrackDataAndPlayer(nextTrackIndex);
         }
-        player.play();
+      } else {
+        if (repeat === 'all') {
+          handleTrackDataAndPlayer(0);
+        }
+        if (repeat === 'one') {
+          handleTrackDataAndPlayer(currAlbumTracksParsed.length - 1);
+        } else {
+          setIsPlaying(false);
+        }
       }
     }
   };
@@ -175,7 +169,20 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   return (
     <div className={style.controlsContainer}>
       <div className={style.buttonsContainer}>
-        <Shuffle />
+        <Shuffle
+          sx={{
+            fontSize: '18px',
+            opacity: '0.7',
+            transition: '0.1s',
+            '&:hover': {
+              opacity: '1',
+              cursor: 'pointer',
+            },
+            '&:active': {
+              opacity: '0.7',
+            },
+          }}
+        />
         <StepBackwardOutlined
           className={style.nextPrevButton}
           onClick={() => {
@@ -203,7 +210,7 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
             skipToNext();
           }}
         />
-        <Repeat />
+        <RepeatComponent />
       </div>
       <div className={style.progressBarWrapper}>
         <span className={style.start}>{currentTime}</span>
