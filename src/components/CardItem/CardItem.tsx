@@ -1,13 +1,21 @@
 import React from 'react';
 import { Card } from 'antd';
-import { AlbumType } from '../../../interface/interface';
+import { AlbumType, Artist } from '../../../interface/interface';
 import { useNavigate } from 'react-router-dom';
-
+import style from './cardItem.module.less'
 const { Meta } = Card;
+
+interface Playlist extends SpotifyApi.PlaylistObjectSimplified {
+  artists?: Artist[];
+}
+
+interface Album extends AlbumType {
+  description?: string | null;
+}
 
 type CardItemProps = {
   //token: string;
-  album: AlbumType | SpotifyApi.PlaylistObjectSimplified;
+  album: Album | Playlist;
   onClick?: () => void;
 };
 
@@ -22,24 +30,31 @@ export const CardItem: React.FC<CardItemProps> = props => {
         background: '#181818',
         boxShadow: '0px 0px 5px 0px black',
         border: 'none',
-        padding: '2%',
+        padding: '16px',
       }}
       cover={
-        <img alt={props.album.name} src={props.album.images[0].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />
+        <img alt={props.album.name} src={props.album.images[0].url} style={{ 
+          boxShadow: '0px 0px 5px 0px black',
+          borderRadius: '4%'
+        }} />
       }
       onClick={props.onClick ? props.onClick : () => {
         navigate(`/album/${props.album.id}`); 
       }}
     >
-      <Meta
-        title={<div style={{ color: 'white' }}>{props.album.name}</div>}
-        description={
-          <div style={{ color: 'white' }}>
-            {/* Date of release: <br />
-            {props.album.release_date} */}
-          </div>
-        }
-      />
+    <Meta 
+    style={{
+      padding: '0px',
+      height: '80px'}}
+    description={
+      <ul className={style.info}>
+      <li className={style.name}>{props.album.name}</li>
+      <li style={{maxHeight: '46px'}}>{props.album.artists 
+        ? props.album.artists.map((e, i, a) => e.name + (i !== a.length - 1 ? ', ' : ''))
+        : props.album.description}
+      </li>
+    </ul>
+    }/>
     </Card>
   );
 };
