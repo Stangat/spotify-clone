@@ -169,7 +169,10 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
       const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
       if (shuffled === 'false') {
         shuffleAlbumTracks(currAlbumTracksParsed);
-        handleTrackDataAndPlayer(0);
+        swapTracks(currAlbumTracksParsed);
+        localStorage.setItem('albumTracks', JSON.stringify(currAlbumTracksParsed));
+        localStorage.setItem('shuffled', 'true');
+        handleTrackDataAndPlayer(1);
       } else {
         const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
         if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
