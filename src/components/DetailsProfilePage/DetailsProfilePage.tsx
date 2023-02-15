@@ -1,20 +1,18 @@
-import { Avatar, Card } from 'antd';
+import { Avatar} from 'antd';
 import {
   ITrackTypes,
   PlaylistsType,
   ProfileType,
   TopArtistsType,
-  UserCurrentPlaylist,
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
 import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
 import { useEffect, useState } from 'react';
 import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
-import Meta from 'antd/es/card/Meta';
 import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
-import { PlaylistTrackBlock } from '../PlaylistTrackBlock/PlaylistTrackBlock';
+import { PlaylistBlock } from '../PlaylistBlock/PlaylistBlock';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -97,7 +95,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         albumTracks={props.albumTracks}
         setAlbumTracks={props.setAlbumTracks}
       />
-      <PlaylistTrackBlock playlists={props.playlists} />
+      <PlaylistBlock playlists={props.playlists} />
     </div>
   );
 };

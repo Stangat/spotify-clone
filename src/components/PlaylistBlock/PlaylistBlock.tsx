@@ -3,11 +3,11 @@ import Meta from 'antd/es/card/Meta';
 import { PlaylistsType, UserCurrentPlaylist } from '../../../interface/interface';
 import styles from '../DetailsProfilePage/detailsProfilePage.module.less';
 
-type PlaylistTrackBlockProps = {
+type PlaylistBlockProps = {
   playlists: PlaylistsType | undefined;
 };
 
-export const PlaylistTrackBlock: React.FC<PlaylistTrackBlockProps> = props => {
+export const PlaylistBlock: React.FC<PlaylistBlockProps> = props => {
   return (
     <div>
       <div className={styles.topArtistUser}>
