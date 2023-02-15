@@ -39,7 +39,7 @@ export const Player: React.FC<PlayerProps> = ({
   setAlbumTracks,
   setTrackId,
   setSongName,
-  setArtistName
+  setArtistName,
 }) => {
   return (
     <div className={style.playerContainer}>
@@ -58,7 +58,7 @@ export const Player: React.FC<PlayerProps> = ({
         setSongName={setSongName}
         setArtistName={setArtistName}
       />
-      <VolumeBlock />
+      <VolumeBlock player={player} />
     </div>
   );
 };

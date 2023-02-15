@@ -29,8 +29,8 @@ export const SongBlock: React.FC<SongBlockProps> = ({ artistName, songName, cove
         <p className={style.artistName}>{artistName}</p>
       </div>
       <div className={style.songInteractionContainer}>
-        <HeartOutlined style={{ padding: '5px', fontSize: '18px' }} />
-        <PictureInPictureAlt style={{ fontSize: '20px', marginLeft: '10px' }} />
+        <HeartOutlined style={{ padding: '5px', fontSize: '16px' }} />
+        <PictureInPictureAlt style={{ fontSize: '16px', marginLeft: '10px' }} />
       </div>
     </div>
   );

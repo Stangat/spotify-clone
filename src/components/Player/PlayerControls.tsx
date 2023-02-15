@@ -35,7 +35,6 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   setArtistName,
 }) => {
   const [currentTime, setCurrentTime] = useState('00:00');
-  // const [totalTime, setTotalTime] = useState('00:00');
   const [progress, setProgress] = useState(0);
   const [width, setWidth] = useState(0);
 
