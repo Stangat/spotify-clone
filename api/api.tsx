@@ -25,9 +25,10 @@ type getArtistAlbumType = {
   token: string;
   id: string;
 };
-type getArtistTrackType = {
+type getTracksPLaylistType = {
   token: string;
   id: string;
+  limit: number;
 };
 type getUserTopTracksType = {
   token: string;
@@ -165,5 +166,17 @@ export async function getArtistAlbum(data: getArtistAlbumType) {
   });
   const artistAlbums = await res.json();
   return artistAlbums;
+}
+
+export async function getTracksPLaylist(token: string, id: string) {
+  const res = await fetch(`https://api.spotify.com/v1/playlists/${id}/tracks`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const playlistTrack = await res.json();
+  return playlistTrack;
 }
 

@@ -1,16 +1,19 @@
 import { PauseCircleFilled, PlayCircleFilled } from '@mui/icons-material';
 import { Layout } from 'antd';
-import { useEffect } from 'react';
-import { getTrack, getUserTopTracks } from '../../../api/api';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getTrack, getTracksPLaylist, getUserTopTracks } from '../../../api/api';
 import {
   ArtistTopUserType,
   ITrackTypes,
   PlaylistsType,
+  PLaylistTracksType,
   ProfileType,
   TopArtistsType,
+  TrackPlaylist,
 } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import styles from './topTracksUserPage.module.less';
+import styles from './playlistTrackPage.module.less';
 type TopTracksUserPageProps = {
   token: string;
   profile: ProfileType | undefined;
@@ -34,15 +37,14 @@ type TopTracksUserPageProps = {
   topArtists: TopArtistsType | undefined;
   setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
-  shuffle: boolean;
-  setShuffle: (shuffle: boolean) => void;
 };
-export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
+export const PlaylistTrackPage: React.FC<TopTracksUserPageProps> = props => {
+  const [tracks, setTracks] = useState<PLaylistTracksType>()
+  let params: any = useParams();
   const getTopTracksUserHandler = async () => {
-    const response = await getUserTopTracks({ token: props.token, limit: 50 });
-    // console.log(response);
-    props.setTopTracks(response);
-    localStorage.setItem('albumTracks', JSON.stringify(response.items));
+    const response = await getTracksPLaylist(props.token,params.id);
+    console.log(response);
+    setTracks(response);
   };
 
   const playingTrackHandler = (url: string) => {
@@ -75,15 +77,15 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
             token={props.token}
           />
           <div className={styles.topTracksUserPageContainer}>
-            {props.topTracks?.items.map((track: ArtistTopUserType, index: number) => {
+            {tracks?.items.map((track: TrackPlaylist, index: number) => {
               return (
-                <div className={styles.trackBlock} key={track.id}>
-                  {props.isPlaying && track.id === props.trackId ? (
+                <div className={styles.trackBlock} key={track.track.id}>
+                  {props.isPlaying && track.track.id === props.trackId ? (
                     <PauseCircleFilled
                       className={styles.playPauseButton}
                       key={index}
                       onClick={() => {
-                        playingTrackHandler(track.preview_url);
+                        playingTrackHandler(track.track.preview_url);
                       }}
                     />
                   ) : (
@@ -91,38 +93,33 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
                       className={styles.playPauseButton}
                       key={index}
                       onClick={async () => {
-                        playingTrackHandler(track.preview_url);
-                        const currentTrack = await getTrack(props.token, track.id);
-                        props.setSongName(track.name);
-                        props.setArtistName(track.artists[0].name);
+                        playingTrackHandler(track.track.preview_url);
+                        const currentTrack = await getTrack(props.token, track.track.id);
+                        console.log(currentTrack)
+                        props.setSongName(track.track.name);
+                        props.setArtistName(track.track.artists[0].name);
                         const url = await currentTrack.album.images[0].url;
                         props.setCoverUrl(url);
                         props.player.preload = 'metadata';
                         props.player.onloadedmetadata = () => {
                           props.setTrackDuration(props.player.duration);
                         };
-                        props.setTrackId(track.id);
-                        const response = await getUserTopTracks({ token: props.token, limit: 50 });
+                        props.setTrackId(track.track.id);
+                        const response = await getTracksPLaylist(props.token, track.track.id );
+                        console.log(response)
                         props.setAlbumTracks(response.items);
-                        const shuffled = localStorage.getItem('shuffled');
-                        if (shuffled !== 'true') {
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        } else {
-                          localStorage.setItem('shuffled', '');
-                          props.setShuffle(false);
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        }
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
                       }}
                     />
                   )}
-                  <div>
-                    <p>{track.name}</p>
+        <div>
+                    <p>{track.track.name}</p>
                     <p className={styles.descriptionTopArtist}>
-                      {track.artists.map(artist => {
+                      {track.track.artists.map(artist => {
                         return artist.name;
                       })}
                     </p>
-                  </div>
+                  </div> 
                 </div>
               );
             })}
