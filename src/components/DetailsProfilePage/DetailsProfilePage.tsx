@@ -14,6 +14,7 @@ import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import Meta from 'antd/es/card/Meta';
 import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
+import { PlaylistTrackBlock } from '../PlaylistTrackBlock/PlaylistTrackBlock';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -96,38 +97,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         albumTracks={props.albumTracks}
         setAlbumTracks={props.setAlbumTracks}
       />
-      <div className={styles.topArtistUser}>
-        <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription + ' ' + styles.desc}>
-          Public Playlist
-        </p>
-        <div className={styles.playlistsUser}>
-          {props.playlists?.items.map((playlist: UserCurrentPlaylist) => {
-            return (
-              <Card
-                key={playlist.id}
-                hoverable
-                style={{
-                  maxWidth: 205,
-                  margin: '1%',
-                  background: '#181818',
-                  boxShadow: '0px 0px 5px 0px black',
-                  border: 'none',
-                  padding: '2%',
-                }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://w7.pngwing.com/pngs/65/131/png-transparent-musical-note-eighth-notes-angle-monochrome-silhouette.png"
-                    style={{ boxShadow: '0px 0px 5px 0px black' }}
-                  />
-                }
-              >
-                <Meta title={playlist.name} />
-              </Card>
-            );
-          })}
-        </div>
-      </div>
+      <PlaylistTrackBlock playlists={props.playlists} />
     </div>
   );
 };
