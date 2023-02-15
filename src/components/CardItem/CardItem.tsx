@@ -8,6 +8,7 @@ const { Meta } = Card;
 type CardItemProps = {
   //token: string;
   album: AlbumType | SpotifyApi.PlaylistObjectSimplified;
+  onClick?: () => void;
 };
 
 export const CardItem: React.FC<CardItemProps> = props => {
@@ -26,8 +27,8 @@ export const CardItem: React.FC<CardItemProps> = props => {
       cover={
         <img alt={props.album.name} src={props.album.images[0].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />
       }
-      onClick={() => {
-        navigate(`/album/${props.album.id}`);
+      onClick={props.onClick ? props.onClick : () => {
+        navigate(`/album/${props.album.id}`); 
       }}
     >
       <Meta

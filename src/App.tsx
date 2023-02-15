@@ -14,7 +14,7 @@ import { Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
-import { GenrePage } from './pages/GenrePage/GenrePage';
+import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -131,7 +131,10 @@ export default function App() {
           />
           <Route path="settings" element={<Settings />} />
           <Route path="search/*" element={<SearchPage token={token}/>} />
-          <Route path="genre/*" element={<GenrePage />} />
+          <Route path="playlist/:id" element={<PlaylisPage 
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}/>} />
       </Routes>
         <Footer>
           <Player

@@ -154,3 +154,16 @@ export async function getPlaylistTracksLikeAlbum(data: getTracksType): Promise<{
   const response = await res.json();
   return response;
 }
+
+export async function getPlaylist(data: getTracksType): Promise<SpotifyApi.SinglePlaylistResponse> {
+  const res = await fetch(`https://api.spotify.com/v1/playlists/${data.id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const response = await res.json();
+  return response;
+}
