@@ -15,7 +15,7 @@ export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
     <div className={styles.topArtistUser}>
       <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>Top artists this month</p>
       <p className={styles.descriptionTopArtist}>Only visible to you</p>
-      <div>
+      <div className={styles.cardsTopBlock}>
         {props.topArtists?.items.map((artist: ArtistTopUserType) => {
           return (
             <Card
@@ -39,6 +39,7 @@ export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
           );
         })}
       </div>
+      
     </div>
   );
 };
