@@ -1,11 +1,11 @@
 import style from './player.module.less';
 import { StepBackwardOutlined, StepForwardOutlined, PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { Progress } from 'antd';
-import { Repeat, RepeatOne, Shuffle } from '@mui/icons-material';
 import { useEffect, useState, useLayoutEffect, useRef } from 'react';
-import { AlbumType, ITrackTypes } from '../../../interface/interface';
+import { ITrackTypes } from '../../../interface/interface';
 import { getTrack } from '../../../api/api';
 import { RepeatComponent } from './Repeat';
+import { ShuffleComponent } from './Shuffle';
 
 type PlayerControlsProps = {
   token: string;
@@ -20,6 +20,8 @@ type PlayerControlsProps = {
   setTrackId: (trackId: string) => void;
   setSongName: (songName: string) => void;
   setArtistName: (ArtistName: string) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -34,6 +36,8 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   setTrackId,
   setSongName,
   setArtistName,
+  shuffle,
+  setShuffle,
 }) => {
   const [currentTime, setCurrentTime] = useState('00:00');
   const [progress, setProgress] = useState(0);
@@ -95,47 +99,95 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
     }
   };
 
+  const shuffleAlbumTracks = (albumTracks: ITrackTypes[]) => {
+    return albumTracks.sort(() => {
+      return Math.random() - 0.5;
+    });
+  };
+
+  const swapTracks = (albumTracks: ITrackTypes[]) => {
+    const currentTrack = albumTracks.find(track => track.preview_url === player.src);
+    const currentTrackIndex = albumTracks.findIndex(track => track.preview_url === player.src);
+    const firstTrack = albumTracks[0];
+    if (currentTrack !== firstTrack) {
+      const buf = firstTrack;
+      albumTracks[0] = albumTracks[currentTrackIndex];
+      albumTracks[currentTrackIndex] = buf;
+    }
+  };
+
   const skipToNext = async () => {
     if (player.src !== '') {
-      const currentTrackIndex = albumTracks.findIndex(track => track.preview_url === player.src);
-      if (currentTrackIndex < albumTracks.length - 1) {
-        const nextTrackIndex = currentTrackIndex + 1;
-        handleTrackDataAndPlayer(nextTrackIndex);
+      const shuffled = localStorage.getItem('shuffled');
+      const currAlbumTracks = localStorage.getItem('albumTracks');
+      if (currAlbumTracks) {
+        const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
+        if (shuffled === 'false') {
+          shuffleAlbumTracks(currAlbumTracksParsed);
+          swapTracks(currAlbumTracksParsed);
+          localStorage.setItem('albumTracks', JSON.stringify(currAlbumTracksParsed));
+          localStorage.setItem('shuffled', 'true');
+          handleTrackDataAndPlayer(1);
+        } else {
+          const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
+          if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
+            const nextTrackIndex = currentTrackIndex + 1;
+            handleTrackDataAndPlayer(nextTrackIndex);
+          }
+        }
       }
     }
   };
 
   const skipToPrevious = async () => {
     if (player.src !== '') {
-      const currentTrackIndex = albumTracks.findIndex(track => track.preview_url === player.src);
-      if (currentTrackIndex > 0) {
-        const previousTrackIndex = currentTrackIndex - 1;
-        handleTrackDataAndPlayer(previousTrackIndex);
+      const shuffled = localStorage.getItem('shuffled');
+      const currAlbumTracks = localStorage.getItem('albumTracks');
+      if (currAlbumTracks) {
+        const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
+        if (shuffled === 'false') {
+          shuffleAlbumTracks(currAlbumTracksParsed);
+          swapTracks(currAlbumTracksParsed);
+          localStorage.setItem('albumTracks', JSON.stringify(currAlbumTracksParsed));
+          localStorage.setItem('shuffled', 'true');
+        } else {
+          const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
+          if (currentTrackIndex > 0) {
+            const nextTrackIndex = currentTrackIndex - 1;
+            handleTrackDataAndPlayer(nextTrackIndex);
+          }
+        }
       }
     }
   };
 
   const handlePlayingEnding = async () => {
     const repeat = localStorage.getItem('repeat');
+    const shuffled = localStorage.getItem('shuffled');
     const currAlbumTracks = localStorage.getItem('albumTracks');
     if (currAlbumTracks) {
       const currAlbumTracksParsed: ITrackTypes[] = JSON.parse(currAlbumTracks);
-      const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
-      if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
-        if (repeat === 'one') {
-          handleTrackDataAndPlayer(currentTrackIndex);
-        } else {
-          const nextTrackIndex = currentTrackIndex + 1;
-          handleTrackDataAndPlayer(nextTrackIndex);
-        }
+      if (shuffled === 'false') {
+        shuffleAlbumTracks(currAlbumTracksParsed);
+        handleTrackDataAndPlayer(0);
       } else {
-        if (repeat === 'all') {
-          handleTrackDataAndPlayer(0);
-        }
-        if (repeat === 'one') {
-          handleTrackDataAndPlayer(currAlbumTracksParsed.length - 1);
+        const currentTrackIndex = currAlbumTracksParsed.findIndex(track => track.preview_url === player.src);
+        if (currentTrackIndex < currAlbumTracksParsed.length - 1) {
+          if (repeat === 'one') {
+            handleTrackDataAndPlayer(currentTrackIndex);
+          } else {
+            const nextTrackIndex = currentTrackIndex + 1;
+            handleTrackDataAndPlayer(nextTrackIndex);
+          }
         } else {
-          setIsPlaying(false);
+          if (repeat === 'all') {
+            handleTrackDataAndPlayer(0);
+          }
+          if (repeat === 'one') {
+            handleTrackDataAndPlayer(currAlbumTracksParsed.length - 1);
+          } else {
+            setIsPlaying(false);
+          }
         }
       }
     }
@@ -169,20 +221,7 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   return (
     <div className={style.controlsContainer}>
       <div className={style.buttonsContainer}>
-        <Shuffle
-          sx={{
-            fontSize: '18px',
-            opacity: '0.7',
-            transition: '0.1s',
-            '&:hover': {
-              opacity: '1',
-              cursor: 'pointer',
-            },
-            '&:active': {
-              opacity: '0.7',
-            },
-          }}
-        />
+        <ShuffleComponent albumTracks={albumTracks} shuffle={shuffle} setShuffle={setShuffle} />
         <StepBackwardOutlined
           className={style.nextPrevButton}
           onClick={() => {

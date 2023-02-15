@@ -35,12 +35,15 @@ type TopTracksUserPageProps = {
   topArtists: TopArtistsType | undefined;
   setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 50 });
-    console.log(response);
+    // console.log(response);
     props.setTopTracks(response);
+    localStorage.setItem('albumTracks', JSON.stringify(response.items));
   };
 
   const playingTrackHandler = (url: string) => {
@@ -103,7 +106,14 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
                         props.setTrackId(track.id);
                         const response = await getUserTopTracks({ token: props.token, limit: 50 });
                         props.setAlbumTracks(response.items);
-                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        const shuffled = localStorage.getItem('shuffled');
+                        if (shuffled !== 'true') {
+                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        } else {
+                          localStorage.setItem('shuffled', '');
+                          props.setShuffle(false);
+                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        }
                       }}
                     />
                   )}
