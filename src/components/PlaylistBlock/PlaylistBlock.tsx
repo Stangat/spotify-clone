@@ -1,5 +1,6 @@
 import { Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
+import { useNavigate } from 'react-router-dom';
 import { PlaylistsType, UserCurrentPlaylist } from '../../../interface/interface';
 import styles from '../DetailsProfilePage/detailsProfilePage.module.less';
 
@@ -8,6 +9,7 @@ type PlaylistBlockProps = {
 };
 
 export const PlaylistBlock: React.FC<PlaylistBlockProps> = props => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className={styles.topArtistUser}>
@@ -35,6 +37,9 @@ export const PlaylistBlock: React.FC<PlaylistBlockProps> = props => {
                     style={{ boxShadow: '0px 0px 5px 0px black' }}
                   />
                 }
+                onClick={() => {
+                  navigate(`/playlist/${playlist.id}`);
+                }}
               >
                 <Meta title={playlist.name} />
               </Card>

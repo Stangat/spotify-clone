@@ -16,6 +16,7 @@ import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
+import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -142,6 +143,35 @@ export default function App() {
           />
           <Route path="settings" element={<Settings />} />
           <Route
+            path="playlist/:id"
+            element={
+              <PlaylistTrackPage
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+                setTopTracks={setTopTracks}
+                topTracks={topTracks}
+                topArtists={topArtists}
+                setTopArtists={setTopArtists}
+                playlists={playlists}
+                setPlaylists={setPlaylists}
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                trackDuration={trackDuration}
+                setTrackDuration={setTrackDuration}
+                albumTracks={albumTracks}
+                setAlbumTracks={setAlbumTracks}
+                trackId={trackId}
+                setTrackId={setTrackId}
+              />
+            }
+          />
+          <Route
             path="top_tracks"
             element={
               <TopTracksUserPage
@@ -150,7 +180,6 @@ export default function App() {
                 profile={profile}
                 setProfile={setProfile}
                 setTopTracks={setTopTracks}
-
                 topTracks={topTracks}
                 topArtists={topArtists}
                 setTopArtists={setTopArtists}
