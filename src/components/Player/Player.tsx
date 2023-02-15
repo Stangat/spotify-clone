@@ -1,5 +1,4 @@
 import style from './player.module.less';
-import './sliders.css';
 import { SongBlock } from './SongBlock';
 import { PlayerControls } from './PlayerControls';
 import { VolumeBlock } from './VolumeBlock';
