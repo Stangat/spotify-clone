@@ -20,6 +20,8 @@ type DetailsAlbumContentProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -124,7 +126,14 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       props.setTrackId(track.id);
                       const response = await getAlbumTracks({ id: props.id, token: props.token });
                       props.setAlbumTracks(response.items);
-                      localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      const shuffled = localStorage.getItem('shuffled');
+                      if (shuffled !== 'true') {
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      } else {
+                        localStorage.setItem('shuffled', '');
+                        props.setShuffle(false);
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      }
                     }}
                   />
                 )}

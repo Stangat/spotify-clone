@@ -33,6 +33,7 @@ export default function App() {
   const [playlists, setPlaylists] = useState<PlaylistsType>();
   const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
   const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
+  const [shuffle, setShuffle] = useState(false);
 
   useEffect(() => {
     const hash: any = window.location.hash;
@@ -101,6 +102,8 @@ export default function App() {
                 setTrackId={setTrackId}
                 albumTracks={albumTracks}
                 setAlbumTracks={setAlbumTracks}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
@@ -134,6 +137,8 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 trackId={trackId}
                 setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
@@ -168,6 +173,8 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 trackId={trackId}
                 setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
@@ -197,6 +204,8 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 trackId={trackId}
                 setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
@@ -221,6 +230,8 @@ export default function App() {
             setAlbumTracks={setAlbumTracks}
             trackId={trackId}
             setTrackId={setTrackId}
+            shuffle={shuffle}
+            setShuffle={setShuffle}
           />
         </Footer>
       </Layout>

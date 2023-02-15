@@ -29,8 +29,10 @@ type ProfilePageProps = {
   setTrackId: (trackId: string) => void;
   topArtists: TopArtistsType | undefined;
   setTopArtists: (topArtists: TopArtistsType | undefined) => void;
-  topTracks: TopArtistsType | undefined 
-  setTopTracks:(topTracks:TopArtistsType | undefined ) => void
+  topTracks: TopArtistsType | undefined;
+  setTopTracks: (topTracks: TopArtistsType | undefined) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const ProfilePage: React.FC<ProfilePageProps> = props => {
@@ -65,6 +67,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
             setTrackId={props.setTrackId}
             albumTracks={props.albumTracks}
             setAlbumTracks={props.setAlbumTracks}
+            shuffle={props.shuffle}
+            setShuffle={props.setShuffle}
           />
         </Layout>
       </Layout>
