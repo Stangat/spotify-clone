@@ -37,13 +37,15 @@ type TopTracksUserPageProps = {
   topArtists: TopArtistsType | undefined;
   setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
+
 export const PlaylistTrackPage: React.FC<TopTracksUserPageProps> = props => {
-  const [tracks, setTracks] = useState<PLaylistTracksType>()
+  const [tracks, setTracks] = useState<PLaylistTracksType>();
   let params: any = useParams();
   const getTopTracksUserHandler = async () => {
-    const response = await getTracksPLaylist(props.token,params.id);
-    console.log(response);
+    const response = await getTracksPLaylist(props.token, params.id);
     setTracks(response);
   };
 
@@ -95,7 +97,6 @@ export const PlaylistTrackPage: React.FC<TopTracksUserPageProps> = props => {
                       onClick={async () => {
                         playingTrackHandler(track.track.preview_url);
                         const currentTrack = await getTrack(props.token, track.track.id);
-                        console.log(currentTrack)
                         props.setSongName(track.track.name);
                         props.setArtistName(track.track.artists[0].name);
                         const url = await currentTrack.album.images[0].url;
@@ -105,21 +106,28 @@ export const PlaylistTrackPage: React.FC<TopTracksUserPageProps> = props => {
                           props.setTrackDuration(props.player.duration);
                         };
                         props.setTrackId(track.track.id);
-                        const response = await getTracksPLaylist(props.token, track.track.id );
-                        console.log(response)
-                        props.setAlbumTracks(response.items);
-                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        const response = await getTracksPLaylist(props.token, params.id);
+                        const tracks = response.items.map((item: TrackPlaylist) => item.track);
+                        props.setAlbumTracks(tracks);
+                        const shuffled = localStorage.getItem('shuffled');
+                        if (shuffled !== 'true') {
+                          localStorage.setItem('albumTracks', JSON.stringify(tracks));
+                        } else {
+                          localStorage.setItem('shuffled', '');
+                          props.setShuffle(false);
+                          localStorage.setItem('albumTracks', JSON.stringify(tracks));
+                        }
                       }}
                     />
                   )}
-        <div>
+                  <div>
                     <p>{track.track.name}</p>
                     <p className={styles.descriptionTopArtist}>
                       {track.track.artists.map(artist => {
                         return artist.name;
                       })}
                     </p>
-                  </div> 
+                  </div>
                 </div>
               );
             })}

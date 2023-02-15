@@ -173,6 +173,8 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 trackId={trackId}
                 setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
