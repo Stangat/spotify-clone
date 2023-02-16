@@ -47,6 +47,7 @@ export const copyToClipboard = () => {
 };
 
 export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbumsType> {
+  console.log(data)
   const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?offset=${data.offset}&limit=${data.limit}`, {
     method: 'GET',
     headers: {

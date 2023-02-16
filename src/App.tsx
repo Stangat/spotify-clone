@@ -20,6 +20,7 @@ import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { Library } from './pages/Library/Library';
+import { getAlbums } from '../api/api';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -37,23 +38,39 @@ export default function App() {
   const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
   const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
   const [shuffle, setShuffle] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalAlbums, setTotalAlbums] = useState(0);
 
   useEffect(() => {
     const hash: any = window.location.hash;
-    let token: any= window.localStorage.getItem('token');
+    let token: any = window.localStorage.getItem('token');
 
     if (!token && hash) {
-        token = hash
-          .substring(1)
-          .split('&')
-          .find((elem: string) => elem.startsWith('access_token'))
-          .split('=')[1];
+      token = hash
+        .substring(1)
+        .split('&')
+        .find((elem: string) => elem.startsWith('access_token'))
+        .split('=')[1];
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
 
     setToken(token);
   }, []);
+
+  const LIMIT = 10;
+  let OFFSET = (page - 1) * LIMIT;
+  const getAlbumsHandler = async () => {
+    const response = await getAlbums({ limit: LIMIT, offset: OFFSET, token: token });
+    setALbums(response.albums.items);
+    setTotalAlbums(response.albums.total);
+  };
+
+  useEffect(() => {
+    if (token) {
+      getAlbumsHandler();
+    }
+  }, [OFFSET, token]);
 
   if (!token) {
     return <Login />;
@@ -74,6 +91,10 @@ export default function App() {
                   token={token}
                   albums={albums}
                   setALbums={setALbums}
+                  page={page}
+                  setPage={setPage}
+                  totalAlbums={totalAlbums}
+                  setTotalAlbums={setTotalAlbums}
                 />
               ) : (
                 <Login />
