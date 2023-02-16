@@ -1,6 +1,6 @@
 import style from './player.module.less';
 import Slider from '@mui/material/Slider';
-import { VolumeUp, VolumeDown, VolumeOff, VolumeMute, OpenInFull, QueueMusic, Lyrics } from '@mui/icons-material';
+import { VolumeUp, VolumeOff, Lyrics } from '@mui/icons-material';
 import { useState } from 'react';
 
 type VolumeBlockProps = {
