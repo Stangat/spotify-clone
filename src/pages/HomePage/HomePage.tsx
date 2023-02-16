@@ -10,13 +10,17 @@ type HomePageProps = {
   setALbums: (albums: AlbumType[]) => void;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
+  page:number,
+  setPage:(page:number)=>void
+  totalAlbums: number,
+  setTotalAlbums:(totalAlbums: number)=>void
 };
 
-const LIMIT = 10;
+
 
 export const HomePage: React.FC<HomePageProps> = props => {
-  const [page, setPage] = useState(1);
-  const [totalAlbums, setTotalAlbums] = useState(0);
+
+
 
   return (
     <div>      
@@ -25,16 +29,14 @@ export const HomePage: React.FC<HomePageProps> = props => {
         setProfile={props.setProfile}
         token={props.token}
         setToken={props.setToken}
-        page={page}
-        setPage={setPage}
-        totalAlbums={totalAlbums}
+        page={props.page}
+        setPage={props.setPage}
+        totalAlbums={props.totalAlbums}
       />
       <HomeContent
         token={props.token}
-        offset={(page - 1) * LIMIT}
-        limit={LIMIT}
-        totalAlbums={totalAlbums}
-        setTotalAlbums={setTotalAlbums}
+        totalAlbums={props.totalAlbums}
+        setTotalAlbums={props.setTotalAlbums}
         albums={props.albums}
         setALbums={props.setALbums}
       />
