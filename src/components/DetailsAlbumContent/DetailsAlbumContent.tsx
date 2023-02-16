@@ -48,6 +48,13 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     setTracks(response.items);
   };
 
+  const timeCorrection = (duration: number) => {
+    const min = Math.trunc(duration / 60000);
+    const sec = Math.trunc(((duration / 60000) % 1) * 60);
+
+    return `${min}:${sec < 10 ? `0${sec}` : sec}`;
+  };
+
   useEffect(() => {
     getTracksHandler();
   }, []);
@@ -134,15 +141,13 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                         props.setShuffle(false);
                         localStorage.setItem('albumTracks', JSON.stringify(response.items));
                       }
-                      // const savedTracks = await getUserSavedTracks(props.token);
-                      // console.log(savedTracks.items);
                     }}
                   />
                 )}
 
                 <div>
-                  <p>{track.name}</p>
-                  <p style={{ color: '#a0a0a0' }}>
+                  <p className={styles.trackName}>{track.name}</p>
+                  <p className={styles.artistName}>
                     {track.artists.map(artist => {
                       return artist.name;
                     })}
@@ -150,7 +155,9 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 </div>
               </div>
 
-              <p>{(track.duration_ms / 60000).toFixed(2)} min</p>
+              {
+                <p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>
+              }
             </div>
           );
         })}
