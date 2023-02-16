@@ -4,12 +4,13 @@
   background: rgb(30, 30, 30);
 }
 .typeAlbum {
+  font-size: 20px;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 .albumName {
   font-size: 60px;
-  font-weight: 600;
+  font-weight: 700;
 }
 .descriptionAlbumTracks {
     color: black;
@@ -36,19 +37,28 @@
   min-height: 200px;
 }
 .tracksBlock {
-  padding: 2%;
+  padding: 15px 55px;
   margin-bottom: 15%;
+  border-bottom: 1px solid hsla(0,0%,100%,.1);
+  border-top: 1px solid hsla(0,0%,100%,.1);
 }
 .trackBlock {
   display: flex;
+  padding: 5px;
   gap: 2%;
   align-items: center;
   justify-content: space-between;
   color: white;
+  border-radius: 5px;
+  &:hover {
+    background-color: hsla(0,0%,100%,.3);
+  }
 }
+
 .artistDesc{
   display: flex;
   align-items: center;
+  gap: 17px;
 }
 
 .playPauseButton {
@@ -59,4 +69,68 @@
 
 .playPauseButton:active {
   transform: translateY(2px);
+}
+
+.artistName {
+  color: #a0a0a0;
+  margin: 0;
+  margin-top: 2px;
+}
+
+.trackName {
+  margin: 0;
+  margin-bottom: 2px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.trackNameActive {
+  margin: 0;
+  margin-bottom: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1ad760;
+}
+
+.trackDuration {
+  color: #a0a0a0;
+}
+
+.tracksHeader {
+  width: 100%;
+  padding: 0 60px 0 70px ;
+  height: 36px;
+  margin-bottom: 16px;
+  color: #cecece;
+  
+  font-size: 18px;
+  letter-spacing: 0.2em;
+
+  display: flex;
+  align-items: center;
+
+  .column0 {
+    flex-basis: 40px;
+  }
+  .column1 {
+    flex-basis: 100%;
+  }
+}
+
+.artistNameHeader {
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.listHeader {
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  li {
+    font-size: 16px;
+  }
 }
