@@ -1,32 +1,17 @@
 .wrapper {
   width: 100%;
 }
+
 .artistName {
   font-weight: 600;
   font-size: 60px;
 }
+
 .blockTop {
   display: flex;
-  // flex-direction: column;
   padding: 2%;
   color: white;
-  // background: blue;
   background-image: linear-gradient(to top, #0000ef68, #000ea978, #0f007e95, #01014ea0, #010628);
-}
-.artistAlbum {
-    padding: 2%;
-    color: white;
-    display: flex;
-    flex-direction: column;
-}
-.cardAlbum {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-}
-.artistFollowers {
-    font-weight: 600;
-    font-size: 20;
 }
 
 .picture {
@@ -40,4 +25,34 @@
 
 .heartFilled {
   font-size: 64px;
+}
+
+.tracksHeader {
+  width: 100%;
+  padding: 0 16px;
+  height: 36px;
+  margin-bottom: 16px;
+  color: #cecece;
+  border-bottom: 1px solid hsla(0,0%,100%,.1);
+  font-size: 1.7em;
+  letter-spacing: 0.2em;
+
+  display: flex;
+  align-items: center;
+
+  .column0 {
+    flex-basis: 3%;
+  }
+  .column1 {
+    flex-basis: 42%;
+  }
+  .column2 {
+    flex-basis: 45%;
+  }
+  .column3 {
+    flex-basis: 10%;
+    display: flex;
+    margin: 0 auto;
+    justify-content: end;
+  }
 }
