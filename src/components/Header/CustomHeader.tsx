@@ -9,9 +9,9 @@ type HeaderProps = {
 
 export const CustomHeader: FC<HeaderProps> = ({children, ...props}) => {
   return (
-      <Header className={style.header}>
-        {children}
-        <DropDownProfile />
-      </Header>
+    <Header className={style.header}>
+      {children}
+      <DropDownProfile />
+    </Header>
   );
 };

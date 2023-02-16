@@ -1,5 +1,5 @@
 import { Content } from 'antd/es/layout/layout';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { getAlbums } from '../../../api/api';
 import { AlbumType } from '../../../interface/interface';
 import { CardItem } from '../CardItem/CardItem';
