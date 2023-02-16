@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks, getTrack } from '../../../api/api';
+import { getAlbumTracks, getTrack, getUserSavedTracks } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import styles from './details.module.less';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
@@ -134,6 +134,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                         props.setShuffle(false);
                         localStorage.setItem('albumTracks', JSON.stringify(response.items));
                       }
+                      // const savedTracks = await getUserSavedTracks(props.token);
+                      // console.log(savedTracks.items);
                     }}
                   />
                 )}
