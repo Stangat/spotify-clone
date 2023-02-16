@@ -2,7 +2,6 @@ import { Layout } from 'antd';
 import { AlbumType, ITrackTypes, PlaylistsType, ProfileType, TopArtistsType } from '../../../interface/interface';
 import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsProfilePage';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import { SideBar } from '../../components/SideBar/SideBar';
 
 type ProfilePageProps = {
   token: string;

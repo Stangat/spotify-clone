@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Route, Routes, useParams} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { getCategories } from "../../../api/api";
 import { CategoryContent } from "../../components/CategoryContent/CategoryContent";
 import { CustomHeader } from "../../components/Header/CustomHeader";

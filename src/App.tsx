@@ -17,7 +17,7 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
-import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
+import { Library } from './pages/Library/Library';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -38,15 +38,14 @@ export default function App() {
 
   useEffect(() => {
     const hash: any = window.location.hash;
-    let token: any = window.localStorage.getItem('token');
+    let token: any= window.localStorage.getItem('token');
 
     if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split('&')
-        .find((elem: any) => elem.startsWith('access_token'))
-        .split('=')[1];
-
+        token = hash
+          .substring(1)
+          .split('&')
+          .find((elem: string) => elem.startsWith('access_token'))
+          .split('=')[1];
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
@@ -57,7 +56,6 @@ export default function App() {
   if (!token) {
     return <Login />;
   }
-
   return (
     <div className={style.app}>
       <Layout hasSider>
@@ -148,12 +146,13 @@ export default function App() {
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route path="settings" element={<Settings />} />
-          <Route path="search/*" element={<SearchPage token={token}/>} />
-          <Route path="playlist/:id" element={<PlaylisPage 
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}/>} />
-                <Route
+          <Route path="search/*" element={<SearchPage token={token} />} />
+          <Route path="library" element={<Library />} />
+          <Route
+            path="playlist/:id"
+            element={<PlaylisPage setIsPlaying={setIsPlaying} isPlaying={isPlaying} player={player} />}
+          />
+          <Route
             path="top_tracks"
             element={
               <TopTracksUserPage
@@ -184,7 +183,7 @@ export default function App() {
               />
             }
           />
-      </Routes>
+        </Routes>
         <Footer>
           <Player
             token={token}
