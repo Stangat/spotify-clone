@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getAlbumTracks, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
-import styles from './details.module.less';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import styles from './details.module.less';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -44,8 +44,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   };
 
   const getTracksHandler = async () => {
-    const response = await getAlbumTracks({ id: props.id, token: props.token });
-    setTracks(response.items);
+    const response = await (await getAlbumTracks({ id: props.id, token: props.token })).items;
+    setTracks(response);
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
         {props.albums.map(album => {
-          if (album.id === props.id) {
+          if (album.id === props.id) { // TODO req
             return (
               <div
                 key={props.id}
