@@ -27,6 +27,17 @@ type DetailsAlbumContentProps = {
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
 
+  const timeSvg = () => {
+    return (
+      <svg role="img" height="16" width="16" aria-hidden="true" fill="#cecece" viewBox="0 0 16 16">
+        <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
+        <path d="M8 3.25a.75.75 0 0 1 .75.75v3.25H11a.75.75 0 0 1 0 1.5H7.25V4A.75.75 0 0 1 8 3.25z"></path>
+      </svg>
+    );
+  };
+
+  const FIELDS = ['#', 'TITLE', timeSvg()];
+
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
       props.player.src = url;
@@ -63,7 +74,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
         {props.albums.map(album => {
-          if (album.id === props.id) { // TODO req
+          if (album.id === props.id) {
+            // TODO req
             return (
               <div
                 key={props.id}
@@ -87,13 +99,17 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                     <p className={styles.typeAlbum}>{album.type}</p>
                     <p className={styles.albumName}>{album.name}</p>
                     <div className={styles.descriptionBottom}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <div className={styles.artistNameHeader}>
                         {album.artists.map(artist => {
-                          return <p key={artist.id}> {artist.name} · </p>;
+                          return <p key={artist.id}> {artist.name}</p>;
                         })}
                       </div>
-                      <p>{album.release_date.slice(0, 4)} · </p>
-                      <p>{album.total_tracks} songs</p>
+                      <ul className={styles.listHeader}>
+                        <li>{album.release_date.slice(0, 4)}</li>
+                        <li>
+                          {album.total_tracks < 10 ? `${album.total_tracks} song` : `${album.total_tracks} songs`}
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -101,6 +117,13 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
             );
           }
         })}
+      </div>
+      <div className={styles.tracksHeader}>
+        {FIELDS.map((e, i) => (
+          <div key={i} className={styles['column' + i]}>
+            {e}
+          </div>
+        ))}
       </div>
       <div className={styles.tracksBlock}>
         {tracks.map((track, index) => {
@@ -146,7 +169,12 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 )}
 
                 <div>
-                  <p className={styles.trackName}>{track.name}</p>
+                  {props.isPlaying && track.id === props.trackId ? (
+                    <p className={styles.trackNameActive}>{track.name}</p>
+                  ) : (
+                    <p className={styles.trackName}>{track.name}</p>
+                  )}
+
                   <p className={styles.artistName}>
                     {track.artists.map(artist => {
                       return artist.name;
@@ -155,9 +183,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 </div>
               </div>
 
-              {
-                <p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>
-              }
+              {<p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>}
             </div>
           );
         })}
