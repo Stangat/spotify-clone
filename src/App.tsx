@@ -17,6 +17,8 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
+import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
+import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { Library } from './pages/Library/Library';
 import { getAlbums } from '../api/api';
 
@@ -204,6 +206,8 @@ export default function App() {
               />
             }
           />
+          <Route path="search" element={<SearchPage token={token} />} />
+          <Route path="collection/tracks" element={<LikedSongs token={token} setToken={setToken} profile={profile} setProfile={setProfile} />} />
         </Routes>
         <Footer>
           <Player

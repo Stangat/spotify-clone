@@ -216,3 +216,16 @@ export async function getTracksPLaylist(token: string, id: string) {
   const playlistTrack = await res.json();
   return playlistTrack;
 }
+
+export async function getUserSavedTracks(token: string) {
+  const res = await fetch(`https://api.spotify.com/v1/me/tracks`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const savedTracks = await res.json();
+  return savedTracks;
+}
+
