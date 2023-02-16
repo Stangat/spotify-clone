@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getAlbumTracks, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
-import styles from './details.module.less';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
+import styles from './details.module.less';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -20,6 +20,8 @@ type DetailsAlbumContentProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -42,8 +44,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   };
 
   const getTracksHandler = async () => {
-    const response = await getAlbumTracks({ id: props.id, token: props.token });
-    setTracks(response.items);
+    const response = await (await getAlbumTracks({ id: props.id, token: props.token })).items;
+    setTracks(response);
   };
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
         {props.albums.map(album => {
-          if (album.id === props.id) {
+          if (album.id === props.id) { // TODO req
             return (
               <div
                 key={props.id}
@@ -124,7 +126,14 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       props.setTrackId(track.id);
                       const response = await getAlbumTracks({ id: props.id, token: props.token });
                       props.setAlbumTracks(response.items);
-                      localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      const shuffled = localStorage.getItem('shuffled');
+                      if (shuffled !== 'true') {
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      } else {
+                        localStorage.setItem('shuffled', '');
+                        props.setShuffle(false);
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      }
                     }}
                   />
                 )}

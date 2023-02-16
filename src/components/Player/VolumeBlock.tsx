@@ -51,7 +51,7 @@ export const VolumeBlock: React.FC<VolumeBlockProps> = ({ player }) => {
             sx={{
               fontSize: '20px',
               opacity: '0.7',
-              transition: '0.2s',
+              transition: '0.1s',
               '&:hover': {
                 opacity: '1',
                 cursor: 'pointer',
@@ -66,7 +66,7 @@ export const VolumeBlock: React.FC<VolumeBlockProps> = ({ player }) => {
             sx={{
               fontSize: '20px',
               opacity: '0.7',
-              transition: '0.2s',
+              transition: '0.1s',
               '&:hover': {
                 opacity: '1',
                 cursor: 'pointer',

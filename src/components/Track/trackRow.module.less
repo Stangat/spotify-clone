@@ -1,0 +1,65 @@
+.wrapper {
+  font-size: 16px;
+  color: rgb(206, 206, 206);
+  display: flex;
+  width: 100%;
+  padding: 0 16px;
+  height: 56px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  &:hover {
+    background-color: hsla(0,0%,100%,.3);
+  }
+}
+
+
+.columnPlay {
+  flex-basis: 3%;
+  flex-shrink: 0;
+  margin: auto;
+  .play {
+    cursor: pointer;
+  }
+}
+
+.columnData {
+  display: flex;
+  flex-basis: 42%;
+  flex-shrink: 1;
+  align-items: center;
+
+  .image {
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+  }
+  .name {
+    font-size: 1em;
+    color: white;
+  }
+  .artists {
+    font-size: 0.875em;
+
+    a {
+      text-decoration: none;
+      color: rgb(206, 206, 206);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.columnAlbum {
+  flex-basis: 45%;
+  flex-shrink: 1;
+  margin: auto;
+}
+
+.columnDuration {
+  margin: auto;
+  flex-basis: 10%;
+  text-align: right;
+  flex-shrink: 0;
+}
