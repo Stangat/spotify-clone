@@ -211,7 +211,7 @@ export default function App() {
             }
           />
           <Route path="search" element={<SearchPage token={token} />} />
-          <Route path="likes" element={<LikedSongs />} />
+          <Route path="collection/tracks" element={<LikedSongs token={token} setToken={setToken} profile={profile} setProfile={setProfile} />} />
         </Routes>
         <Footer>
           <Player
