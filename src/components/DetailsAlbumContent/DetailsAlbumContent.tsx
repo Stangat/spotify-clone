@@ -20,6 +20,8 @@ type DetailsAlbumContentProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -48,11 +50,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
-    props.player.addEventListener('ended', () => {
-      props.setIsPlaying(false);
-    });
   }, []);
-  
+
   return (
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
@@ -101,7 +100,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           return (
             <div className={styles.trackBlock} key={track.id}>
               <div className={styles.artistDesc}>
-                {(props.isPlaying && track.id === props.trackId) ? (
+                {props.isPlaying && track.id === props.trackId ? (
                   <PauseCircleFilled
                     className={styles.playPauseButton}
                     key={index}
@@ -127,6 +126,14 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       props.setTrackId(track.id);
                       const response = await getAlbumTracks({ id: props.id, token: props.token });
                       props.setAlbumTracks(response.items);
+                      const shuffled = localStorage.getItem('shuffled');
+                      if (shuffled !== 'true') {
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      } else {
+                        localStorage.setItem('shuffled', '');
+                        props.setShuffle(false);
+                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                      }
                     }}
                   />
                 )}

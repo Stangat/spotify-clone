@@ -8,7 +8,7 @@ type DetailsAlbumPageProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
   token: string;
-  setToken: (token:string)=>void
+  setToken: (token: string) => void;
   albums: AlbumType[];
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
@@ -24,13 +24,20 @@ type DetailsAlbumPageProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
   let params: any = useParams(); // TODO
   return (
     <div className={style.wrapper}>
-      <DropdownProfile setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} token={props.token} />
+      <DropdownProfile
+        setToken={props.setToken}
+        profile={props.profile}
+        setProfile={props.setProfile}
+        token={props.token}
+      />
       <DetailsAlbumContent
         token={props.token}
         id={params.id}
@@ -47,6 +54,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
         setTrackId={props.setTrackId}
         albumTracks={props.albumTracks}
         setAlbumTracks={props.setAlbumTracks}
+        shuffle={props.shuffle}
+        setShuffle={props.setShuffle}
       />
     </div>
   );

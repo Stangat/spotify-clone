@@ -1,5 +1,4 @@
 import style from './player.module.less';
-import './sliders.css';
 import { SongBlock } from './SongBlock';
 import { PlayerControls } from './PlayerControls';
 import { VolumeBlock } from './VolumeBlock';
@@ -23,6 +22,8 @@ type PlayerProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
+  shuffle: boolean;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 export const Player: React.FC<PlayerProps> = ({
@@ -39,7 +40,9 @@ export const Player: React.FC<PlayerProps> = ({
   setAlbumTracks,
   setTrackId,
   setSongName,
-  setArtistName
+  setArtistName,
+  shuffle,
+  setShuffle,
 }) => {
   return (
     <div className={style.playerContainer}>
@@ -57,8 +60,10 @@ export const Player: React.FC<PlayerProps> = ({
         setTrackId={setTrackId}
         setSongName={setSongName}
         setArtistName={setArtistName}
+        shuffle={shuffle}
+        setShuffle={setShuffle}
       />
-      <VolumeBlock />
+      <VolumeBlock player={player} />
     </div>
   );
 };

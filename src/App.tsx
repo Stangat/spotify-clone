@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, PlaylistsType, ProfileType, ITrackTypes } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -15,6 +15,9 @@ import { Footer } from 'antd/es/layout/layout';
 import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
+import { ArtistPage } from './pages/ArtistPage/ArtistPage';
+import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
+import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -29,6 +32,9 @@ export default function App() {
   const [albumTracks, setAlbumTracks] = useState<ITrackTypes[]>([]);
   const [profile, setProfile] = useState<ProfileType>();
   const [playlists, setPlaylists] = useState<PlaylistsType>();
+  const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
+  const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
+  const [shuffle, setShuffle] = useState(false);
 
   useEffect(() => {
     const hash: any = window.location.hash;
@@ -55,7 +61,7 @@ export default function App() {
   return (
     <div className={style.app}>
       <Layout hasSider>
-        <SideBar/>
+        <SideBar />
         <Routes>
           <Route
             path="/"
@@ -97,6 +103,8 @@ export default function App() {
                 setTrackId={setTrackId}
                 albumTracks={albumTracks}
                 setAlbumTracks={setAlbumTracks}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
           />
@@ -104,6 +112,10 @@ export default function App() {
             path="profile/:id"
             element={
               <ProfilePage
+                topTracks={topTracks}
+                setTopTracks={setTopTracks}
+                topArtists={topArtists}
+                setTopArtists={setTopArtists}
                 setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
@@ -126,8 +138,14 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 trackId={trackId}
                 setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
               />
             }
+          />
+          <Route
+            path="artist/:id"
+            element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route path="settings" element={<Settings />} />
           <Route path="search/*" element={<SearchPage token={token}/>} />
@@ -135,6 +153,37 @@ export default function App() {
                 setIsPlaying={setIsPlaying}
                 isPlaying={isPlaying}
                 player={player}/>} />
+                <Route
+            path="top_tracks"
+            element={
+              <TopTracksUserPage
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+                setTopTracks={setTopTracks}
+                topTracks={topTracks}
+                topArtists={topArtists}
+                setTopArtists={setTopArtists}
+                playlists={playlists}
+                setPlaylists={setPlaylists}
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                trackDuration={trackDuration}
+                setTrackDuration={setTrackDuration}
+                albumTracks={albumTracks}
+                setAlbumTracks={setAlbumTracks}
+                trackId={trackId}
+                setTrackId={setTrackId}
+                shuffle={shuffle}
+                setShuffle={setShuffle}
+              />
+            }
+          />
       </Routes>
         <Footer>
           <Player
@@ -155,6 +204,8 @@ export default function App() {
             setAlbumTracks={setAlbumTracks}
             trackId={trackId}
             setTrackId={setTrackId}
+            shuffle={shuffle}
+            setShuffle={setShuffle}
           />
         </Footer>
       </Layout>

@@ -19,7 +19,7 @@
 .playerContainer{
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 25px;
 }
 
 .songInteractionContainer {
@@ -60,19 +60,29 @@
 }
 
 .volumeBlockContainer {
-  width: 250px;
+  width: 170px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+  margin-left: 80px;
+}
+
+@media only screen and (max-width: 1080px) {
+  .volumeBlockContainer {
+    gap: 15px;
+    margin-left: 0;
+  }
 }
 
 .volumeSliderContainer {
   width: 100px;
+  padding-top: 4px;
 }
 
 .playPauseButton {
   font-size: 32px;
-  transition: 0.2s;
+  transition: 0.1s;
   cursor: pointer;
 }
 
@@ -86,8 +96,19 @@
 
 .nextPrevButton {
   font-size: 22px;
-  transition: 0.2s;
+  transition: 0.1s;
+  opacity: 0.7;
+  transition: 0.5ms;
 }
+
+.nextPrevButton:hover {
+  opacity: 1;
+}
+
+.nextPrevButton:active {
+  opacity: 0.7;
+}
+
 
 .nextPrevButton:active {
   transform: translateY(2px);
