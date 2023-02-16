@@ -2,9 +2,8 @@ import { PauseCircleFilled, PlayCircleFilled } from '@mui/icons-material';
 import { Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTrack, getTracksPLaylist, getUserTopTracks } from '../../../api/api';
+import { getTrack, getTracksPLaylist } from '../../../api/api';
 import {
-  ArtistTopUserType,
   ITrackTypes,
   PlaylistsType,
   PLaylistTracksType,
@@ -43,7 +42,7 @@ type TopTracksUserPageProps = {
 
 export const PlaylistTrackPage: React.FC<TopTracksUserPageProps> = props => {
   const [tracks, setTracks] = useState<PLaylistTracksType>();
-  let params: any = useParams();
+  const params: any = useParams();
   const getTopTracksUserHandler = async () => {
     const response = await getTracksPLaylist(props.token, params.id);
     setTracks(response);

@@ -8,7 +8,7 @@ import {
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
 import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
