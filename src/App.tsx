@@ -20,8 +20,10 @@ import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { Library } from './pages/Library/Library';
-import { getAlbums, getUserPlaylists } from '../api/api';
+import { getAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
 import { CollectionPlaylists } from './components/CollectionPlaylists/CollectionPlaylists';
+import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
+import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -70,11 +72,16 @@ export default function App() {
     const response = await getUserPlaylists({ token: token });
     setPlaylists(response);
   };
+  const getTopArtistsUserHandler = async () => {
+    const response = await getUserTopArtist({ token: token });
+    setTopArtists(response);
+  };
 
   useEffect(() => {
     if (token) {
       getAlbumsHandler();
-      getPlaylistHandler()
+      getPlaylistHandler();
+      getTopArtistsUserHandler();
     }
   }, [OFFSET, token]);
 
@@ -175,10 +182,37 @@ export default function App() {
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route path="settings" element={<Settings />} />
-          <Route path="search/*" element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile}/>} />
+          <Route
+            path="search/*"
+            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
           <Route
             path="collection/*"
-            element={<CollectionPlaylists playlists={playlists} token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            element={
+              <CollectionPlaylists
+                playlists={playlists}
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+              />
+            }
+          />
+          <Route
+            path="collection/artists"
+            element={
+              <CollectionArtists
+                topArtists={topArtists}
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+              />
+            }
+          />
+          <Route
+            path="collection/albums"
+            element={<CollectionAlbums token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route
             path="playlist/:id"
@@ -215,7 +249,10 @@ export default function App() {
               />
             }
           />
-          <Route path="search" element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile}/>} />
+          <Route
+            path="search"
+            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
           <Route
             path="collection/tracks"
             element={<LikedSongs token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}

@@ -41,10 +41,6 @@ type DetailsProfilePageProps = {
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
-  const getTopArtistsUserHandler = async () => {
-    const response = await getUserTopArtist({ token: props.token });
-    props.setTopArtists(response);
-  };
 
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 4 });
@@ -53,7 +49,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   useEffect(() => {
     getTopTracksUserHandler();
-    getTopArtistsUserHandler();
+    //getTopArtistsUserHandler();
     //getPlaylistHandler();
   }, []);
 
