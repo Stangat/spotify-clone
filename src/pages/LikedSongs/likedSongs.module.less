@@ -2,25 +2,30 @@
   width: 100%;
 }
 
-.artistName {
-  font-weight: 600;
-  font-size: 60px;
+.blockName {
+  font-weight: 800;
+  font-size: 100px;
+  margin: 20px 0;
+  line-height: 85px;
 }
 
 .blockTop {
   display: flex;
-  padding: 2%;
+  padding: 3%;
+  gap: 25px;
+  align-items: center;
   color: white;
   background-image: linear-gradient(to top, #0000ef68, #000ea978, #0f007e95, #01014ea0, #010628);
 }
 
 .picture {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-image: linear-gradient(to top, #00cbef68, #007ca978, #00587e95, #01374ea0, #0136468b);
+  box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 55%), 0 4px 8px 0 rgb(35 31 32 / 70%);
 }
 
 .heartFilled {
@@ -34,7 +39,7 @@
   margin-bottom: 16px;
   color: #cecece;
   border-bottom: 1px solid hsla(0,0%,100%,.1);
-  font-size: 1.7em;
+  font-size: 18px;
   letter-spacing: 0.2em;
 
   display: flex;
@@ -55,4 +60,27 @@
     margin: 0 auto;
     justify-content: end;
   }
+}
+
+.playlistBody {
+  padding: 0 32px 100px;
+}
+
+.blockData{
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.blockCategory {
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.blockUserName {
+  margin: 0;
+  font-weight: 700;
 }
