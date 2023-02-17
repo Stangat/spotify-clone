@@ -169,7 +169,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 )}
 
                 <div>
-                  {props.isPlaying && track.id === props.trackId ? (
+                  {track.id === props.trackId ? (
                     <p className={styles.trackNameActive}>{track.name}</p>
                   ) : (
                     <p className={styles.trackName}>{track.name}</p>
