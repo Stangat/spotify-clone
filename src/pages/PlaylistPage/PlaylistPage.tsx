@@ -31,6 +31,8 @@ export const PlaylistTop: FC<{playlist: SpotifyApi.PlaylistObjectFull | undefine
   );
 };
 
+export const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()]
+
 export const PlaylisPage: FC<PlaylistProps> = (props) => {
   const { id } = useParams(); 
 
@@ -52,8 +54,6 @@ export const PlaylisPage: FC<PlaylistProps> = (props) => {
       props.setIsPlaying(false);
     });
   }, []);
-
-  const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()]
 
   return(
     <div className={style.wrapper}>

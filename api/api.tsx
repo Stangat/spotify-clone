@@ -236,7 +236,7 @@ export async function getTracksPLaylist(token: string, id: string) {
 }
 
 export async function getSearchResults(token: string, types: typesOfSearchQuery[], q: string): Promise<SpotifyApi.SearchResponse>{
-  const res = await fetch(`${baseUrl}/search?type=${types.join(',')}&q=${q}`, {
+  const res = await fetch(`${baseUrl}/search?type=${types.join(',')}&q=${q}&limit=30`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
