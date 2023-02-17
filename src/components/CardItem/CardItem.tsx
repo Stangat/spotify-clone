@@ -26,6 +26,12 @@ type CardItemProps = {
 
 export const CardItem: React.FC<CardItemProps> = props => {
   const navigate = useNavigate();
+
+  let link = '';
+  if (props.album.images[0] ) {
+    link = props.album.images[0].url;
+  }
+
   return (
     <Card
       hoverable
@@ -43,7 +49,8 @@ export const CardItem: React.FC<CardItemProps> = props => {
           height: '155px',
           boxShadow: '0px 0px 5px 0px black',
           borderRadius: '4%',
-          backgroundImage: `url(${props.album.images[0].url})`,
+          backgroundColor: '#000000',
+          backgroundImage: `url(${link})`,
           backgroundSize: 'cover',
         }}></div>
       }
