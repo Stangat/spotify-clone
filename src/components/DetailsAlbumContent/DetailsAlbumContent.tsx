@@ -88,16 +88,15 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 }}
               >
                 <div className={styles.boxBlur}>
-                  <img
-                    className={styles.imageAlbum}
-                    key={album.id}
-                    alt={album.label}
-                    src={album.images[1].url}
-                    style={{ boxShadow: '0px 0px 5px 0px black' }}
-                  />
+                  <img className={styles.imageAlbum} key={album.id} alt={album.label} src={album.images[1].url} />
                   <div className={styles.descriptionAlbumTracks}>
                     <p className={styles.typeAlbum}>{album.type}</p>
-                    <p className={styles.albumName}>{album.name}</p>
+                    {album.name.length > 17 ? (
+                      <p className={styles.albumNameMini}>{album.name}</p>
+                    ) : (
+                      <p className={styles.albumName}>{album.name}</p>
+                    )}
+
                     <div className={styles.descriptionBottom}>
                       <div className={styles.artistNameHeader}>
                         {album.artists.map(artist => {
@@ -169,7 +168,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 )}
 
                 <div>
-                  {props.isPlaying && track.id === props.trackId ? (
+                  {track.id === props.trackId ? (
                     <p className={styles.trackNameActive}>{track.name}</p>
                   ) : (
                     <p className={styles.trackName}>{track.name}</p>

@@ -1,3 +1,4 @@
+import { margin } from '@mui/system';
 import { Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +9,8 @@ type TopArtistBlockProps = {
   topArtists: TopArtistsType | undefined;
 };
 
-
 export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className={styles.topArtistUser}>
       <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>Top artists this month</p>
@@ -22,24 +22,48 @@ export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
               key={artist.id}
               hoverable
               style={{
-                maxWidth: 205,
+                flex: '1',
                 margin: '1%',
                 background: '#181818',
                 boxShadow: '0px 0px 5px 0px black',
                 border: 'none',
                 padding: '2%',
               }}
-              cover={<img alt="example" src={artist.images[2].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />}
+              cover={
+                <div
+                  style={{
+                    width: '200px',
+                    height: '200px',
+                    backgroundImage: `url(${artist.images[1].url})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    margin: 'auto',
+                    boxShadow: '0px 0px 5px 0px black',
+                    borderRadius: '50%',
+                  }}
+                ></div>
+              }
               onClick={() => {
                 navigate(`/artist/${artist.id}`);
               }}
             >
-              <Meta title={artist.name} description={artist.type} />
+              <Meta
+                title={
+                  <p
+                    style={{
+                      margin: '0',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {artist.name.length < 25 ? artist.name : `${artist.name.slice(0, 25)}...`}
+                  </p>
+                }
+                description={artist.type}
+              />
             </Card>
           );
         })}
       </div>
-      
     </div>
   );
 };
