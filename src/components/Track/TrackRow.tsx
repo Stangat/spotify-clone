@@ -12,9 +12,10 @@ const PlayButton: FC = () => {
 type TrackPoprs = {
   track: SpotifyApi.TrackObjectFull | null;
   children?: ReactNode;
-};
+  album?: boolean;
+}
 
-export const TrackRow: FC<TrackPoprs> = props => {
+export const TrackRow: FC<TrackPoprs> = ({album = true, ...props}) => {
   const milliseconds = props.track?.duration_ms || 0;
   const time = {
     minutes: parseInt(`${milliseconds / 1000 / 60}`),
@@ -22,28 +23,31 @@ export const TrackRow: FC<TrackPoprs> = props => {
   };
 
   return (
-    <div className={style.wrapper}>
-      <div className={style.columnPlay}>
-        <PlayButton></PlayButton>
-      </div>
-      <div className={style.columnData}>
-        <img className={style.image} src={props.track?.album.images[0].url} alt="img" />
-        <div>
-          <span className={style.name}>{props.track?.name}</span>
-          <div className={style.artists}>
-            {props.track?.artists.map((e, i, a) => (
-              <div key={i}>
-                <a key={e.id}>{e.name}</a>
-                {`${i !== a.length - 1 ? ', ' : ''}`}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className={style.columnAlbum}>{props.track?.album.name}</div>
-      <div className={style.columnDuration}>
-        {time.minutes + ':' + (String(time.seconds).length == 1 ? time.seconds + '0' : time.seconds)}
+  <div className={style.wrapper}>
+    <div className={style.columnPlay}>
+      <PlayButton></PlayButton>
+    </div>
+    <div className={style.columnData}>
+      <img className={style.image} src={props.track?.album.images[0].url} alt="img"/>
+      <div>
+        <span className={style.name}>{props.track?.name}</span>
+        <div className={style.artists}>{props.track?.artists.map((e, i, a) => <>
+          <a key={e.id}>
+          {e.name}</a>{`${(i !== a.length - 1 ? ', ' : '')}`}
+          </>)}</div>
       </div>
     </div>
-  );
+    <div className={style.columnAlbum}>{props.track?.album.name}</div>
+    <div className={style.columnDuration}>
+      {time.minutes + ':' + (String(time.seconds).length == 1 ? time.seconds + '0' : time.seconds)}
+    </div>
+    <div className={style.columnAlbum} hidden={!album}>
+      {props.track?.album.name}
+    </div>
+    <div className={style.columnDuration}>
+      {time.minutes
+      + ':' +
+      (String(time.seconds).length == 1 ? time.seconds + '0' : time.seconds)}
+    </div>
+  </div>);
 };

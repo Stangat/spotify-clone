@@ -65,9 +65,9 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
     getTopTracksUserHandler();
   }, []);
   return (
-    <div style={{ background: '#1e1e1e', width: '100%' }}>
-      <Layout hasSider style={{ background: 'rgb(30, 30, 30)', marginBottom: '10%' }}>
-        <Layout style={{ background: '#1e1e1e', display: 'flex' }}>
+    <div style={{ background: '#121212', width: '100%' }}>
+      <Layout hasSider style={{ background: '#121212', marginBottom: '10%' }}>
+        <Layout style={{ background: '#121212', display: 'flex' }}>
           <DropdownProfile
             setToken={props.setToken}
             profile={props.profile}

@@ -1,6 +1,6 @@
 import 'antd/dist/antd';
 import style from './less.module.less';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
@@ -46,20 +46,19 @@ export default function App() {
   const [userAlbums,setUserAlbums] = useState<UserAlbumsType | undefined>()
 
   useEffect(() => {
-    const hash: any = window.location.hash;
-    let token: any = window.localStorage.getItem('token');
+    const hash: string = window.location.hash;
+    let token: string | null = window.localStorage.getItem('token');
 
     if (!token && hash) {
       token = hash
         .substring(1)
         .split('&')
-        .find((elem: string) => elem.startsWith('access_token'))
-        .split('=')[1];
+        .find((elem: string) => elem.startsWith('access_token'))?.split('=')[1] || '';
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
 
-    setToken(token);
+    setToken(token || '');
   }, []);
 
   const LIMIT = 10;
@@ -96,7 +95,7 @@ export default function App() {
   }
   return (
     <div className={style.app}>
-      <Layout hasSider>
+      <Layout hasSider style={{width: '100%'}}>
         <SideBar />
         <Routes>
           <Route
