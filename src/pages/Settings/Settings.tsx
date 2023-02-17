@@ -10,13 +10,6 @@ type SettingsProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
 };
-const onChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
-
-const onSearch = (value: string) => {
-  console.log('search:', value);
-};
 
 export const Settings: React.FC<SettingsProps> = props => {
   const { t, i18n } = useTranslation();
@@ -36,15 +29,14 @@ export const Settings: React.FC<SettingsProps> = props => {
         <span className={style.titleBlock}>{t('settings')}</span>
         <div className={style.blockChoose}>
           <div className={style.selectBlock}>
-            <span className={style.selectTitle}>Language</span>
-            <span className={style.chooseTitle}>Choose language</span>
+            <span className={style.selectTitle}>{t('language')}</span>
+            <span className={style.chooseTitle}>{t('choose')}</span>
           </div>
           <Select
             showSearch
-            placeholder="Select language"
+            placeholder= {t('select')}
             optionFilterProp="children"
             onChange={changeLanguageHandler}
-            onSearch={onSearch}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
             options={[
               {

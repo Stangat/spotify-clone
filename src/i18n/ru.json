@@ -1,3 +1,21 @@
 {
-  "settings": "Настройки"
+  "settings": "Настройки",
+  "language": "Язык",
+  "choose": "Выберите язык",
+  "select": "Выберите язык",
+  "followers": "Слушатели",
+  "several": "Несколько альбомов",
+  "release": "Дата выхода",
+  "playlists": "Плейлисты",
+  "artists": "Артисты",
+  "albums": "Альбомы",
+  "playlist": "Плейлист",
+  "liked": "Любимые треки",
+  "song": "песня",
+  "songs": "песни",
+  "profile": "ПРОФИЛЬ",
+  "publicPlaylists": "Публичные плейлисты",
+  "profileDrop": "Профиль",
+  "logout": "Выйти",
+  "copylink": "Скопировать профиль"
 }

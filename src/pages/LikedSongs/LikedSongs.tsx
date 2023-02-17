@@ -6,6 +6,7 @@ import style from './likedSongs.module.less';
 import { TrackRow } from '../../components/Track/TrackRow';
 import { HeartFilled } from '@ant-design/icons';
 // import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
+import { useTranslation } from 'react-i18next';
 
 type LikedSongsPageProps = {
   token: string;
@@ -15,6 +16,7 @@ type LikedSongsPageProps = {
 };
 
 export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, profile, setProfile }) => {
+  const { t} = useTranslation();
   const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
 
   const timeSvg = () => {
@@ -44,14 +46,14 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
           <HeartFilled className={style.heartFilled} />
         </div>
         <div className={style.blockData}>
-          <p className={style.blockCategory}>Playlist</p>
-          <p className={style.blockName}>Liked Songs</p>
+          <p className={style.blockCategory}>{t('playlist')}</p>
+          <p className={style.blockName}>{t('liked')}</p>
           <p className={style.blockUserName}>
             {userSavedSongs?.total === undefined
               ? ''
               : userSavedSongs?.total < 10
-              ? `${profile?.display_name} • ${userSavedSongs?.total} song`
-              : `${profile?.display_name} • ${userSavedSongs?.total} songs`}
+              ? `${profile?.display_name} • ${userSavedSongs?.total} ${t('song')}`
+              : `${profile?.display_name} • ${userSavedSongs?.total} ${t('songs')}`}
           </p>
         </div>
       </div>

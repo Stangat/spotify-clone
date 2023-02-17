@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getPlaylist } from "../../../api/api";
 import { TrackRow } from "../../components/Track/TrackRow";
 import style from './playlistPage.module.less';
+import { useTranslation } from 'react-i18next';
 
 type PlaylistProps = {
   setIsPlaying: (isPlaying: boolean) => void;
@@ -15,6 +16,7 @@ const timeSvg = () => {
 }
 
 export const PlaylisPage: FC<PlaylistProps> = (props) => {
+  const { t} = useTranslation();
   const { id } = useParams(); 
 
   const [playlist, setPlaylist] = useState<SpotifyApi.PlaylistObjectFull>();
@@ -43,7 +45,7 @@ export const PlaylisPage: FC<PlaylistProps> = (props) => {
     <div className={style.about} style={{backgroundImage: `url(${playlist?.images[playlist?.images.length - 1].url}`}}>
       <div className={style.aboutCover}></div>
       <div className={style.aboutContent}>
-        <h2>Playlist</h2>
+        <h2> {t('playlist')}</h2>
         <span className={style.playlistName}>{playlist?.name || 'Playlist'}</span>
         <span className={style.playlistDescription}>{playlist?.description}</span>
         <ul className={style.playlistInfo}>

@@ -3,6 +3,7 @@ import { Route, Routes, useNavigate, useParams } from "react-router";
 import { getSearchResults, typesOfSearchQuery } from "../../../api/api";
 import style from './search.module.less';
 import { SearchAll } from "./SearchAll";
+import { useTranslation } from 'react-i18next';
 
 type SearchProps = {
   token: string;
@@ -17,6 +18,7 @@ const TYPES: {[key: string]: typesOfSearchQuery[]} = {
 }
 
 export const Search: FC<SearchProps> = props => {
+  const { t} = useTranslation();
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const { query } = useParams(); 
   const navigate = useNavigate();

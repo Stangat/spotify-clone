@@ -1,3 +1,23 @@
 {
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language",
+    "choose": "Choose language",
+    "select": "Select language",
+    "followers": "Followers",
+    "several": "Several albums",
+    "release": "Date of release:",
+    "playlists": "Playlists",
+    "artists": "Artists",
+    "albums": "Albums",
+    "playlist": "Playlist",
+    "liked": "Liked Songs",
+    "song": "song",
+    "songs": "songs",
+    "TITLE": "TITLE",
+    "ALBUM":"ALBUM",
+    "profile": "PROFILE",
+    "publicPlaylists": "Public Playlists",
+    "profileDrop": "Profile",
+    "logout": "Log out",
+    "copylink": "Copy link to profile"
 }
