@@ -39,7 +39,7 @@ export interface Artist {
 export interface AlbumType {
   album_type: string;
   total_tracks: number;
-  available_markets: string[];
+  available_markets?: string[];
   external_urls: ExternalUrls;
   href: string;
   id: string;
@@ -50,11 +50,11 @@ export interface AlbumType {
   restrictions: Restrictions;
   type: string;
   uri: string;
-  copyrights: Copyright[];
-  external_ids: ExternalIds;
-  genres: string[];
-  label: string;
-  popularity: number;
+  copyrights?: Copyright[];
+  external_ids?: ExternalIds;
+  genres?: string[];
+  label?: string;
+  popularity?: number;
   //album_group: string;
   artists: Artist[];
 }

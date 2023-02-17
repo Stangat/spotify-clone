@@ -3,7 +3,7 @@ import style from './loginPage.module.less';
 export function Login() {
   const getAccess = async () => {
     const client_id = 'aff3867dd68b4c578f21a273db9478ab';
-    const redirect_uri = 'http://localhost:8080/';
+    const redirect_uri = 'http://localhost:8080/'; //TODO изменить чтобы работал на деплое
     const api_uri = 'https://accounts.spotify.com/authorize';
     const scope = [
       'user-read-private',

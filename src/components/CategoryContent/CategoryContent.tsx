@@ -11,8 +11,8 @@ type SingleCategoryProps = {
 
 export const CategoryContent: FC<SingleCategoryProps> = props => {
   const { id } = useParams(); 
-  const token = props.token;
   const navigate = useNavigate();
+  const token = props.token;
 
   const [playlists, setPlaylists] = useState<SpotifyApi.PagingObject<SpotifyApi.PlaylistObjectSimplified>>();
 
