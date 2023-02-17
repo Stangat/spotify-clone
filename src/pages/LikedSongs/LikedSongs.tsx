@@ -1,13 +1,11 @@
-import { Card } from 'antd';
-import Meta from 'antd/es/card/Meta';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getArtist, getArtistAlbum } from '../../../api/api';
-import { ArtistAlbums, ArtistType, ProfileType } from '../../../interface/interface';
+import { getUserSavedTracks } from '../../../api/api';
+import { ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './likedSongs.module.less';
-import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
-import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
+import { TrackRow } from '../../components/Track/TrackRow';
+import { HeartFilled } from '@ant-design/icons';
+// import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
 
 type LikedSongsPageProps = {
   token: string;
@@ -16,7 +14,9 @@ type LikedSongsPageProps = {
   setProfile: (profile: ProfileType) => void;
 };
 
-export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
+export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, profile, setProfile }) => {
+  const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
+
   const timeSvg = () => {
     return (
       <svg role="img" height="16" width="16" aria-hidden="true" fill="#cecece" viewBox="0 0 16 16">
@@ -25,31 +25,48 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
       </svg>
     );
   };
-
   const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()];
+
+  const getUserSavedTracksHandler = async () => {
+    const response = await getUserSavedTracks(token);
+    setUserSavedSongs(response);
+  };
+
+  useEffect(() => {
+    getUserSavedTracksHandler();
+  }, []);
 
   return (
     <div className={style.wrapper}>
-      <DropdownProfile
-        setToken={props.setToken}
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-      />
+      <DropdownProfile setToken={setToken} profile={profile} setProfile={setProfile} token={token} />
       <div className={style.blockTop}>
         <div className={style.picture}>
           <HeartFilled className={style.heartFilled} />
         </div>
-        <p className={style.artistName}>Liked Songs</p>
+        <div className={style.blockData}>
+          <p className={style.blockCategory}>Playlist</p>
+          <p className={style.blockName}>Liked Songs</p>
+          <p className={style.blockUserName}>
+            {userSavedSongs?.total === undefined
+              ? ''
+              : userSavedSongs?.total < 10
+              ? `${profile?.display_name} • ${userSavedSongs?.total} song`
+              : `${profile?.display_name} • ${userSavedSongs?.total} songs`}
+          </p>
+        </div>
       </div>
-      <div className={style.tracksHeader}>
-        {FIELDS.map((e, i) => (
-          <div key={i} className={style['column' + i]}>
-            {e}
-          </div>
+      <div className={style.playlistBody}>
+        <div className={style.tracksHeader}>
+          {FIELDS.map((e, i) => (
+            <div key={i} className={style['column' + i]}>
+              {e}
+            </div>
+          ))}
+        </div>
+        {userSavedSongs?.items.map(e => (
+          <TrackRow key={e.track?.id} track={e.track}></TrackRow>
         ))}
       </div>
-      
     </div>
   );
 };
