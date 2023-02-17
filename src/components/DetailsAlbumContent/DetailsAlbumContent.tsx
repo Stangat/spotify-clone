@@ -55,7 +55,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   };
 
   const getTracksHandler = async () => {
-    const response = await (await getAlbumTracks({ id: props.id, token: props.token })).items;
+    const response = (await getAlbumTracks({ id: props.id, token: props.token })).items;
     setTracks(response);
   };
 
@@ -96,19 +96,20 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                     ) : (
                       <p className={styles.albumName}>{album.name}</p>
                     )}
-
                     <div className={styles.descriptionBottom}>
-                      <div className={styles.artistNameHeader}>
+                      <div className={styles.detailsContainer}>
                         {album.artists.map(artist => {
-                          return <p key={artist.id}> {artist.name}</p>;
+                          return (
+                            <p className={styles.name} key={artist.id}>
+                              {`${artist.name}`}
+                            </p>
+                          );
                         })}
                       </div>
-                      <ul className={styles.listHeader}>
-                        <li>{album.release_date.slice(0, 4)}</li>
-                        <li>
-                          {album.total_tracks < 10 ? `${album.total_tracks} song` : `${album.total_tracks} songs`}
-                        </li>
-                      </ul>
+                      <p className={styles.date}>{`• ${album.release_date.slice(0, 4)} •`}</p>
+                      <p className={styles.songs}>
+                        {album.total_tracks < 10 ? `${album.total_tracks} song` : `${album.total_tracks} songs`}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -117,77 +118,78 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           }
         })}
       </div>
-      <div className={styles.tracksHeader}>
-        {FIELDS.map((e, i) => (
-          <div key={i} className={styles['column' + i]}>
-            {e}
-          </div>
-        ))}
-      </div>
-      <div className={styles.tracksBlock}>
-        {tracks.map((track, index) => {
-          return (
-            <div className={styles.trackBlock} key={track.id}>
-              <div className={styles.artistDesc}>
-                {props.isPlaying && track.id === props.trackId ? (
-                  <PauseCircleFilled
-                    className={styles.playPauseButton}
-                    key={index}
-                    onClick={() => {
-                      playingTrackHandler(track.preview_url);
-                    }}
-                  />
-                ) : (
-                  <PlayCircleFilled
-                    className={styles.playPauseButton}
-                    key={index}
-                    onClick={async () => {
-                      playingTrackHandler(track.preview_url);
-                      props.setSongName(track.name);
-                      props.setArtistName(track.artists[0].name);
-                      const currentTrack = await getTrack(props.token, track.id);
-                      const url = await currentTrack.album.images[0].url;
-                      props.setCoverUrl(url);
-                      props.player.preload = 'metadata';
-                      props.player.onloadedmetadata = () => {
-                        props.setTrackDuration(props.player.duration);
-                      };
-                      props.setTrackId(track.id);
-                      const response = await getAlbumTracks({ id: props.id, token: props.token });
-                      props.setAlbumTracks(response.items);
-                      const shuffled = localStorage.getItem('shuffled');
-                      if (shuffled !== 'true') {
-                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                      } else {
-                        localStorage.setItem('shuffled', '');
-                        props.setShuffle(false);
-                        localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                      }
-                    }}
-                  />
-                )}
-
-                <div>
-                  {track.id === props.trackId ? (
-                    <p className={styles.trackNameActive}>{track.name}</p>
+      <div className={styles.albumBody}>
+        <div className={styles.tracksHeader}>
+          {FIELDS.map((e, i) => (
+            <div key={i} className={styles['column' + i]}>
+              {e}
+            </div>
+          ))}
+        </div>
+        <div className={styles.tracksBlock}>
+          {tracks.map((track, index) => {
+            return (
+              <div className={styles.trackBlock} key={track.id}>
+                <div className={styles.artistDesc}>
+                  {props.isPlaying && track.id === props.trackId ? (
+                    <PauseCircleFilled
+                      className={styles.playPauseButton}
+                      key={index}
+                      onClick={() => {
+                        playingTrackHandler(track.preview_url);
+                      }}
+                    />
                   ) : (
-                    <p className={styles.trackName}>{track.name}</p>
+                    <PlayCircleFilled
+                      className={styles.playPauseButton}
+                      key={index}
+                      onClick={async () => {
+                        playingTrackHandler(track.preview_url);
+                        props.setSongName(track.name);
+                        props.setArtistName(track.artists[0].name);
+                        const currentTrack = await getTrack(props.token, track.id);
+                        const url = await currentTrack.album.images[0].url;
+                        props.setCoverUrl(url);
+                        props.player.preload = 'metadata';
+                        props.player.onloadedmetadata = () => {
+                          props.setTrackDuration(props.player.duration);
+                        };
+                        props.setTrackId(track.id);
+                        const response = await getAlbumTracks({ id: props.id, token: props.token });
+                        props.setAlbumTracks(response.items);
+                        const shuffled = localStorage.getItem('shuffled');
+                        if (shuffled !== 'true') {
+                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        } else {
+                          localStorage.setItem('shuffled', '');
+                          props.setShuffle(false);
+                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
+                        }
+                      }}
+                    />
                   )}
 
-                  <p className={styles.artistName}>
-                    {track.artists.map(artist => {
-                      return artist.name;
-                    })}
-                  </p>
-                </div>
-              </div>
+                  <div>
+                    {track.id === props.trackId ? (
+                      <p className={styles.trackNameActive}>{track.name}</p>
+                    ) : (
+                      <p className={styles.trackName}>{track.name}</p>
+                    )}
 
-              {<p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>}
-            </div>
-          );
-        })}
+                    <p className={styles.artistName}>
+                      {track.artists.map(artist => {
+                        return artist.name;
+                      })}
+                    </p>
+                  </div>
+                </div>
+
+                {<p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
-``;
