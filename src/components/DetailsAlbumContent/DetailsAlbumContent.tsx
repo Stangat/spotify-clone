@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks, getTrack, getUserSavedTracks } from '../../../api/api';
+import { getAlbumTracks, getTrack} from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
