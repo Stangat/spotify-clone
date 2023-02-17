@@ -63,7 +63,7 @@ export default function App() {
   }, []);
 
   const LIMIT = 10;
-  let OFFSET = (page - 1) * LIMIT;
+  const OFFSET = (page - 1) * LIMIT;
   const getAlbumsHandler = async () => {
     const response = await getAlbums({ limit: LIMIT, offset: OFFSET, token: token });
     setALbums(response.albums.items);
