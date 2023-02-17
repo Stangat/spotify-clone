@@ -1,6 +1,6 @@
 import 'antd/dist/antd';
 import style from './less.module.less';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
@@ -17,7 +17,6 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
-import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -37,21 +36,20 @@ export default function App() {
   const [shuffle, setShuffle] = useState(false);
 
   useEffect(() => {
-    const hash: any = window.location.hash;
-    let token: any = window.localStorage.getItem('token');
+    const hash: string = window.location.hash;
+    let token: string | null = window.localStorage.getItem('token');
 
     if (!token && hash) {
       token = hash
         .substring(1)
         .split('&')
-        .find((elem: any) => elem.startsWith('access_token'))
-        .split('=')[1];
+        .find((elem: string) => elem.startsWith('access_token'))?.split('=')[1] || '';
 
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
 
-    setToken(token);
+    setToken(token || '');
   }, []);
 
   if (!token) {
@@ -60,7 +58,7 @@ export default function App() {
 
   return (
     <div className={style.app}>
-      <Layout hasSider>
+      <Layout hasSider style={{width: '100%'}}>
         <SideBar />
         <Routes>
           <Route
@@ -149,7 +147,8 @@ export default function App() {
           />
           <Route path="settings" element={<Settings />} />
           <Route path="search/*" element={<SearchPage token={token}/>} />
-          <Route path="playlist/:id" element={<PlaylisPage 
+          <Route path="playlist/:id" element={<PlaylisPage
+                //key={} // TODO 
                 setIsPlaying={setIsPlaying}
                 isPlaying={isPlaying}
                 player={player}/>} />

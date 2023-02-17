@@ -8,9 +8,10 @@ const PlayButton: FC = () => {
 type TrackPoprs = {
   track: SpotifyApi.TrackObjectFull | null;
   children?: ReactNode;
+  album?: boolean;
 }
 
-export const TrackRow: FC<TrackPoprs> = (props) => {
+export const TrackRow: FC<TrackPoprs> = ({album = true, ...props}) => {
   const milliseconds = props.track?.duration_ms || 0;
   const time = {
     minutes: parseInt(`${(milliseconds/1000)/60}`),
@@ -31,7 +32,7 @@ export const TrackRow: FC<TrackPoprs> = (props) => {
           </>)}</div>
       </div>
     </div>
-    <div className={style.columnAlbum}>
+    <div className={style.columnAlbum} hidden={!album}>
       {props.track?.album.name}
     </div>
     <div className={style.columnDuration}>

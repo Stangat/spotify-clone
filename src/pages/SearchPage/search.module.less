@@ -1,6 +1,6 @@
 .wrapper {
   width: 100%;
-  padding-bottom: 100px;
+  padding-bottom: 130px;
 }
 
 .searchContainer {
@@ -35,13 +35,13 @@
 .searchBody {
   display: flex;
   gap: 24px;
-  padding: 32px 0;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .searchHeader {
   padding-bottom: 16px;
   width: 100%;
+  padding-top: 32px;
   h2 {
     margin: 0;
     font-size: 1.5rem;
@@ -62,9 +62,10 @@
   color: white;
   line-height: 32px;
   text-transform: capitalize;
-  background: #ffffff12;
+  background-color: #ffffff12;
+  transition: background-color 0.2s ease 0s, color 0.2s ease 0s;
   &:hover {
-    background: #ffffff33;
+    background-color: #ffffff33;
   }
 }
 

@@ -1,3 +1,4 @@
+import { width } from '@mui/system';
 import React, { useState } from 'react';
 import { AlbumType, ProfileType } from '../../../interface/interface';
 import { HeaderHome } from '../../components/Header/Header';
@@ -19,7 +20,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
   const [totalAlbums, setTotalAlbums] = useState(0);
 
   return (
-    <div>      
+    <div style={{width: '100%'}}>      
       <HeaderHome
         profile={props.profile}
         setProfile={props.setProfile}

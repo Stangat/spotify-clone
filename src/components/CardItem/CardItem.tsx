@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import { AlbumType, Artist } from '../../../interface/interface';
 import { useNavigate } from 'react-router-dom';
 import style from './cardItem.module.less'
+import { maxWidth } from '@mui/system';
 const { Meta } = Card;
 
 interface Playlist extends SpotifyApi.PlaylistObjectSimplified {
@@ -13,9 +14,13 @@ interface Album extends AlbumType {
   description?: string | null;
 }
 
+interface SimpleAlbum extends SpotifyApi.AlbumObjectSimplified {
+  description?: string | null;
+}
+
 type CardItemProps = {
   //token: string;
-  album: Album | Playlist;
+  album: Album | Playlist | SimpleAlbum;
   onClick?: () => void;
 };
 
@@ -25,18 +30,22 @@ export const CardItem: React.FC<CardItemProps> = props => {
     <Card
       hoverable
       style={{
-        maxWidth: 205,
-        margin: '1%',
         background: '#181818',
         boxShadow: '0px 0px 5px 0px black',
         border: 'none',
         padding: '16px',
+        width: '188px'
       }}
       cover={
-        <img alt={props.album.name} src={props.album.images[0].url} style={{ 
+        <div style={{
+          margin: '0 auto',
+          width: '155px',
+          height: '155px',
           boxShadow: '0px 0px 5px 0px black',
-          borderRadius: '4%'
-        }} />
+          borderRadius: '4%',
+          backgroundImage: `url(${props.album.images[0].url})`,
+          backgroundSize: 'cover',
+        }}></div>
       }
       onClick={props.onClick ? props.onClick : () => {
         navigate(`/album/${props.album.id}`); 
@@ -55,6 +64,5 @@ export const CardItem: React.FC<CardItemProps> = props => {
       </li>
     </ul>
     }/>
-    </Card>
-  );
+    </Card>);
 };

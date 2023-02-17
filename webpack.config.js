@@ -27,12 +27,22 @@ module.exports = ({ development }) => ({
     path: path.resolve(__dirname, 'dist'),
     assetModuleFilename: 'assets/[hash][ext]',
     filename: '[name].[contenthash].js',
+    publicPath: '/', // TODO /* PROBLEMS WITH BUILD */
   },
   module: {
     rules: [
       {
         test: /\.[tj]sx?$/,
-        use: 'ts-loader',
+        use: [{
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react']
+          }
+        },
+        {
+          loader: "ts-loader",
+        },
+      ],
         exclude: /node_modules/,
       },
       {
