@@ -1,7 +1,7 @@
-import { Avatar, Dropdown, MenuProps, message, Space } from 'antd';
+import { Avatar, Dropdown, MenuProps, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './dropDown.module.less';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getProfile } from '../../../api/api';
 import { ProfileType } from '../../../interface/interface';
 import { useNavigate } from 'react-router-dom';

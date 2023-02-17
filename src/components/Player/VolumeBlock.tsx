@@ -1,6 +1,6 @@
 import style from './player.module.less';
 import Slider from '@mui/material/Slider';
-import { VolumeUp, VolumeDown, VolumeOff, VolumeMute, OpenInFull, QueueMusic, Lyrics } from '@mui/icons-material';
+import { VolumeUp, VolumeOff} from '@mui/icons-material';
 import { useState } from 'react';
 
 type VolumeBlockProps = {
@@ -44,7 +44,6 @@ export const VolumeBlock: React.FC<VolumeBlockProps> = ({ player }) => {
 
   return (
     <div className={style.volumeBlockContainer}>
-      <Lyrics style={{ fontSize: '20px' }} />
       <div onClick={handleMuteAudio}>
         {playerMuted ? (
           <VolumeOff

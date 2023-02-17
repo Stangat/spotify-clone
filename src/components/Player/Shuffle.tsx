@@ -1,5 +1,5 @@
 import { Shuffle } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { ITrackTypes } from '../../../interface/interface';
 
 type ShuffleProps = {

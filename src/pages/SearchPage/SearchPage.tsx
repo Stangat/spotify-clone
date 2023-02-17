@@ -6,6 +6,7 @@ import { CustomHeader } from "../../components/Header/CustomHeader";
 import { GenreCard } from "../../components/GenreCard/GenreCard";
 import { Search } from "./Search";
 import style from './search.module.less';
+import { ProfileType } from "../../../interface/interface";
 
 const searchIcon = () => {
   return (<svg role="img" height="24" width="24" aria-hidden="true" className={style.searchIcon} viewBox="0 0 24 24" data-encore-id="icon">
@@ -14,6 +15,9 @@ const searchIcon = () => {
 
 type SearchProps = {
   token: string;
+  setToken: (token:string)=>void
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
 };
 
 export const SearchPage: FC<SearchProps> = props => {
@@ -36,7 +40,7 @@ export const SearchPage: FC<SearchProps> = props => {
 
   return (
     <div className={style.wrapper}>
-      <CustomHeader>
+      <CustomHeader profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken}>
         <div className={style.searchContainer}>
           <input className={style.search} type="text" onChange={trackChangingOfInput} placeholder="What do you want to listen to?"/>
           {searchIcon()}

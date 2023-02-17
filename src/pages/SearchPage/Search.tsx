@@ -30,7 +30,6 @@ export const Search: FC<SearchProps> = props => {
 
   useEffect(() => {
     getResultOfSearching();
-    console.log(items);
   }, [query]);
 
   return(

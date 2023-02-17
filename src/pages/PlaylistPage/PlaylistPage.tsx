@@ -61,7 +61,7 @@ export const PlaylisPage: FC<PlaylistProps> = (props) => {
       <div className={style.playlistControls}></div>
       <div className={style.playlistBody}>
         <div className={style.tracksHeader}>
-          {FIELDS.map((e, i) => <div className={style['column' + i]}>{e}</div>)}
+          {FIELDS.map((e, i) => <div key={i} className={style['column' + i]}>{e}</div>)}
         </div>
         {playlist?.tracks.items.map(e => <TrackRow key={e.track?.id} track={e.track}></TrackRow>)}
       </div>

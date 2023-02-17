@@ -16,7 +16,7 @@ export const ArtistPage: React.FC<ArtistPageProps> = props => {
   const navigate = useNavigate();
   const [artist, setArtist] = useState<ArtistType>();
   const [artistAlbum, setArtistAlbum] = useState<ArtistAlbums>();
-  let params: any = useParams();
+  const params: any = useParams();
 
   const getArtistHandler = async () => {
     const response = await getArtist({ id: params.id, token: props.token });

@@ -29,7 +29,7 @@ type DetailsAlbumPageProps = {
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
-  let params: any = useParams(); // TODO
+  const params: any = useParams(); // TODO
   return (
     <div className={style.wrapper}>
       <DropdownProfile

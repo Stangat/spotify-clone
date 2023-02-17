@@ -32,8 +32,11 @@ type getTracksPLaylistType = {
 };
 type getUserTopTracksType = {
   token: string;
-  limit: number
+  limit: number;
 };
+type getUserAlbumsType = {
+  token: string;
+}
 
 const baseUrl = 'https://api.spotify.com/v1'
 
@@ -136,6 +139,18 @@ export async function getUserTopTracks(data: getUserTopTracksType) {
   return topTrack;
 }
 
+export async function getUserAlbums(data: getUserAlbumsType) {
+  const res = await fetch(`${baseUrl}/me/albums`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topAlbums = await res.json();
+  return topAlbums;
+}
+
 export async function getCategories(token: string): Promise<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>{
   const res = await fetch(`${baseUrl}/browse/categories?limit=50`, {
     method: 'GET',
@@ -159,7 +174,7 @@ export async function getSingleCategory(props: {token: string, id: string | unde
   const { playlists } = await res.json();
   return playlists;
 }
- 
+
 export async function getArtist(data: getArtistType) {
   const res = await fetch(`${baseUrl}/artists/${data.id}`, {
     method: 'GET',
@@ -232,3 +247,14 @@ export async function getSearchResults(token: string, types: typesOfSearchQuery[
   return searchResult;
 }
 
+export async function getUserSavedTracks(token: string) {
+  const res = await fetch(`https://api.spotify.com/v1/me/tracks`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const savedTracks = await res.json();
+  return savedTracks;
+}

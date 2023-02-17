@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType,UserAlbumsType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -17,6 +17,13 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
+import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
+import { LikedSongs } from './pages/LikedSongs/LikedSongs';
+import { Library } from './pages/Library/Library';
+import { getAlbums, getUserAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
+import { CollectionPlaylists } from './components/CollectionPlaylists/CollectionPlaylists';
+import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
+import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
 
 export default function App() {
   const [token, setToken] = useState('');
@@ -34,6 +41,9 @@ export default function App() {
   const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
   const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
   const [shuffle, setShuffle] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalAlbums, setTotalAlbums] = useState(0);
+  const [userAlbums,setUserAlbums] = useState<UserAlbumsType | undefined>()
 
   useEffect(() => {
     const hash: string = window.location.hash;
@@ -44,7 +54,6 @@ export default function App() {
         .substring(1)
         .split('&')
         .find((elem: string) => elem.startsWith('access_token'))?.split('=')[1] || '';
-
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
@@ -52,10 +61,38 @@ export default function App() {
     setToken(token || '');
   }, []);
 
+  const LIMIT = 10;
+  const OFFSET = (page - 1) * LIMIT;
+  const getAlbumsHandler = async () => {
+    const response = await getAlbums({ limit: LIMIT, offset: OFFSET, token: token });
+    setALbums(response.albums.items);
+    setTotalAlbums(response.albums.total);
+  };
+  const getPlaylistHandler = async () => {
+    const response = await getUserPlaylists({ token: token });
+    setPlaylists(response);
+  };
+  const getTopArtistsUserHandler = async () => {
+    const response = await getUserTopArtist({ token: token });
+    setTopArtists(response);
+  };
+  const getTopAlbumsUserHandler = async () => {
+    const response = await getUserAlbums({ token: token });
+    setUserAlbums(response);
+  };
+
+  useEffect(() => {
+    if (token) {
+      getAlbumsHandler();
+      getPlaylistHandler();
+      getTopArtistsUserHandler();
+      getTopAlbumsUserHandler();
+    }
+  }, [OFFSET, token]);
+
   if (!token) {
     return <Login />;
   }
-
   return (
     <div className={style.app}>
       <Layout hasSider style={{width: '100%'}}>
@@ -72,6 +109,10 @@ export default function App() {
                   token={token}
                   albums={albums}
                   setALbums={setALbums}
+                  page={page}
+                  setPage={setPage}
+                  totalAlbums={totalAlbums}
+                  setTotalAlbums={setTotalAlbums}
                 />
               ) : (
                 <Login />
@@ -146,13 +187,43 @@ export default function App() {
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route path="settings" element={<Settings />} />
-          <Route path="search/*" element={<SearchPage token={token}/>} />
-          <Route path="playlist/:id" element={<PlaylisPage
-                //key={} // TODO 
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}/>} />
-                <Route
+          <Route
+            path="search/*"
+            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
+          <Route
+            path="collection/*"
+            element={
+              <CollectionPlaylists
+                playlists={playlists}
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+              />
+            }
+          />
+          <Route
+            path="collection/artists"
+            element={
+              <CollectionArtists
+                topArtists={topArtists}
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+              />
+            }
+          />
+          <Route
+            path="collection/albums"
+            element={<CollectionAlbums userAlbums={userAlbums}token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
+          <Route
+            path="playlist/:id"
+            element={<PlaylisPage setIsPlaying={setIsPlaying} isPlaying={isPlaying} player={player} />}
+          />
+          <Route
             path="top_tracks"
             element={
               <TopTracksUserPage
@@ -183,7 +254,15 @@ export default function App() {
               />
             }
           />
-      </Routes>
+          <Route
+            path="search"
+            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
+          <Route
+            path="collection/tracks"
+            element={<LikedSongs token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
+        </Routes>
         <Footer>
           <Player
             token={token}

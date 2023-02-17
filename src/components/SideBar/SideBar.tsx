@@ -28,9 +28,9 @@ function getItem(
 const items: MenuItem[] = [
   getItem('Home', '', <HomeFilled/>),
   getItem('Search', 'search', <SearchOutlined/>),
-  getItem('Your library', 'library', <ContainerOutlined />),
+  getItem('Your library', 'collection/playlists', <ContainerOutlined />),
   getItem('Create playlist', 'playlists', <PlusCircleFilled/>),
-  getItem('Liked Songs', 'likes', <HeartFilled />),
+  getItem('Liked Songs', 'collection/tracks',  <HeartFilled />),
 ];
 
 export const SideBar: React.FC = () => {

@@ -6,8 +6,6 @@ import styles from './homeContent.module.less';
 
 type HomeContentProps = {
   token: string;
-  offset: number;
-  limit: number;
   totalAlbums: number;
   setTotalAlbums: (totalAlbums: number) => void;
   albums: AlbumType[];
@@ -16,16 +14,6 @@ type HomeContentProps = {
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
 /*   const [albums, setALbums] = useState<AlbumType[]>([]); */
-
-  const getAlbumsHandler = async () => {
-    const response = await getAlbums({ limit: props.limit, offset: props.offset, token: props.token });
-    props.setALbums(response.albums.items);
-    props.setTotalAlbums(response.albums.total);
-  };
-
-  useEffect(() => {
-    getAlbumsHandler();
-  }, [props.offset]);
 
   return (
     <div className={styles.mainContentContainer}>

@@ -12,17 +12,17 @@ export const SongBlock: React.FC<SongBlockProps> = ({ artistName, songName, cove
   return (
     <div className={style.songBlockContainer}>
       <div className={style.coverContainer}>
-        <img
-          className={style.albumCover}
-          width="64"
-          height="64"
-          alt="cover"
-          src={
-            coverUrl
-              ? coverUrl
-              : 'https://www.pngfind.com/pngs/m/461-4611544_vinyl-record-png-record-vinyl-transparent-png.png'
-          }
-        />
+        {coverUrl ? (
+          <img width="64" height="64" alt="cover" src={coverUrl} />
+        ) : (
+          <img
+            className={style.albumCover}
+            width="64"
+            height="64"
+            alt="cover"
+            src={'https://www.pngfind.com/pngs/m/461-4611544_vinyl-record-png-record-vinyl-transparent-png.png'}
+          />
+        )}
       </div>
       <div className={style.songNameAndArtistContainer}>
         <p className={style.songName}>{songName}</p>
