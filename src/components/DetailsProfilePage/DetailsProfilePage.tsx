@@ -9,10 +9,10 @@ import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
 import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
 import { useEffect} from 'react';
-import { DropDownProfile } from '../DropDownProfile/DropDownProfile';
 import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
 import { PlaylistBlock } from '../PlaylistBlock/PlaylistBlock';
+import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -40,10 +40,6 @@ type DetailsProfilePageProps = {
 };
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
-  const getPlaylistHandler = async () => {
-    const response = await getUserPlaylists({ token: props.token });
-    props.setPlaylists(response);
-  };
 
   const getTopArtistsUserHandler = async () => {
     const response = await getUserTopArtist({ token: props.token });
@@ -58,7 +54,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
   useEffect(() => {
     getTopTracksUserHandler();
     getTopArtistsUserHandler();
-    getPlaylistHandler();
+    //getPlaylistHandler();
   }, []);
 
   return (
@@ -74,7 +70,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
           <p>Followers: {props.profile?.followers.total}</p>
         </div>
       </div>
-      <DropDownProfile />
+      <DropDownCopy />
       <TopArtistBlock topArtists={props.topArtists} />
       <TopTracksBlock
         topTracks={props.topTracks}
