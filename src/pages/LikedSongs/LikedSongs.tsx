@@ -7,6 +7,7 @@ import { ArtistAlbums, ArtistType, ProfileType } from '../../../interface/interf
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './likedSongs.module.less';
 import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
+import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
 
 type LikedSongsPageProps = {
   token: string;
@@ -48,6 +49,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
           </div>
         ))}
       </div>
+      
     </div>
   );
 };
