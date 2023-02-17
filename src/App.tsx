@@ -1,4 +1,5 @@
 import 'antd/dist/antd';
+import React from "react";
 import style from './less.module.less';
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
@@ -32,7 +33,12 @@ import { CollectionPlaylists } from './components/CollectionPlaylists/Collection
 import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
 import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
 
+import { useTranslation } from "react-i18next";
+
+
 export default function App() {
+  const { t, i18n } = useTranslation();
+
   const [token, setToken] = useState('');
   const [albums, setALbums] = useState<AlbumType[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);

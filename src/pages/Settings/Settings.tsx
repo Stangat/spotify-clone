@@ -2,6 +2,8 @@ import { Select } from 'antd';
 import { ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './settings.module.less';
+import { useTranslation } from 'react-i18next';
+
 type SettingsProps = {
   token: string;
   setToken: (token: string) => void;
@@ -15,7 +17,13 @@ const onChange = (value: string) => {
 const onSearch = (value: string) => {
   console.log('search:', value);
 };
+
 export const Settings: React.FC<SettingsProps> = props => {
+  const { t, i18n } = useTranslation();
+
+  const changeLanguageHandler = (lang: 'ru' | 'en') => {
+    i18n.changeLanguage(lang);
+  };
   return (
     <div className={style.wrapper}>
       <DropdownProfile
@@ -25,7 +33,7 @@ export const Settings: React.FC<SettingsProps> = props => {
         token={props.token}
       />
       <div className={style.wrapperChoose}>
-        <span className={style.titleBlock}>Settings</span>
+        <span className={style.titleBlock}>{t('settings')}</span>
         <div className={style.blockChoose}>
           <div className={style.selectBlock}>
             <span className={style.selectTitle}>Language</span>
@@ -35,17 +43,17 @@ export const Settings: React.FC<SettingsProps> = props => {
             showSearch
             placeholder="Select language"
             optionFilterProp="children"
-            onChange={onChange}
+            onChange={changeLanguageHandler}
             onSearch={onSearch}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
             options={[
               {
-                value: 'english',
+                value: 'en',
                 label: 'English',
               },
               {
-                value: 'russian',
-                label: 'Russian',
+                value: 'ru',
+                label: 'Русский',
               },
             ]}
           />
