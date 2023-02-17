@@ -32,8 +32,11 @@ type getTracksPLaylistType = {
 };
 type getUserTopTracksType = {
   token: string;
-  limit: number
+  limit: number;
 };
+type getUserAlbumsType = {
+  token: string;
+}
 
 export const copyToClipboard = () => {
   navigator.clipboard.writeText(window.location.href).then(
@@ -47,7 +50,6 @@ export const copyToClipboard = () => {
 };
 
 export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbumsType> {
-  console.log(data)
   const res = await fetch(`https://api.spotify.com/v1/browse/new-releases?offset=${data.offset}&limit=${data.limit}`, {
     method: 'GET',
     headers: {
@@ -133,7 +135,19 @@ export async function getUserTopTracks(data: getUserTopTracksType) {
   return topTrack;
 }
 
-export async function getCategories(token: string): Promise<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>{
+export async function getUserAlbums(data: getUserAlbumsType) {
+  const res = await fetch(`https://api.spotify.com/v1/me/albums`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topAlbums = await res.json();
+  return topAlbums;
+}
+
+export async function getCategories(token: string): Promise<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>> {
   const res = await fetch('https://api.spotify.com/v1/browse/categories?limit=50', {
     method: 'GET',
     headers: {
@@ -145,7 +159,10 @@ export async function getCategories(token: string): Promise<SpotifyApi.PagingObj
   return categories;
 }
 
-export async function getSingleCategory(props: {token: string, id: string | undefined}): Promise<SpotifyApi.PagingObject<SpotifyApi.PlaylistObjectSimplified>>{
+export async function getSingleCategory(props: {
+  token: string;
+  id: string | undefined;
+}): Promise<SpotifyApi.PagingObject<SpotifyApi.PlaylistObjectSimplified>> {
   const res = await fetch(`https://api.spotify.com/v1/browse/categories/${props.id}/playlists`, {
     method: 'GET',
     headers: {
@@ -156,7 +173,7 @@ export async function getSingleCategory(props: {token: string, id: string | unde
   const { playlists } = await res.json();
   return playlists;
 }
- 
+
 export async function getArtist(data: getArtistType) {
   const res = await fetch(`https://api.spotify.com/v1/artists/${data.id}`, {
     method: 'GET',
@@ -181,14 +198,19 @@ export async function getArtistAlbum(data: getArtistAlbumType) {
   const artistAlbums = await res.json();
   return artistAlbums;
 }
-export async function getPlaylistTracksLikeAlbum(data: getTracksType): Promise<{items: {track: IResponseTracksType}[]}> {
-  const res = await fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks?fields=items(track)&market=ES&limit=50`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${data.token}`,
-      'Content-Type': 'application/json',
-    },
-  });
+export async function getPlaylistTracksLikeAlbum(
+  data: getTracksType
+): Promise<{ items: { track: IResponseTracksType }[] }> {
+  const res = await fetch(
+    `https://api.spotify.com/v1/playlists/${data.id}/tracks?fields=items(track)&market=ES&limit=50`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
   const artistAlbums = await res.json();
   return artistAlbums;
 }
@@ -228,4 +250,3 @@ export async function getUserSavedTracks(token: string) {
   const savedTracks = await res.json();
   return savedTracks;
 }
-
