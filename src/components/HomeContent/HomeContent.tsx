@@ -1,8 +1,10 @@
+import { t } from 'i18next';
 import React, { useEffect } from 'react';
 import { getAlbums } from '../../../api/api';
 import { AlbumType } from '../../../interface/interface';
 import { CardItem } from '../CardItem/CardItem';
 import styles from './homeContent.module.less';
+import { useTranslation } from 'react-i18next';
 
 type HomeContentProps = {
   token: string;
@@ -13,11 +15,11 @@ type HomeContentProps = {
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
-/*   const [albums, setALbums] = useState<AlbumType[]>([]); */
+  const { t } = useTranslation();
 
   return (
     <div className={styles.mainContentContainer}>
-      <h2 className={styles.titleAlbums}>NEW RELEASES</h2>
+      <h2 className={styles.titleAlbums}>{t('releases')}</h2>
       <div className={styles.wrapper}
         style={{
           backgroundColor: '#121212',

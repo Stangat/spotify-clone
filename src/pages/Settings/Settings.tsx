@@ -16,6 +16,7 @@ export const Settings: React.FC<SettingsProps> = props => {
 
   const changeLanguageHandler = (lang: 'ru' | 'en') => {
     i18n.changeLanguage(lang);
+    localStorage.setItem('lang', lang)
   };
   return (
     <div className={style.wrapper}>

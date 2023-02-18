@@ -27,7 +27,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
       </svg>
     );
   };
-  const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()];
+  const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
 
   const getUserSavedTracksHandler = async () => {
     const response = await getUserSavedTracks(token);

@@ -7,6 +7,7 @@ import { GenreCard } from "../../components/GenreCard/GenreCard";
 import { Search } from "./Search";
 import { ProfileType } from "../../../interface/interface";
 import style from './search.module.less';
+import { useTranslation } from 'react-i18next';
 
 const searchIcon = () => {
   return (<svg role="img" height="24" width="24" aria-hidden="true" className={style.searchIcon} viewBox="0 0 24 24" data-encore-id="icon">
@@ -21,7 +22,7 @@ type SearchProps = {
 };
 
 export const SearchPage: FC<SearchProps> = props => {
-  
+  const { t} = useTranslation();
   const [categories, setCategories] = useState<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>(); 
   const navigate = useNavigate();
 
@@ -50,7 +51,7 @@ export const SearchPage: FC<SearchProps> = props => {
         <Routes>
           <Route path="/" element={
             <div className={style.searchBody}>
-              <div className={style.searchHeader}><h2>Browse all</h2></div>
+              <div className={style.searchHeader}><h2>{t('browse')}</h2></div>
                 {categories && categories.items.map((e : SpotifyApi.CategoryObject) => {
                   return <GenreCard key={e.id} item={e}/>;
                 })}

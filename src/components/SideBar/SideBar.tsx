@@ -6,6 +6,7 @@ import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -25,17 +26,18 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem('Home', '', <HomeFilled/>),
-  getItem('Search', 'search', <SearchOutlined/>),
-  getItem('Your library', 'collection/playlists', <ContainerOutlined />),
-  getItem('Create playlist', 'playlists', <PlusCircleFilled/>),
-  getItem('Liked Songs', 'collection/tracks',  <HeartFilled />),
-];
 
 export const SideBar: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
-
+  const items: MenuItem[] = [
+    getItem(`${t('home')}`, '', <HomeFilled/>),
+    getItem(`${t('search')}`, 'search', <SearchOutlined/>),
+    getItem(`${t('library')}`, 'collection/playlists', <ContainerOutlined />),
+    getItem(`${t('create')}`, 'playlists', <PlusCircleFilled/>),
+    getItem(`${t('liked')}`, 'collection/tracks',  <HeartFilled />),
+  ];
+  
   return (
     <Sider>
       <Link to={'/'}>

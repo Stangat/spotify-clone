@@ -4,17 +4,19 @@ import Meta from 'antd/es/card/Meta';
 import { useNavigate } from 'react-router-dom';
 import { ArtistTopUserType, TopArtistsType } from '../../../interface/interface';
 import styles from '../DetailsProfilePage/detailsProfilePage.module.less';
+import { useTranslation } from 'react-i18next';
 
 type TopArtistBlockProps = {
   topArtists: TopArtistsType | undefined;
 };
 
 export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <div className={styles.topArtistUser}>
       <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>Top artists this month</p>
-      <p className={styles.descriptionTopArtist}>Only visible to you</p>
+      <p className={styles.descriptionTopArtist}>{t('visible')}</p>
       <div className={styles.cardsTopBlock}>
         {props.topArtists?.items.map((artist: ArtistTopUserType) => {
           return (

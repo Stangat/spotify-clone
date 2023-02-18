@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CardItem } from "../../components/CardItem/CardItem";
@@ -5,9 +6,10 @@ import { RowOfCards } from "../../components/RowOfCards/RowOfCards";
 import { TrackRow } from "../../components/Track/TrackRow";
 import commonstyle from './search.module.less';
 import style from './searchAll.module.less';
+import { useTranslation } from 'react-i18next';
 
 export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = props => {
-
+  const { t} = useTranslation();
   function getTopResult(items: SpotifyApi.SearchResponse | undefined) {
     /*let key : keyof SpotifyApi.SearchResponse;
     for (key in items) {
@@ -34,7 +36,7 @@ export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = pro
     <div className={commonstyle.searchBody}>
       <div className={style.hat}>
         <section className={style.topResultContainer}>
-          <h2 className={style.header}>Top result</h2>
+          <h2 className={style.header}>{t('topResult')}</h2>
           <div className={style.topResult}>
             <img className={style.topResult__image} src={'#'} alt="#" />
             <div className={style.topResult__content}>
@@ -44,7 +46,7 @@ export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = pro
           </div>
         </section>
         <section className={style.songsBlockContainer}>
-          <h2 className={style.header}>Songs</h2>
+          <h2 className={style.header}>{t('upSongs')}</h2>
           <div className={style.songsBlock}>
             <div>
               {props.items?.tracks?.items.map((e, i) => i < 4 ? <TrackRow album={false} track={e}></TrackRow> : '')}
