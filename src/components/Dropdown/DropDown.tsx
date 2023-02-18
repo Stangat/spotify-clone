@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { getProfile } from '../../../api/api';
 import { ProfileType } from '../../../interface/interface';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type DropdownProfileType = {
   token: string;
@@ -14,6 +15,7 @@ type DropdownProfileType = {
 };
 
 export const DropdownProfile: React.FC<DropdownProfileType> = props => {
+  const { t } = useTranslation();
   const logout = () => {
     props.setToken("")
     window.localStorage.removeItem("token")
@@ -48,15 +50,15 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
 
   const items: MenuProps['items'] = [
     {
-      label: 'Profile',
+      label: `${t('profileDrop')}`,
       key: '1',
     },
     {
-      label: 'Settings',
+      label: `${t('settings')}`,
       key: '2',
     },
     {
-      label: 'Log out',
+      label: `${t('logout')}`,
       key: '3',
     },
   ];

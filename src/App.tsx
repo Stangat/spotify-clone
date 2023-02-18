@@ -1,4 +1,5 @@
 import 'antd/dist/antd';
+import React from "react";
 import style from './less.module.less';
 import { Routes, Route, useParams } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
@@ -6,7 +7,14 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType,UserAlbumsType } from '../interface/interface';
+import {
+  AlbumType,
+  PlaylistsType,
+  ProfileType,
+  ITrackTypes,
+  TopArtistsType,
+  UserAlbumsType,
+} from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -25,7 +33,12 @@ import { CollectionPlaylists } from './components/CollectionPlaylists/Collection
 import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
 import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
 
+import { useTranslation } from "react-i18next";
+
+
 export default function App() {
+  const { t, i18n } = useTranslation();
+
   const [token, setToken] = useState('');
   const [albums, setALbums] = useState<AlbumType[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -43,7 +56,7 @@ export default function App() {
   const [shuffle, setShuffle] = useState(false);
   const [page, setPage] = useState(1);
   const [totalAlbums, setTotalAlbums] = useState(0);
-  const [userAlbums,setUserAlbums] = useState<UserAlbumsType | undefined>()
+  const [userAlbums, setUserAlbums] = useState<UserAlbumsType | undefined>();
 
   useEffect(() => {
     const hash: string = window.location.hash;
@@ -187,7 +200,10 @@ export default function App() {
             path="artist/:id"
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
-          <Route path="settings" element={<Settings />} />
+          <Route
+            path="settings"
+            element={<Settings token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
           <Route
             path="search/*"
             element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
@@ -218,7 +234,15 @@ export default function App() {
           />
           <Route
             path="collection/albums"
-            element={<CollectionAlbums userAlbums={userAlbums}token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            element={
+              <CollectionAlbums
+                userAlbums={userAlbums}
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+              />
+            }
           />
           <Route
             path="playlist/:id"

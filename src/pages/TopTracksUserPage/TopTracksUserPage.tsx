@@ -40,7 +40,6 @@ type TopTracksUserPageProps = {
 export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 50 });
-    // console.log(response);
     props.setTopTracks(response);
     localStorage.setItem('albumTracks', JSON.stringify(response.items));
   };

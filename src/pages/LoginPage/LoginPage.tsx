@@ -24,6 +24,7 @@ export function Login() {
       ' '
     )}&response_type=token&show_dialog=true`;
   };
+  localStorage.setItem('lang', 'en')
   return (
     <div className={style.container}>
       <img

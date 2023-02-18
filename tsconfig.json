@@ -13,6 +13,7 @@
     "skipLibCheck": true,
     "jsx": "react-jsx",
     "importHelpers": true,
+    "resolveJsonModule": true
   },
   "exclude": ["node_modules"]
 }

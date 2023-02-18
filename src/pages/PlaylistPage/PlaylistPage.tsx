@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getPlaylist } from "../../../api/api";
 import { TrackRow } from "../../components/Track/TrackRow";
 import style from './playlistPage.module.less';
+import { useTranslation } from 'react-i18next';
 
 type PlaylistProps = {
   setIsPlaying: (isPlaying: boolean) => void;
@@ -15,27 +16,29 @@ const timeSvg = () => {
 }
 
 export const PlaylistTop: FC<{playlist: SpotifyApi.PlaylistObjectFull | undefined}>= (props) => {
+  const { t} = useTranslation();
   return (
   <div className={style.about} style={{backgroundImage: `url(${props.playlist?.images[props.playlist?.images.length - 1].url}`}}>
     <div className={style.aboutCover}></div>
     <div className={style.aboutContent}>
-      <h2>Playlist</h2>
-      <span className={style.playlistName}>{props.playlist?.name || 'Playlist'}</span>
+      <h2>{t('playlist')}</h2>
+      <span className={style.playlistName}>{props.playlist?.name || `${t('playlist')}`}</span>
       <span className={style.playlistDescription}>{props.playlist?.description}</span>
       <ul className={style.playlistInfo}>
         <li>{props.playlist?.owner.display_name || 'Spotify'}</li>
-        <li>{(props.playlist?.tracks.total || 0) + ' songs'}</li>
+        <li>{(props.playlist?.tracks.total || 0) + ` ${t('songs')}` }</li>
       </ul>
     </div>
   </div>
   );
 };
 
-export const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()]
+
 
 export const PlaylisPage: FC<PlaylistProps> = (props) => {
+  const { t} = useTranslation();
   const { id } = useParams(); 
-
+  const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()]
   const [playlist, setPlaylist] = useState<SpotifyApi.PlaylistObjectFull>();
   const token = window.localStorage.getItem('token');
 

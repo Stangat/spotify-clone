@@ -9,6 +9,7 @@ import {
   TopArtistsType,
 } from '../../../interface/interface';
 import styles from '../DetailsProfilePage/detailsProfilePage.module.less';
+import { useTranslation } from 'react-i18next';
 
 type TopTracksBlockProps = {
   topTracks: TopArtistsType | undefined;
@@ -35,6 +36,7 @@ type TopTracksBlockProps = {
 };
 
 export const TopTracksBlock: React.FC<TopTracksBlockProps> = props => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
@@ -56,8 +58,8 @@ export const TopTracksBlock: React.FC<TopTracksBlockProps> = props => {
     <div className={styles.topArtistUser}>
       <div className={styles.topTracksDescription}>
         <div>
-          <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>Top tracks this month</p>
-          <p className={styles.descriptionTopArtist}>Only visible to you</p>
+          <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>{t('topTrack')}</p>
+          <p className={styles.descriptionTopArtist}>{t('visible')}</p>
         </div>
         <p
           className={styles.descriptionTopArtist}
@@ -65,7 +67,7 @@ export const TopTracksBlock: React.FC<TopTracksBlockProps> = props => {
             navigate(`/top_tracks`);
           }}
         >
-          SHOW ALL
+          {t('showAll')}
         </p>
       </div>
       <div>

@@ -6,6 +6,8 @@ import { getArtist, getArtistAlbum} from '../../../api/api';
 import { ArtistAlbums, ArtistType, ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './artistPage.module.less';
+import { useTranslation } from 'react-i18next';
+
 type ArtistPageProps = {
   token: string;
   setToken: (token: string) => void;
@@ -13,6 +15,7 @@ type ArtistPageProps = {
   setProfile: (profile: ProfileType) => void;
 };
 export const ArtistPage: React.FC<ArtistPageProps> = props => {
+  const { t} = useTranslation();
   const navigate = useNavigate();
   const [artist, setArtist] = useState<ArtistType>();
   const [artistAlbum, setArtistAlbum] = useState<ArtistAlbums>();
@@ -42,10 +45,10 @@ export const ArtistPage: React.FC<ArtistPageProps> = props => {
       />
       <div className={style.blockTop}>
         <p className={style.artistName}>{artist?.name}</p>
-        <p className={style.artistFollowers}>Followers: {artist?.followers.total}</p>
+        <p className={style.artistFollowers}>{t('followers')}: {artist?.followers.total}</p>
       </div>
       <div className={style.artistAlbum}>
-        <p className={style.artistFollowers}>Several albums</p>
+        <p className={style.artistFollowers}>{t('several')}</p>
         <div className={style.cardAlbum}>
           {artistAlbum?.items.map(album => {
             return (

@@ -2,7 +2,8 @@ import { ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './library.module.less';
 import { useNavigate } from 'react-router-dom';
-import { MenuProps } from 'antd';
+import { useTranslation } from 'react-i18next';
+
 type LibraryPageProps = {
   token: string;
   setToken: (token: string) => void;
@@ -10,13 +11,13 @@ type LibraryPageProps = {
   setProfile: (profile: ProfileType) => void;
 };
 
-const TYPES = [
-  { name: 'playlists', type: 'playlists', key: '1' },
-  { name: 'artists', type: 'artists', key: '2' },
-  { name: 'albums', type: 'albums', key: '2' },
-];
-
 export const Library: React.FC<LibraryPageProps> = props => {
+  const { t} = useTranslation();
+  const TYPES = [
+    { name: 'playlists', type: 'playlists', key: '1' },
+    { name: 'artists', type: 'artists', key: '2' },
+    { name: 'albums', type: 'albums', key: '2' },
+  ];
   const navigate = useNavigate();
   const clickHandler = (e:any) => {
     switch (e.target.innerHTML) {
@@ -45,7 +46,7 @@ export const Library: React.FC<LibraryPageProps> = props => {
         {TYPES.map(e => {
           return (
             <span className={style.searchTag} key={e.name} onClick={clickHandler}>
-              {e.name}
+              {t(e.name)}
             </span>
           );
         })}

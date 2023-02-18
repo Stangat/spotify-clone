@@ -3,6 +3,7 @@ import { getAlbumTracks, getTrack} from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
+import { useTranslation } from 'react-i18next';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -25,6 +26,7 @@ type DetailsAlbumContentProps = {
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
+  const { t} = useTranslation();
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
 
   const timeSvg = () => {
@@ -108,7 +110,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       </div>
                       <p className={styles.date}>{`• ${album.release_date.slice(0, 4)} •`}</p>
                       <p className={styles.songs}>
-                        {album.total_tracks < 10 ? `${album.total_tracks} song` : `${album.total_tracks} songs`}
+                        {album.total_tracks < 10 ? `${album.total_tracks} ${t('song')}` : `${album.total_tracks} ${t('songs')}`}
                       </p>
                     </div>
                   </div>

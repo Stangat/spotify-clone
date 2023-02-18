@@ -1,20 +1,23 @@
 import { Card } from 'antd';
 import Meta from 'antd/es/card/Meta';
+import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 import { PlaylistsType, UserCurrentPlaylist } from '../../../interface/interface';
 import styles from '../DetailsProfilePage/detailsProfilePage.module.less';
+import { useTranslation } from 'react-i18next';
 
 type PlaylistBlockProps = {
   playlists: PlaylistsType | undefined;
 };
 
 export const PlaylistBlock: React.FC<PlaylistBlockProps> = props => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <div>
       <div className={styles.topArtistUser}>
         <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription + ' ' + styles.desc}>
-          Public Playlist
+          {t('publicPlaylists')}
         </p>
         <div className={styles.playlistsUser}>
           {props.playlists?.items.map((playlist: UserCurrentPlaylist) => {
