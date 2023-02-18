@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { CardItem } from "../../components/CardItem/CardItem";
 import { RowOfCards } from "../../components/RowOfCards/RowOfCards";
 import { TrackRow } from "../../components/Track/TrackRow";
@@ -22,6 +23,8 @@ export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = pro
     }*/
     return  items?.tracks?.items.reduce((prev, current) => (prev.popularity > current.popularity) ? prev : current);
   }
+
+  const navigate = useNavigate();
 
   useEffect(()=> {
     getTopResult(props.items);
@@ -51,7 +54,7 @@ export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = pro
       </div>
         {<RowOfCards title={'Albums'}>{props.items?.albums?.items.map((e, i) => i < 8 ? <CardItem key={e.id} album={e}></CardItem> : '')}</RowOfCards>}
         {/* {<RowOfCards title={'Artists'}>{props.items?.artists?.items.map((e, i) => i < 8 ? <CardItem key={e.id} album={e}></CardItem> : '')}</RowOfCards>} */}
-        {<RowOfCards title={'Playlists'}>{props.items?.playlists?.items.map((e, i) => i < 8 ? <CardItem key={e.id} album={e}></CardItem> : '')}</RowOfCards>}
+        {<RowOfCards title={'Playlists'}>{props.items?.playlists?.items.map((e, i) => i < 8 ? <CardItem key={e.id} album={e} onClick={() => {navigate(`/playlist/${e.id}`)}}></CardItem> : '')}</RowOfCards>}
     </div>
   );
 };
