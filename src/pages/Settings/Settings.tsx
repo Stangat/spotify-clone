@@ -49,6 +49,14 @@ export const Settings: React.FC<SettingsProps> = props => {
                 value: 'ru',
                 label: 'Русский',
               },
+              {
+                value: 'de',
+                label: 'German',
+              },
+              {
+                value: 'es',
+                label: 'Spanish',
+              },
             ]}
           />
         </div>
