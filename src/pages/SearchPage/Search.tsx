@@ -6,6 +6,7 @@ import { SearchSongs } from "./SearchSongs";
 import { CardItem } from "../../components/CardItem/CardItem";
 import style from './search.module.less';
 import { useTranslation } from "react-i18next";
+import { CardArtist } from "../../components/CardItem/CardArtist";
 
 type SearchProps = {
   token: string;
@@ -20,7 +21,7 @@ const TYPES: {[key: string]: typesOfSearchQuery[]} = {
 }
 
 export const Search: FC<SearchProps> = props => {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const { query } = useParams(); 
   const navigate = useNavigate();
@@ -56,6 +57,11 @@ export const Search: FC<SearchProps> = props => {
           <div className={style.cardsContainer}>
             {items?.albums?.items
               .map(e => <CardItem key={e.id} album={e}></CardItem>)}
+          </div>}/>
+          <Route path="/artists" element={
+          <div className={style.cardsContainer}>
+            {items?.artists?.items
+            .map(e => <CardArtist artist={e}></CardArtist>)}
           </div>}/>
       </Routes>
     </div>

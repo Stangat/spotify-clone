@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = props => {
   const { t} = useTranslation();
+
   function getTopResult(items: SpotifyApi.SearchResponse | undefined) {
     /*let key : keyof SpotifyApi.SearchResponse;
     for (key in items) {
@@ -23,7 +24,9 @@ export const SearchAll: FC<{items: SpotifyApi.SearchResponse | undefined}> = pro
         }
       }
     }*/
-    return  items?.tracks?.items.reduce((prev, current) => (prev.popularity > current.popularity) ? prev : current);
+    if (items?.tracks?.items[0]) {
+      return  items?.tracks?.items.reduce((prev, current) => (prev.popularity > current.popularity) ? prev : current);
+    }
   }
 
   const navigate = useNavigate();

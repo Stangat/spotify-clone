@@ -32,7 +32,10 @@ export const SearchPage: FC<SearchProps> = props => {
   }
 
   function trackChangingOfInput (e: React.ChangeEvent<HTMLInputElement>) {
-    navigate(e.target.value)
+    const arr = window.location.href.split('/');
+    const i = arr.findIndex( e => e === 'search') + 1;
+    arr[i] = e.target.value;
+    navigate(arr.slice(i).join('/'));
   }
 
   useEffect(() => {
