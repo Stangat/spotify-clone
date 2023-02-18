@@ -5,7 +5,7 @@ import React from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -38,10 +38,12 @@ export const SideBar: React.FC = () => {
 
   return (
     <Sider>
-      <div  className={styles.titleBlock}>
-        <SpotifySvg />
-        <p>Spotify Clone</p>
-      </div>
+      <Link to={'/'}>
+        <div  className={styles.titleBlock}>
+          {<SpotifySvg />}
+          <p>Spotify Clone</p>
+        </div>
+      </Link>
       <Menu
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}

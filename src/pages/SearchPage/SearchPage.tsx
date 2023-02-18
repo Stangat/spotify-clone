@@ -5,8 +5,8 @@ import { CategoryContent } from "../../components/CategoryContent/CategoryConten
 import { CustomHeader } from "../../components/Header/CustomHeader";
 import { GenreCard } from "../../components/GenreCard/GenreCard";
 import { Search } from "./Search";
-import style from './search.module.less';
 import { ProfileType } from "../../../interface/interface";
+import style from './search.module.less';
 
 const searchIcon = () => {
   return (<svg role="img" height="24" width="24" aria-hidden="true" className={style.searchIcon} viewBox="0 0 24 24" data-encore-id="icon">

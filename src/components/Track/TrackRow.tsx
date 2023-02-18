@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, Fragment, ReactNode } from 'react';
 import style from './trackRow.module.less';
 
 const PlayButton: FC = () => {
@@ -31,15 +31,11 @@ export const TrackRow: FC<TrackPoprs> = ({album = true, ...props}) => {
       <img className={style.image} src={props.track?.album.images[0].url} alt="img"/>
       <div>
         <span className={style.name}>{props.track?.name}</span>
-        <div className={style.artists}>{props.track?.artists.map((e, i, a) => <>
+        <div className={style.artists}>{props.track?.artists.map((e, i, a) => <Fragment key={e.id}>
           <a key={e.id}>
           {e.name}</a>{`${(i !== a.length - 1 ? ', ' : '')}`}
-          </>)}</div>
+          </Fragment>)}</div>
       </div>
-    </div>
-    <div className={style.columnAlbum}>{props.track?.album.name}</div>
-    <div className={style.columnDuration}>
-      {time.minutes + ':' + (String(time.seconds).length == 1 ? time.seconds + '0' : time.seconds)}
     </div>
     <div className={style.columnAlbum} hidden={!album}>
       {props.track?.album.name}
@@ -47,7 +43,7 @@ export const TrackRow: FC<TrackPoprs> = ({album = true, ...props}) => {
     <div className={style.columnDuration}>
       {time.minutes
       + ':' +
-      (String(time.seconds).length == 1 ? time.seconds + '0' : time.seconds)}
+      (String(time.seconds).length == 1 ? '0' +time.seconds: time.seconds)}
     </div>
   </div>);
 };

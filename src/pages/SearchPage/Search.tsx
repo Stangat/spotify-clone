@@ -1,9 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router";
 import { getSearchResults, typesOfSearchQuery } from "../../../api/api";
+import { SearchAll } from "./SearchAll";
+import { SearchSongs } from "./SearchSongs";
+import { CardItem } from "../../components/CardItem/CardItem";
 import style from './search.module.less';
 import { SearchAll } from "./SearchAll";
-import { useTranslation } from 'react-i18next';
 
 type SearchProps = {
   token: string;
@@ -11,8 +13,8 @@ type SearchProps = {
 
 const TYPES: {[key: string]: typesOfSearchQuery[]} = {
   all: ['track', 'playlist', 'album', 'artist'],
-  song: ['track'],
-  playlist: ['playlist'],
+  songs: ['track'],
+  playlists: ['playlist'],
   albums: ['album'],
   artists: ['artist'],
 }
@@ -44,7 +46,17 @@ export const Search: FC<SearchProps> = props => {
         })}
       </div>
       <Routes>
-        <Route path="/" element={<SearchAll items={items}></SearchAll>}/>
+        <Route path="/" element={<SearchAll key={'sa' + query} items={items}></SearchAll>}/>
+        <Route path="/songs" element={<SearchSongs key={'ss' + query} items={items}></SearchSongs>}/>
+        <Route path="/playlists" element={
+          <div className={style.cardsContainer}>
+            {items?.playlists && items?.playlists.items.map(e => <CardItem key={e.id} album={e} onClick={() => {navigate(`/playlist/${e.id}`)}}/>)}
+          </div>}/>
+        <Route path="/albums" element={
+          <div className={style.cardsContainer}>
+            {items?.albums?.items
+              .map(e => <CardItem key={e.id} album={e}></CardItem>)}
+          </div>}/>
       </Routes>
     </div>
   );
