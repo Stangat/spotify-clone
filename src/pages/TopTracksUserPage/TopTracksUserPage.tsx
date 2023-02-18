@@ -11,6 +11,7 @@ import {
 } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import styles from './topTracksUserPage.module.less';
+
 type TopTracksUserPageProps = {
   token: string;
   profile: ProfileType | undefined;
@@ -37,6 +38,7 @@ type TopTracksUserPageProps = {
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
 };
+
 export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 50 });
@@ -63,6 +65,7 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
   useEffect(() => {
     getTopTracksUserHandler();
   }, []);
+
   return (
     <div style={{ background: '#121212', width: '100%' }}>
       <Layout hasSider style={{ background: '#121212', marginBottom: '10%' }}>

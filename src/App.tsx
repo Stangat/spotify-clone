@@ -25,9 +25,7 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
-import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
-import { Library } from './pages/Library/Library';
 import { getAlbums, getUserAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
 import { CollectionPlaylists } from './components/CollectionPlaylists/CollectionPlaylists';
 import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
@@ -278,10 +276,6 @@ export default function App() {
                 setShuffle={setShuffle}
               />
             }
-          />
-          <Route
-            path="search"
-            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
           <Route
             path="collection/tracks"
