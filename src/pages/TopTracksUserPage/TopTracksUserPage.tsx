@@ -32,8 +32,6 @@ type TopTracksUserPageProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
-  topArtists: TopArtistsType | undefined;
-  setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;

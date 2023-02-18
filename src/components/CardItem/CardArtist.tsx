@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import style from './cardItem.module.less'
+import { textTransform } from '@mui/system';
 const { Meta } = Card;
 
 type CardItemProps = {
@@ -51,7 +52,7 @@ export const CardArtist: React.FC<CardItemProps> = props => {
     description={
       <ul className={style.info}>
       <li className={style.name}>{props.artist.name}</li>
-      <li>{props.artist.type}</li>
+      <li style={{textTransform: 'capitalize',}}>{props.artist.type}</li>
     </ul>
     }/>
     </Card>);

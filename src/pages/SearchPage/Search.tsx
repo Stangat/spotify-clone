@@ -58,8 +58,6 @@ export const Search: FC<SearchProps> = props => {
     }
   };
 
-  // TODO так закидывать запросами нельзя, наверное
-
   useEffect(() => {
     const timeOutId = setTimeout(() => getResultOfSearching(), 500);
     return () => clearTimeout(timeOutId);
@@ -71,7 +69,7 @@ export const Search: FC<SearchProps> = props => {
         {Object.keys(TYPES).map((e) => {
           return <span
           style={{display: `${!availableTags[e] ? 'none' : 'inline-block' }`}}
-          className={style.searchTag + `${currentTag  === e ? ' ' + style.activeTag : ''}`} 
+          className={style.searchTag + `${currentTag === e ? ' ' + style.activeTag : ''}`} 
           onClick={() => {
             setCurrentTag(e);
             e === 'all' ? navigate('') : navigate(e)}
@@ -80,7 +78,7 @@ export const Search: FC<SearchProps> = props => {
         })}
       </div>
       <Routes>
-        <Route path="/" element={<SearchAll items={items}></SearchAll>}/>
+      <Route path="/" element={<SearchAll items={items}></SearchAll>}/>
         <Route path="/songs" element={<SearchSongs items={items}></SearchSongs>}/>
         <Route path="/playlists" element={
           <div className={style.cardsContainer}>

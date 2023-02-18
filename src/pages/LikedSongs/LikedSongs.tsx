@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { getUserSavedTracks } from '../../../api/api';
 import { ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import style from './likedSongs.module.less';
 import { TrackRow } from '../../components/Track/TrackRow';
 import { HeartFilled } from '@ant-design/icons';
 // import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
 import { useTranslation } from 'react-i18next';
+import style from './likedSongs.module.less';
 
 type LikedSongsPageProps = {
   token: string;
@@ -40,7 +40,9 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
 
   return (
     <div className={style.wrapper}>
-      <DropdownProfile setToken={setToken} profile={profile} setProfile={setProfile} token={token} />
+      <div className={style.header}>
+        <DropdownProfile setToken={setToken} profile={profile} setProfile={setProfile} token={token} />
+      </div>
       <div className={style.blockTop}>
         <div className={style.picture}>
           <HeartFilled className={style.heartFilled} />
@@ -58,6 +60,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
         </div>
       </div>
       <div className={style.playlistBody}>
+        <div style={{height: 100}}></div>
         <div className={style.tracksHeader}>
           {FIELDS.map((e, i) => (
             <div key={i} className={style['column' + i]}>

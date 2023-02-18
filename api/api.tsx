@@ -248,7 +248,7 @@ export async function getSearchResults(token: string, types: typesOfSearchQuery[
 }
 
 export async function getUserSavedTracks(token: string) {
-  const res = await fetch(`https://api.spotify.com/v1/me/tracks`, {
+  const res = await fetch(`${baseUrl}/me/tracks`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -257,4 +257,51 @@ export async function getUserSavedTracks(token: string) {
   });
   const savedTracks = await res.json();
   return savedTracks;
+}
+
+export async function getUserPlaylistsSpotifyApi(token: string): Promise<SpotifyApi.ListOfCurrentUsersPlaylistsResponse> {
+  const res = await fetch(`${baseUrl}/me/playlists`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const userPlaylists = await res.json();
+  return userPlaylists;
+}
+
+export async function getUserLikedTracksSpotifyApi(token: string): Promise<SpotifyApi.UsersSavedTracksResponse> {
+  const res = await fetch(`${baseUrl}/me/tracks`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const userPlaylists = await res.json();
+  return userPlaylists;
+}
+
+export async function getUserTopArtistsSpotifyApi(token: string): Promise<SpotifyApi.UsersTopArtistsResponse> {
+  const res = await fetch(`${baseUrl}/me/top/artists`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topArtists = await res.json();
+  return topArtists;
+}
+export async function getUserAlbumsSpotifyApi(token: string): Promise<SpotifyApi.UsersSavedAlbumsResponse> {
+  const res = await fetch(`${baseUrl}/me/albums`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const userAlbums = await res.json();
+  return userAlbums;
 }

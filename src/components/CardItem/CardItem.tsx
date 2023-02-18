@@ -66,7 +66,7 @@ export const CardItem: React.FC<CardItemProps> = props => {
     description={
       <ul className={style.info}>
       <li className={style.name}>{props.album.name}</li>
-      <li style={{maxHeight: '46px'}}>{props.album.artists 
+      <li className={style.descr}>{props.album.artists 
         ? props.album.artists.map((e, i, a) => e.name + (i !== a.length - 1 ? ', ' : ''))
         : props.album.description}
       </li>

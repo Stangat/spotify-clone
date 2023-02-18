@@ -1,7 +1,6 @@
 import 'antd/dist/antd';
-import React from "react";
 import style from './less.module.less';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
@@ -27,11 +26,9 @@ import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { getAlbums, getUserAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
-import { CollectionPlaylists } from './components/CollectionPlaylists/CollectionPlaylists';
-import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
-import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
 
 import { useTranslation } from "react-i18next";
+import { Library } from './pages/Library/Library';
 
 
 export default function App() {
@@ -208,39 +205,7 @@ export default function App() {
           />
           <Route
             path="collection/*"
-            element={
-              <CollectionPlaylists
-                playlists={playlists}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
-          />
-          <Route
-            path="collection/artists"
-            element={
-              <CollectionArtists
-                topArtists={topArtists}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
-          />
-          <Route
-            path="collection/albums"
-            element={
-              <CollectionAlbums
-                userAlbums={userAlbums}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
+            element={ <Library token={token}setToken={setToken} profile={profile} setProfile={setProfile}/> }
           />
           <Route
             path="playlist/:id"
@@ -256,8 +221,6 @@ export default function App() {
                 setProfile={setProfile}
                 setTopTracks={setTopTracks}
                 topTracks={topTracks}
-                topArtists={topArtists}
-                setTopArtists={setTopArtists}
                 playlists={playlists}
                 setPlaylists={setPlaylists}
                 setIsPlaying={setIsPlaying}

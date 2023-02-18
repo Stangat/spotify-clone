@@ -7,11 +7,11 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
+import { getUserTopTracks } from '../../../api/api';
 import { useEffect} from 'react';
-import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
+//import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
-import { PlaylistBlock } from '../PlaylistBlock/PlaylistBlock';
+//import { PlaylistBlock } from '../../pages/Library/PlaylistBlock/PlaylistBlock';
 import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
 import { useTranslation } from 'react-i18next';
 
@@ -50,8 +50,6 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   useEffect(() => {
     getTopTracksUserHandler();
-    //getTopArtistsUserHandler();
-    //getPlaylistHandler();
   }, []);
 
   return (
@@ -68,7 +66,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         </div>
       </div>
       <DropDownCopy />
-      <TopArtistBlock topArtists={props.topArtists} />
+      {/* <TopArtistBlock topArtists={props.topArtists} /> */}
       <TopTracksBlock
         topTracks={props.topTracks}
         topArtists={props.topArtists}
@@ -92,7 +90,8 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         shuffle={props.shuffle}
         setShuffle={props.setShuffle}
       />
-      <PlaylistBlock playlists={props.playlists} />
+      {/* <
+       playlists={props.playlists} /> */}
     </div>
   );
 };

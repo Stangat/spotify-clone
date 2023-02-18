@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { FC, startTransition, useEffect, useState } from "react";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { getCategories } from "../../../api/api";
 import { CategoryContent } from "../../components/CategoryContent/CategoryContent";
 import { CustomHeader } from "../../components/Header/CustomHeader";
@@ -33,7 +33,7 @@ export const SearchPage: FC<SearchProps> = props => {
   }
 
   function trackChangingOfInput (e: React.ChangeEvent<HTMLInputElement>) {
-    navigate(e.target.value);
+    navigate(e.target.value)
   }
 
   useEffect(() => {
