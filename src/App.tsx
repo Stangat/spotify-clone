@@ -12,12 +12,11 @@ import {
   ProfileType,
   ITrackTypes,
   TopArtistsType,
-  UserAlbumsType,
 } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
-import { Layout } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import { SideBar } from './components/SideBar/SideBar';
 import { Player } from './components/Player/Player';
@@ -25,7 +24,7 @@ import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
-import { getAlbums, getUserAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
+import { getAlbums, getUserPlaylists } from '../api/api';
 
 import { useTranslation } from "react-i18next";
 import { Library } from './pages/Library/Library';
@@ -46,12 +45,10 @@ export default function App() {
   const [albumTracks, setAlbumTracks] = useState<ITrackTypes[]>([]);
   const [profile, setProfile] = useState<ProfileType>();
   const [playlists, setPlaylists] = useState<PlaylistsType>();
-  const [topArtists, setTopArtists] = useState<TopArtistsType | undefined>();
   const [topTracks, setTopTracks] = useState<TopArtistsType | undefined>();
   const [shuffle, setShuffle] = useState(false);
   const [page, setPage] = useState(1);
   const [totalAlbums, setTotalAlbums] = useState(0);
-  const [userAlbums, setUserAlbums] = useState<UserAlbumsType | undefined>();
 
   useEffect(() => {
     const hash: string = window.location.hash;
@@ -82,21 +79,10 @@ export default function App() {
     const response = await getUserPlaylists({ token: token });
     setPlaylists(response);
   };
-  const getTopArtistsUserHandler = async () => {
-    const response = await getUserTopArtist({ token: token });
-    setTopArtists(response);
-  };
-  const getTopAlbumsUserHandler = async () => {
-    const response = await getUserAlbums({ token: token });
-    setUserAlbums(response);
-  };
-
   useEffect(() => {
     if (token) {
       getAlbumsHandler();
       getPlaylistHandler();
-      getTopArtistsUserHandler();
-      getTopAlbumsUserHandler();
     }
   }, [OFFSET, token]);
 
@@ -105,8 +91,9 @@ export default function App() {
   }
 
   return (
+    <ConfigProvider theme={{ token: { fontFamily: `'Inter', sans-serif !important`, },}}>
     <div className={style.app}>
-      <Layout hasSider style={{ width: '100%' }}>
+      <Layout hasSider style={{width: '100%'}}>
         <SideBar />
         <Routes>
           <Route
@@ -164,8 +151,6 @@ export default function App() {
               <ProfilePage
                 topTracks={topTracks}
                 setTopTracks={setTopTracks}
-                topArtists={topArtists}
-                setTopArtists={setTopArtists}
                 setToken={setToken}
                 profile={profile}
                 setProfile={setProfile}
@@ -203,25 +188,24 @@ export default function App() {
           />
           <Route
             path="search/*"
-            element={
-              <SearchPage
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                isPlaying={isPlaying}
-                setIsPlaying={setIsPlaying}
-                player={player}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                setTrackDuration={setTrackDuration}
-                setAlbumTracks={setAlbumTracks}
-                setShuffle={setShuffle}
-              />
-            }
+            element={<SearchPage
+              token={token}
+              setToken={setToken}
+              profile={profile}
+              setProfile={setProfile}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              player={player}
+              trackId={trackId}
+              setTrackId={setTrackId}
+              setSongName={setSongName}
+              setArtistName={setArtistName}
+              setCoverUrl={setCoverURL}
+              setTrackDuration={setTrackDuration}
+              setAlbumTracks={setAlbumTracks}
+              setShuffle={setShuffle}
+            />
+          }
           />
           <Route
             path="collection/*"
@@ -276,25 +260,24 @@ export default function App() {
           />
           <Route
             path="collection/tracks"
-            element={
-              <LikedSongs
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                isPlaying={isPlaying}
-                setIsPlaying={setIsPlaying}
-                player={player}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                setTrackDuration={setTrackDuration}
-                setAlbumTracks={setAlbumTracks}
-                setShuffle={setShuffle}
-              />
-            }
+            element={<LikedSongs
+              token={token}
+              setToken={setToken}
+              profile={profile}
+              setProfile={setProfile}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              player={player}
+              trackId={trackId}
+              setTrackId={setTrackId}
+              setSongName={setSongName}
+              setArtistName={setArtistName}
+              setCoverUrl={setCoverURL}
+              setTrackDuration={setTrackDuration}
+              setAlbumTracks={setAlbumTracks}
+              setShuffle={setShuffle}
+            />
+          }
           />
         </Routes>
         <Footer>
@@ -322,5 +305,6 @@ export default function App() {
         </Footer>
       </Layout>
     </div>
+    </ConfigProvider>
   );
 }

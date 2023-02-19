@@ -29,8 +29,6 @@ type TopTracksBlockProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
-  topArtists: TopArtistsType | undefined;
-  setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
 };
@@ -56,23 +54,8 @@ export const TopTracksBlock: React.FC<TopTracksBlockProps> = props => {
 
   return (
     <div className={styles.topArtistUser}>
-      <div className={styles.topTracksDescription}>
-        <div>
-          <p className={styles.descriptionTopArtist + ' ' + styles.topArtisDescription}>{t('topTrack')}</p>
-          <p className={styles.descriptionTopArtist}>{t('visible')}</p>
-        </div>
-        <p
-          className={styles.descriptionTopArtist}
-          onClick={() => {
-            navigate(`/top_tracks`);
-          }}
-        >
-          {t('showAll')}
-        </p>
-      </div>
       <div>
         {props.topTracks?.items.map((track: ArtistTopUserType, index: number) => {
-          //console.log(track);
           return (
             <div className={styles.trackBlock} key={track.id}>
               {props.isPlaying && track.id === props.trackId ? (

@@ -1,10 +1,11 @@
 import { FC, ReactNode } from "react";
 import style from './rowOfCards.module.less';
 
-export const RowOfCards : FC<{title: string, children: ReactNode}> = ({title, children}) => {
+export const RowOfCards : FC<{title?: string, subtitle?: string, children: ReactNode}> = ({title, subtitle, children}) => {
   return (
     <section className={style.row}>
-      <h2 className={style.rowHeader}>{title}</h2>
+      {title ? <h2 className={style.rowHeader}>{title}</h2> : ''}
+      { subtitle ? <p className={style.subtitle}>{subtitle}</p> : '' }
       <div className={style.rowContent}>
         {children}
       </div>
