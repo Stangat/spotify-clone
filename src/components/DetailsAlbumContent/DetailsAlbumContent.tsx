@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks, getTrack} from '../../../api/api';
+import { getAlbumTracks, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
@@ -12,7 +12,7 @@ type DetailsAlbumContentProps = {
   isPlaying: boolean;
   player: HTMLAudioElement;
   setSongName: (songName: string) => void;
-  setArtistName: (ArtistName: string) => void;
+  setArtistName: (artistName: string) => void;
   setCoverUrl: (coverUrl: string) => void;
   trackDuration: number;
   setTrackDuration: (trackDuration: number) => void;
@@ -136,7 +136,9 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       className={styles.playPauseButton}
                       key={index}
                       onClick={() => {
-                        playingTrackHandler(track.preview_url);
+                        if (track.preview_url) {
+                          playingTrackHandler(track.preview_url);
+                        }
                       }}
                     />
                   ) : (
@@ -144,7 +146,9 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                       className={styles.playPauseButton}
                       key={index}
                       onClick={async () => {
-                        playingTrackHandler(track.preview_url);
+                        if (track.preview_url) {
+                          playingTrackHandler(track.preview_url);
+                        }
                         props.setSongName(track.name);
                         props.setArtistName(track.artists[0].name);
                         const currentTrack = await getTrack(props.token, track.id);
