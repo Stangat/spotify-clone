@@ -31,7 +31,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
   const [topResult, setTopResult] = useState<SpotifyApi.ArtistObjectFull>();
 
   function getTopResult(items: SpotifyApi.SearchResponse | undefined) {
-    if (items?.albums?.items[0]) {
+    if (items?.artists?.items[0]) {
       setTopResult(
         items.artists?.items.reduce((prev, current) => (prev.popularity > current.popularity ? prev : current)) ||
           items.artists?.items[0]
@@ -45,7 +45,8 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
 
   const uniqueTracksHandler = async () => {
     if (props.token) {
-      const response = await getSearchResults(props.token, ['track'], query || '');
+      const response = await getSearchResults(props.token, ['track', 'artist'], query || '');
+      getTopResult(response);
       const tracks = response.tracks?.items;
       if (tracks) {
         const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
@@ -66,7 +67,6 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
 
   useEffect(() => {
     uniqueTracksHandler();
-    getTopResult(props.items);
   }, []);
 
   return (
