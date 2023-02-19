@@ -3,9 +3,6 @@ import { IResponseAlbumsType, IResponseTracksType } from '../interface/interface
 type getPlaylistsType = {
   token: string;
 };
-type getUserTopArtistType = {
-  token: string;
-};
 type getAlbumsPropsType = {
   token: string;
   offset: number;
@@ -24,11 +21,6 @@ type getArtistType = {
 type getArtistAlbumType = {
   token: string;
   id: string;
-};
-type getTracksPLaylistType = {
-  token: string;
-  id: string;
-  limit: number;
 };
 type getUserTopTracksType = {
   token: string;
@@ -113,18 +105,6 @@ export async function getProfile(token: string) {
   });
   const user = await res.json();
   return user;
-}
-
-export async function getUserTopArtist(data: getUserTopArtistType) {
-  const res = await fetch(`${baseUrl}/me/top/artists`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${data.token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const topArtist = await res.json();
-  return topArtist;
 }
 
 export async function getUserTopTracks(data: getUserTopTracksType) {
@@ -294,6 +274,7 @@ export async function getUserTopArtistsSpotifyApi(token: string): Promise<Spotif
   const topArtists = await res.json();
   return topArtists;
 }
+
 export async function getUserAlbumsSpotifyApi(token: string): Promise<SpotifyApi.UsersSavedAlbumsResponse> {
   const res = await fetch(`${baseUrl}/me/albums`, {
     method: 'GET',
@@ -304,4 +285,16 @@ export async function getUserAlbumsSpotifyApi(token: string): Promise<SpotifyApi
   });
   const userAlbums = await res.json();
   return userAlbums;
+}
+
+export async function getFollowedArtists(token: string): Promise<SpotifyApi.UsersFollowedArtistsResponse> {
+  const res = await fetch(`${baseUrl}/me/following?type=artist`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const followedArtists = await res.json();
+  return followedArtists;
 }

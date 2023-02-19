@@ -1,59 +1,128 @@
 .blockProfileDescription {
+  height: 30vh;
+  max-height: 500px;
+  min-height: 340px;
+  padding: 0 32px 24px;
+
   display: flex;
   flex-direction: row;
+
   background-image: linear-gradient(to top, #28292b, #353a3d, #444d4c, #565f5a, #6e7167);
-}
-.descriptionProfile {
-  color: white;
-  font-weight: 600;
-}
-.userNameProfile{
-  font-size: 60px;
-}
-.topArtistUser {
-  background: #121212;
-  padding: 2%;
-}
-.descriptionTopArtist {
-  color: #4b4b4b;
-  font-weight: 600;
-  cursor: pointer;
-}
-.topArtisDescription {
-  color:white;
-  font-size: 20px;
-}
-.playlistsUser {
-  display: flex;
-  
-}
-.trackBlock {
-  display: flex;
-  align-items: center;
-  gap:10px;
-  color: white;
-  font-weight: 600;
-}
-.topTracksDescription {
-  display: flex;
-  justify-content: space-between;
-}
-:global(.ant-card-meta-title) {
-  color: white !important;
-}
-:global(.ant-card-meta-description) {
-  color: #4b4b4b !important;
-}
-.playPauseButton {
-  color: #1ad760;
-  font-size: 32px;
-  transition: 0.2s;
+
+  .imageContainer {
+    height: 232px;
+    min-width: 232px;
+    width: 232px;
+    align-self: flex-end;
+    margin-right: 24px;
+  }
 }
 
-.playPauseButton:active {
-  transform: translateY(2px);
-}
-.cardsTopBlock {
+.descriptionProfile {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: column;
+  justify-content: flex-end;
+  flex: 1;
+
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+
+  > * {
+    display: inline-block;
+  }
+
+  .userNameProfile{
+    width: 100%;
+
+    margin: 0;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    font-size: 6rem;
+    font-weight: 900;
+    text-align: left;
+    user-select: none;
+  }
+
+  h2 {
+    margin-top: 4px;
+    font-weight: 600;
+    font-size: .75rem;
+    text-transform: uppercase;
+  }
+
+  .descriptionItems {
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 400;
+    >*:last-child::before {
+      content: "•";
+      margin: 0px 4px;
+    }
+  }
 }
+
+.bgUnderHat {
+  position: absolute;
+  height: 260px;
+  width: calc(100% - 200px);
+  background-color: rgb(83, 83, 83);
+  background-image: -webkit-gradient(linear, left top,left bottom ,from(rgba(0,0,0,.6)),to(#121212));
+}
+
+.bodyWrapper {
+  padding: 0 32px;
+}
+
+.dropDown {
+  padding: 24px 0;
+}
+
+.followingContainer {
+  position: relative;
+}
+
+// .descriptionTopArtist {
+//   color: #4b4b4b;
+//   font-weight: 600;
+//   cursor: pointer;
+// }
+
+// .topArtisDescription {
+//   color:white;
+//   font-size: 20px;
+// }
+
+// .playlistsUser {
+//   display: flex;
+// }
+
+// .trackBlock {
+//   display: flex;
+//   align-items: center;
+//   gap:10px;
+//   color: white;
+//   font-weight: 600;
+// }
+
+// .topTracksDescription {
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// .playPauseButton {
+//   color: #1ad760;
+//   font-size: 32px;
+//   transition: 0.2s;
+// }
+
+// .playPauseButton:active {
+//   transform: translateY(2px);
+// }
+
+// .cardsTopBlock {
+//   display: flex;
+//   flex-wrap: wrap;
+// }

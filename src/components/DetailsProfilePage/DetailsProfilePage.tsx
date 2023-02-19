@@ -7,13 +7,14 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getUserTopTracks } from '../../../api/api';
-import { useEffect} from 'react';
+import { getFollowedArtists, getUserTopArtistsSpotifyApi, getUserTopTracks } from '../../../api/api';
+import { useEffect, useState} from 'react';
 //import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
-import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
 //import { PlaylistBlock } from '../../pages/Library/PlaylistBlock/PlaylistBlock';
 import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
 import { useTranslation } from 'react-i18next';
+import { RowOfCards } from '../RowOfCards/RowOfCards';
+import { CardArtist } from '../CardItem/CardArtist';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -32,8 +33,6 @@ type DetailsProfilePageProps = {
   setTrackId: (trackId: string) => void;
   albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
-  topArtists: TopArtistsType | undefined;
-  setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
   setTopTracks: (topTracks: TopArtistsType | undefined) => void;
   shuffle: boolean;
@@ -42,32 +41,57 @@ type DetailsProfilePageProps = {
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
   const { t } = useTranslation();
+  const [followedArtists, setFollowedArtists] = useState<SpotifyApi.UsersFollowedArtistsResponse>();
+  const [topArtists, setTopArtists] = useState<SpotifyApi.UsersTopArtistsResponse>();
+  const [topArtistsSortedList, setTopArtistsSortedList] = useState<SpotifyApi.ArtistObjectFull[]>();
 
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 4 });
     props.setTopTracks(response);
   };
 
+  const getFollowedArtistsList = async () => {
+    const response = await getFollowedArtists(props.token);
+    setFollowedArtists(response);
+  }
+
+  const getUserTopArtistList = async () => {
+    const response = await getUserTopArtistsSpotifyApi(props.token);
+    const forSort =  [...response.items];
+    setTopArtistsSortedList(forSort.sort((l, r) => r.popularity - l.popularity))
+    setTopArtists(response);
+  }
+
   useEffect(() => {
     getTopTracksUserHandler();
+    getFollowedArtistsList();
+    getUserTopArtistList();
   }, []);
 
   return (
     <div className={styles.detailsProfileContainer}>
       <div className={styles.blockProfileDescription} key={props.profile?.id}>
-        <div style={{ padding: '2%' }}>
-          <Avatar size={250} icon={<UserOutlined />} src={props.profile?.images[0].url} />
+        <div className={styles.imageContainer}>
+          <Avatar style={{height: '100%', width: '100%'}} icon={<UserOutlined />} src={props.profile?.images[0].url} />
         </div>
         <div className={styles.descriptionProfile}>
-          <p>{t('profile')}</p>
-          <p className={styles.userNameProfile}>{props.profile?.display_name}</p>
-          <p>{props.playlists?.total} {t('publicPlaylists')}</p>
-          <p>{t('followers')}: {props.profile?.followers.total}</p>
+          <h2>{t('profile')}</h2>
+          <h1 className={styles.userNameProfile}>{props.profile?.display_name}</h1>
+          <div className={styles.descriptionItems}>
+            <p>{props.playlists?.total} {t('publicPlaylists')}</p>
+            <p>{followedArtists?.artists ? followedArtists?.artists.total : '0'} {t('following')}</p>
+          </div>
         </div>
       </div>
-      <DropDownCopy />
+      <div className={styles.bgUnderHat}></div>
+      <div className={styles.bodyWrapper}>
+        <div className={styles.dropDown}><DropDownCopy /></div>
+        <div className={styles.followingContainer}>
+          <RowOfCards title={'Top artists this month'}>{topArtistsSortedList?.map((e, i) => i < 8 ? <CardArtist style={{boxShadow: 'none',}} key={e.id} artist={e}></CardArtist> : '')}</RowOfCards>
+        </div>
+      </div>
       {/* <TopArtistBlock topArtists={props.topArtists} /> */}
-      <TopTracksBlock
+      {/* <TopTracksBlock
         topTracks={props.topTracks}
         topArtists={props.topArtists}
         setTopArtists={props.setTopArtists}
@@ -89,7 +113,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         setAlbumTracks={props.setAlbumTracks}
         shuffle={props.shuffle}
         setShuffle={props.setShuffle}
-      />
+      /> */}
       {/* <
        playlists={props.playlists} /> */}
     </div>
