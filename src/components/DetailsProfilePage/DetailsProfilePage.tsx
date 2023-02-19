@@ -114,7 +114,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
             </p>
           </div>
           <div className={styles.topTracksContainer}>
-              {topTracksSpotifyApi?.items && topTracksSpotifyApi?.items.map((e)=> <TrackRow key={e.id} track={e}></TrackRow>)}
+              {/* {topTracksSpotifyApi?.items && topTracksSpotifyApi?.items.map((e)=> <TrackRow key={e.id} track={e}></TrackRow>)} */}
           </div>
           {/* <TopTracksBlock
             topTracks={props.topTracks}
