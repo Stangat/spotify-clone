@@ -4,8 +4,11 @@ import { TrackRow } from "../../components/Track/TrackRow";
 //import { FIELDS } from "../PlaylistPage/PlaylistPage";
 import style from './searchSongs.module.less';
 import { useTranslation } from 'react-i18next';
+import { getSearchResults } from "../../../api/api";
+import { useParams } from "react-router-dom";
 
 type SearchSongsProps = {
+  token: string;
   items: SpotifyApi.SearchResponse | undefined;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
@@ -28,17 +31,21 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
   const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const { t} = useTranslation();
   const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
+  const { query } = useParams();
 
-  const uniqueTracksHandler = () => {
-    const tracks = props.items?.tracks?.items;
-    if (tracks) {
-      const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
-        if (!accumulator.find(track => track.preview_url === current.preview_url)) {
-          accumulator.push(current);
-        }
-        return accumulator;
-      }, []);
-      setUniqueTracks(tracksWithoutDubl);
+  const uniqueTracksHandler = async () => {
+    if (props.token) {
+      const response = await getSearchResults(props.token, ['track'], query || '');
+      const tracks = response.tracks?.items;
+      if (tracks) {
+        const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
+          if (!accumulator.find(track => track.preview_url === current.preview_url)) {
+            accumulator.push(current);
+          }
+          return accumulator;
+        }, []);
+        setUniqueTracks(tracksWithoutDubl);
+      }
     }
   };
 

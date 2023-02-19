@@ -120,6 +120,7 @@ export const Search: FC<SearchProps> = props => {
           path="/songs"
           element={
             <SearchSongs
+              token={props.token}
               key={'ss' + query}
               items={items}
               isPlaying={props.isPlaying}
