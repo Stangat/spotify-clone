@@ -7,12 +7,13 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getUserPlaylists, getUserTopArtist, getUserTopTracks } from '../../../api/api';
+import { getUserTopTracks } from '../../../api/api';
 import { useEffect} from 'react';
-import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
+//import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
 import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
-import { PlaylistBlock } from '../PlaylistBlock/PlaylistBlock';
+//import { PlaylistBlock } from '../../pages/Library/PlaylistBlock/PlaylistBlock';
 import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
+import { useTranslation } from 'react-i18next';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -40,7 +41,7 @@ type DetailsProfilePageProps = {
 };
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
-
+  const { t } = useTranslation();
 
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 4 });
@@ -49,25 +50,23 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   useEffect(() => {
     getTopTracksUserHandler();
-    //getTopArtistsUserHandler();
-    //getPlaylistHandler();
   }, []);
 
   return (
     <div className={styles.detailsProfileContainer}>
       <div className={styles.blockProfileDescription} key={props.profile?.id}>
         <div style={{ padding: '2%' }}>
-          <Avatar size={250} icon={<UserOutlined />} />
+          <Avatar size={250} icon={<UserOutlined />} src={props.profile?.images[0].url} />
         </div>
         <div className={styles.descriptionProfile}>
-          <p>PROFILE</p>
+          <p>{t('profile')}</p>
           <p className={styles.userNameProfile}>{props.profile?.display_name}</p>
-          <p>{props.playlists?.total} Public Playlists</p>
-          <p>Followers: {props.profile?.followers.total}</p>
+          <p>{props.playlists?.total} {t('publicPlaylists')}</p>
+          <p>{t('followers')}: {props.profile?.followers.total}</p>
         </div>
       </div>
       <DropDownCopy />
-      <TopArtistBlock topArtists={props.topArtists} />
+      {/* <TopArtistBlock topArtists={props.topArtists} /> */}
       <TopTracksBlock
         topTracks={props.topTracks}
         topArtists={props.topArtists}
@@ -91,7 +90,8 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
         shuffle={props.shuffle}
         setShuffle={props.setShuffle}
       />
-      <PlaylistBlock playlists={props.playlists} />
+      {/* <
+       playlists={props.playlists} /> */}
     </div>
   );
 };

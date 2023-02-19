@@ -1,6 +1,6 @@
 import 'antd/dist/antd';
 import style from './less.module.less';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage/HomePage';
 import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
@@ -24,15 +24,16 @@ import { Player } from './components/Player/Player';
 import { PlaylisPage } from './pages/PlaylistPage/PlaylistPage';
 import { ArtistPage } from './pages/ArtistPage/ArtistPage';
 import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
-import { PlaylistTrackPage } from './pages/PlaylistTrackPage/PlaylistTrackPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
-import { Library } from './pages/Library/Library';
 import { getAlbums, getUserAlbums, getUserPlaylists, getUserTopArtist } from '../api/api';
-import { CollectionPlaylists } from './components/CollectionPlaylists/CollectionPlaylists';
-import { CollectionArtists } from './components/CollectionArtists/CollectionArtists';
-import { CollectionAlbums } from './components/CollectionAlbums/CollectionAlbums';
+
+import { useTranslation } from "react-i18next";
+import { Library } from './pages/Library/Library';
+
 
 export default function App() {
+  const { t, i18n } = useTranslation();
+
   const [token, setToken] = useState('');
   const [albums, setALbums] = useState<AlbumType[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -196,7 +197,10 @@ export default function App() {
             path="artist/:id"
             element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
           />
-          <Route path="settings" element={<Settings />} />
+          <Route
+            path="settings"
+            element={<Settings token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+          />
           <Route
             path="search/*"
             element={
@@ -221,39 +225,7 @@ export default function App() {
           />
           <Route
             path="collection/*"
-            element={
-              <CollectionPlaylists
-                playlists={playlists}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
-          />
-          <Route
-            path="collection/artists"
-            element={
-              <CollectionArtists
-                topArtists={topArtists}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
-          />
-          <Route
-            path="collection/albums"
-            element={
-              <CollectionAlbums
-                userAlbums={userAlbums}
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-              />
-            }
+            element={ <Library token={token}setToken={setToken} profile={profile} setProfile={setProfile}/> }
           />
           <Route
             path="playlist/:id"
@@ -283,8 +255,6 @@ export default function App() {
                 setProfile={setProfile}
                 setTopTracks={setTopTracks}
                 topTracks={topTracks}
-                topArtists={topArtists}
-                setTopArtists={setTopArtists}
                 playlists={playlists}
                 setPlaylists={setPlaylists}
                 setIsPlaying={setIsPlaying}
@@ -300,28 +270,6 @@ export default function App() {
                 trackId={trackId}
                 setTrackId={setTrackId}
                 shuffle={shuffle}
-                setShuffle={setShuffle}
-              />
-            }
-          />
-          <Route
-            path="search"
-            element={
-              <SearchPage
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                isPlaying={isPlaying}
-                setIsPlaying={setIsPlaying}
-                player={player}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                setTrackDuration={setTrackDuration}
-                setAlbumTracks={setAlbumTracks}
                 setShuffle={setShuffle}
               />
             }

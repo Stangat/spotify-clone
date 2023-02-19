@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { getUserSavedTracks } from '../../../api/api';
 import { ITrackTypes, ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import style from './likedSongs.module.less';
 import { TrackRow } from '../../components/Track/TrackRow';
 import { HeartFilled } from '@ant-design/icons';
+// import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
+import { useTranslation } from 'react-i18next';
+import style from './likedSongs.module.less';
 
 type LikedSongsPageProps = {
   token: string;
@@ -24,7 +26,24 @@ type LikedSongsPageProps = {
   setShuffle: (shuffle: boolean) => void;
 };
 
-export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
+export const LikedSongs: React.FC<LikedSongsPageProps> = ({
+  token,
+  setToken,
+  profile,
+  setProfile,
+  isPlaying,
+  setIsPlaying,
+  player,
+  trackId,
+  setTrackId,
+  setSongName,
+  setArtistName,
+  setCoverUrl,
+  setTrackDuration,
+  setAlbumTracks,
+  setShuffle
+}) => {
+  const { t } = useTranslation();
   const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
 
   const timeSvg = () => {
@@ -35,10 +54,10 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
       </svg>
     );
   };
-  const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()];
+  const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
 
   const getUserSavedTracksHandler = async () => {
-    const response:SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(props.token);
+    const response: SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(token);
     setUserSavedSongs(response);
   };
 
@@ -48,29 +67,27 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
 
   return (
     <div className={style.wrapper}>
-      <DropdownProfile
-        setToken={props.setToken}
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-      />
+      <div className={style.header}>
+        <DropdownProfile setToken={setToken} profile={profile} setProfile={setProfile} token={token} />
+      </div>
       <div className={style.blockTop}>
         <div className={style.picture}>
           <HeartFilled className={style.heartFilled} />
         </div>
         <div className={style.blockData}>
-          <p className={style.blockCategory}>Playlist</p>
-          <p className={style.blockName}>Liked Songs</p>
+          <p className={style.blockCategory}>{t('playlist')}</p>
+          <p className={style.blockName}>{t('liked')}</p>
           <p className={style.blockUserName}>
             {userSavedSongs?.total === undefined
               ? ''
               : userSavedSongs?.total < 10
-              ? `${props.profile?.display_name} • ${userSavedSongs?.total} song`
-              : `${props.profile?.display_name} • ${userSavedSongs?.total} songs`}
+              ? `${profile?.display_name} • ${userSavedSongs?.total} ${t('song')}`
+              : `${profile?.display_name} • ${userSavedSongs?.total} ${t('songs')}`}
           </p>
         </div>
       </div>
       <div className={style.playlistBody}>
+        <div style={{ height: 100 }}></div>
         <div className={style.tracksHeader}>
           {FIELDS.map((e, i) => (
             <div key={i} className={style['column' + i]}>
@@ -82,17 +99,17 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
           <TrackRow
             key={e.track?.id}
             track={e.track}
-            isPlaying={props.isPlaying}
-            setIsPlaying={props.setIsPlaying}
-            player={props.player}
-            trackId={props.trackId}
-            setTrackId={props.setTrackId}
-            setSongName={props.setSongName}
-            setArtistName={props.setArtistName}
-            setCoverUrl={props.setCoverUrl}
-            setTrackDuration={props.setTrackDuration}
-            setAlbumTracks={props.setAlbumTracks}
-            setShuffle={props.setShuffle}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            player={player}
+            trackId={trackId}
+            setTrackId={setTrackId}
+            setSongName={setSongName}
+            setArtistName={setArtistName}
+            setCoverUrl={setCoverUrl}
+            setTrackDuration={setTrackDuration}
+            setAlbumTracks={setAlbumTracks}
+            setShuffle={setShuffle}
           ></TrackRow>
         ))}
       </div>

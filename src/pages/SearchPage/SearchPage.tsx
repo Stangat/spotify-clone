@@ -1,11 +1,13 @@
-import { FC, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { FC, startTransition, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { getCategories } from '../../../api/api';
 import { CategoryContent } from '../../components/CategoryContent/CategoryContent';
 import { CustomHeader } from '../../components/Header/CustomHeader';
 import { GenreCard } from '../../components/GenreCard/GenreCard';
 import { Search } from './Search';
 import { ITrackTypes, ProfileType } from '../../../interface/interface';
+import { useTranslation } from 'react-i18next';
+import { v4 as uuidv4 } from 'uuid';
 import style from './search.module.less';
 
 const searchIcon = () => {
@@ -44,6 +46,7 @@ type SearchPageProps = {
 
 export const SearchPage: React.FC<SearchPageProps> = props => {
   const [categories, setCategories] = useState<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const getBrowseByCategories = async () => {
@@ -79,7 +82,7 @@ export const SearchPage: React.FC<SearchPageProps> = props => {
             element={
               <div className={style.searchBody}>
                 <div className={style.searchHeader}>
-                  <h2>Browse all</h2>
+                  <h2>{t('browse')}</h2>
                 </div>
                 {categories &&
                   categories.items.map((e: SpotifyApi.CategoryObject) => {
@@ -93,6 +96,7 @@ export const SearchPage: React.FC<SearchPageProps> = props => {
             path="/:query/*"
             element={
               <Search
+                key={uuidv4()}
                 token={props.token}
                 isPlaying={props.isPlaying}
                 setIsPlaying={props.setIsPlaying}

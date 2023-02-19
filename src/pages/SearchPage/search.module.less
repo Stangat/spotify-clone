@@ -36,6 +36,7 @@
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
+  padding-bottom: 70px;
 }
 
 .searchHeader {
@@ -64,8 +65,15 @@
   text-transform: capitalize;
   background-color: #ffffff12;
   transition: background-color 0.2s ease 0s, color 0.2s ease 0s;
+  margin-right: 6px;
+
   &:hover {
     background-color: #ffffff33;
+  }
+
+  &.activeTag {
+    background-color: #ffffff;
+    color: #121212;
   }
 }
 
