@@ -4,11 +4,20 @@ import { getPlaylist } from "../../../api/api";
 import { TrackRow } from "../../components/Track/TrackRow";
 import { useTranslation } from 'react-i18next';
 import style from './playlistPage.module.less';
+import { ITrackTypes } from "../../../interface/interface";
 
 type PlaylistProps = {
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
+  setSongName: (songName: string) => void;
+  setArtistName: (artistName: string) => void;
+  setCoverUrl: (coverUrl: string) => void;
+  setTrackDuration: (trackDuration: number) => void;
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  setShuffle: (shuffle: boolean) => void;
 };
 
 const timeSvg = () => {
@@ -46,7 +55,7 @@ export const PlaylisPage: FC<PlaylistProps> = (props) => {
 
   const getPlaylistHandler = async () => {
     if (token && id) {
-      const response = await getPlaylist({token, id});
+      const response = await getPlaylist({ token, id });
       setPlaylist(response);
     } else {
       console.log('!token || !id in playlist req', token, id);
@@ -55,21 +64,42 @@ export const PlaylisPage: FC<PlaylistProps> = (props) => {
 
   useEffect(() => {
     getPlaylistHandler();
-    props.player.addEventListener('ended', () => {
-      props.setIsPlaying(false);
-    });
   }, []);
 
-  return(
+  return (
     <div className={style.wrapper}>
-      <PlaylistTop playlist={playlist}/>
+      <PlaylistTop playlist={playlist} />
       <div className={style.playlistControls}></div>
       <div className={style.playlistBody}>
         <div className={style.tracksHeader}>
-          {FIELDS.map((e, i) => <div key={i} className={style['column' + i]}>{e}</div>)}
+          {FIELDS.map((e, i) => (
+            <div key={i} className={style['column' + i]}>
+              {e}
+            </div>
+          ))}
         </div>
-        {playlist?.tracks.items.map(e => <TrackRow key={e.track?.id} track={e.track}></TrackRow>)}
+        {playlist?.tracks.items.map(e =>
+          e.track?.preview_url ? (
+            <TrackRow
+              key={e.track?.id}
+              track={e.track}
+              isPlaying={props.isPlaying}
+              setIsPlaying={props.setIsPlaying}
+              player={props.player}
+              trackId={props.trackId}
+              setTrackId={props.setTrackId}
+              setSongName={props.setSongName}
+              setArtistName={props.setArtistName}
+              setCoverUrl={props.setCoverUrl}
+              setTrackDuration={props.setTrackDuration}
+              setAlbumTracks={props.setAlbumTracks}
+              setShuffle={props.setShuffle}
+            ></TrackRow>
+          ) : (
+            ''
+          )
+        )}
       </div>
     </div>
   );
-}
+};

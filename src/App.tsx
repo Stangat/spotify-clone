@@ -58,10 +58,12 @@ export default function App() {
     let token: string | null = window.localStorage.getItem('token');
 
     if (!token && hash) {
-      token = hash
-        .substring(1)
-        .split('&')
-        .find((elem: string) => elem.startsWith('access_token'))?.split('=')[1] || '';
+      token =
+        hash
+          .substring(1)
+          .split('&')
+          .find((elem: string) => elem.startsWith('access_token'))
+          ?.split('=')[1] || '';
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
@@ -104,7 +106,7 @@ export default function App() {
 
   return (
     <div className={style.app}>
-      <Layout hasSider style={{width: '100%'}}>
+      <Layout hasSider style={{ width: '100%' }}>
         <SideBar />
         <Routes>
           <Route
@@ -201,7 +203,25 @@ export default function App() {
           />
           <Route
             path="search/*"
-            element={<SearchPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            element={
+              <SearchPage
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                player={player}
+                trackId={trackId}
+                setTrackId={setTrackId}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                setTrackDuration={setTrackDuration}
+                setAlbumTracks={setAlbumTracks}
+                setShuffle={setShuffle}
+              />
+            }
           />
           <Route
             path="collection/*"
@@ -209,7 +229,21 @@ export default function App() {
           />
           <Route
             path="playlist/:id"
-            element={<PlaylisPage setIsPlaying={setIsPlaying} isPlaying={isPlaying} player={player} />}
+            element={
+              <PlaylisPage
+                setIsPlaying={setIsPlaying}
+                isPlaying={isPlaying}
+                player={player}
+                trackId={trackId}
+                setTrackId={setTrackId}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                setTrackDuration={setTrackDuration}
+                setAlbumTracks={setAlbumTracks}
+                setShuffle={setShuffle}
+              />
+            }
           />
           <Route
             path="top_tracks"
@@ -242,7 +276,25 @@ export default function App() {
           />
           <Route
             path="collection/tracks"
-            element={<LikedSongs token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            element={
+              <LikedSongs
+                token={token}
+                setToken={setToken}
+                profile={profile}
+                setProfile={setProfile}
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                player={player}
+                trackId={trackId}
+                setTrackId={setTrackId}
+                setSongName={setSongName}
+                setArtistName={setArtistName}
+                setCoverUrl={setCoverURL}
+                setTrackDuration={setTrackDuration}
+                setAlbumTracks={setAlbumTracks}
+                setShuffle={setShuffle}
+              />
+            }
           />
         </Routes>
         <Footer>

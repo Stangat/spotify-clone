@@ -91,7 +91,9 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
       const url = await currentTrack.album.images[0].url;
       setTrackId(trackId);
       setCoverUrl(url);
-      player.src = trackUrl;
+      if (trackUrl) {
+        player.src = trackUrl;
+      }
       if (!isPlaying) {
         setIsPlaying(true);
       }
