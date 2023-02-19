@@ -1,13 +1,14 @@
-import { FC, useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { FC, startTransition, useEffect, useState } from "react";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { getCategories } from "../../../api/api";
 import { CategoryContent } from "../../components/CategoryContent/CategoryContent";
 import { CustomHeader } from "../../components/Header/CustomHeader";
 import { GenreCard } from "../../components/GenreCard/GenreCard";
 import { Search } from "./Search";
 import { ProfileType } from "../../../interface/interface";
-import style from './search.module.less';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuidv4 } from 'uuid';
+import style from './search.module.less';
 
 const searchIcon = () => {
   return (<svg role="img" height="24" width="24" aria-hidden="true" className={style.searchIcon} viewBox="0 0 24 24" data-encore-id="icon">
@@ -22,7 +23,7 @@ type SearchProps = {
 };
 
 export const SearchPage: FC<SearchProps> = props => {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<SpotifyApi.PagingObject<SpotifyApi.CategoryObject>>(); 
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ export const SearchPage: FC<SearchProps> = props => {
             </div>}>
           </Route>
           <Route path="category/:id" element={<CategoryContent token={props.token}/>}></Route>
-          <Route path="/:query/*" element={<Search token={props.token}></Search>}></Route>
+          <Route path="/:query/*" element={<Search key={uuidv4()} token={props.token}></Search>}></Route>
         </Routes>
       </main>
     </div>);

@@ -129,7 +129,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           ))}
         </div>
         <div className={styles.tracksBlock}>
-          {tracks.map((track, index) => {
+          {tracks && tracks.map((track, index) => {
             return (
               <div className={styles.trackBlock} key={track.id}>
                 <div className={styles.artistDesc}>
