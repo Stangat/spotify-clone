@@ -1,20 +1,30 @@
 import { useEffect, useState } from 'react';
 import { getUserSavedTracks } from '../../../api/api';
-import { ProfileType } from '../../../interface/interface';
+import { ITrackTypes, ProfileType } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './likedSongs.module.less';
 import { TrackRow } from '../../components/Track/TrackRow';
 import { HeartFilled } from '@ant-design/icons';
-// import { TopTracksBlock } from '../../components/TopTracksBlock/TopTracksBlock';
 
 type LikedSongsPageProps = {
   token: string;
   setToken: (token: string) => void;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
+  isPlaying: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+  player: HTMLAudioElement;
+  trackId: string;
+  setTrackId: (trackId: string) => void;
+  setSongName: (songName: string) => void;
+  setArtistName: (artistName: string) => void;
+  setCoverUrl: (coverUrl: string) => void;
+  setTrackDuration: (trackDuration: number) => void;
+  setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
+  setShuffle: (shuffle: boolean) => void;
 };
 
-export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, profile, setProfile }) => {
+export const LikedSongs: React.FC<LikedSongsPageProps> = props => {
   const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
 
   const timeSvg = () => {
@@ -28,7 +38,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
   const FIELDS = ['#', 'TITLE', 'ALBUM', timeSvg()];
 
   const getUserSavedTracksHandler = async () => {
-    const response = await getUserSavedTracks(token);
+    const response:SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(props.token);
     setUserSavedSongs(response);
   };
 
@@ -38,7 +48,12 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
 
   return (
     <div className={style.wrapper}>
-      <DropdownProfile setToken={setToken} profile={profile} setProfile={setProfile} token={token} />
+      <DropdownProfile
+        setToken={props.setToken}
+        profile={props.profile}
+        setProfile={props.setProfile}
+        token={props.token}
+      />
       <div className={style.blockTop}>
         <div className={style.picture}>
           <HeartFilled className={style.heartFilled} />
@@ -50,8 +65,8 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
             {userSavedSongs?.total === undefined
               ? ''
               : userSavedSongs?.total < 10
-              ? `${profile?.display_name} • ${userSavedSongs?.total} song`
-              : `${profile?.display_name} • ${userSavedSongs?.total} songs`}
+              ? `${props.profile?.display_name} • ${userSavedSongs?.total} song`
+              : `${props.profile?.display_name} • ${userSavedSongs?.total} songs`}
           </p>
         </div>
       </div>
@@ -64,7 +79,21 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({ token, setToken, pro
           ))}
         </div>
         {userSavedSongs?.items.map(e => (
-          <TrackRow key={e.track?.id} track={e.track}></TrackRow>
+          <TrackRow
+            key={e.track?.id}
+            track={e.track}
+            isPlaying={props.isPlaying}
+            setIsPlaying={props.setIsPlaying}
+            player={props.player}
+            trackId={props.trackId}
+            setTrackId={props.setTrackId}
+            setSongName={props.setSongName}
+            setArtistName={props.setArtistName}
+            setCoverUrl={props.setCoverUrl}
+            setTrackDuration={props.setTrackDuration}
+            setAlbumTracks={props.setAlbumTracks}
+            setShuffle={props.setShuffle}
+          ></TrackRow>
         ))}
       </div>
     </div>
