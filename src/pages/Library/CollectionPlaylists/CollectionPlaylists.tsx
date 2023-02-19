@@ -27,7 +27,7 @@ export const CollectionPlaylists: React.FC<CollectionPlaylistsProps> = props => 
 
   useEffect(() => {
     getUserData();
-  });
+  }, []);
 
   return (
     <div className={style.wrapper}>
