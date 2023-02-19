@@ -108,22 +108,22 @@ export interface Restrictions {
 
 export interface ITrackTypes {
   artists: Artist[];
-  available_markets: string[];
+  available_markets?: string[] | undefined;
   disc_number: number;
   duration_ms: number;
   explicit: boolean;
   external_urls: ExternalUrls2;
   href: string;
   id: string;
-  is_playable: boolean;
-  linked_from: LinkedFrom;
-  restrictions: Restrictions;
+  is_playable?: boolean | undefined;
+  linked_from?: LinkedFrom | undefined;
+  restrictions?: Restrictions | undefined;
   name: string;
-  preview_url: string;
+  preview_url: string | null;
   track_number: number;
   type: string;
   uri: string;
-  is_local: boolean;
+  is_local?: boolean | undefined;
 }
 
 export interface IResponseTracksType {
