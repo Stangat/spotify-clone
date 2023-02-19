@@ -4,7 +4,6 @@ import style from "./genreCard.module.less";
 
 export const GenreCard: React.FC<{item: SpotifyApi.CategoryObject}> = (props) => {
   const { t} = useTranslation();
-  console.log(props.item.name)
   const navigate = useNavigate();
 
   function changeUrl() {

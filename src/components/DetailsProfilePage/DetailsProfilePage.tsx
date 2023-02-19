@@ -50,15 +50,13 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   useEffect(() => {
     getTopTracksUserHandler();
-    //getTopArtistsUserHandler();
-    //getPlaylistHandler();
   }, []);
 
   return (
     <div className={styles.detailsProfileContainer}>
       <div className={styles.blockProfileDescription} key={props.profile?.id}>
         <div style={{ padding: '2%' }}>
-          <Avatar size={250} icon={<UserOutlined />} />
+          <Avatar size={250} icon={<UserOutlined />} src={props.profile?.images[0].url} />
         </div>
         <div className={styles.descriptionProfile}>
           <p>{t('profile')}</p>

@@ -2,16 +2,17 @@
   width: 100%;
 }
 .wrapperChoose {
-    padding-top: 5%;
+    padding: 8% 15% 0% 15%;;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 .titleBlock {
   color: white;
   font-size: 22px;
   font-weight: 600;
-  padding: 3%;
-  border-bottom: 2px #4b4b4b solid;
+  //padding: 3%;
+  //border-bottom: 2px #4b4b4b solid;
 }
 .selectTitle {
   color: white;
@@ -24,11 +25,12 @@
   font-weight: 600;
 }
 .blockChoose {
+  width: 100%;
     padding-top: 9%;
     display: flex;
-    justify-content: space-around;
-    border-bottom: 2px #4b4b4b solid;
-    padding-bottom: 2%;
+    justify-content: space-between;
+    border-bottom: 1px #4b4b4b solid;
+    padding-bottom: 9%;
 }
 .selectBlock {
     display: flex;
@@ -37,7 +39,11 @@
 }
 :global(.ant-select-selector) {
     background-color: #4b4b4b !important;
+    border: none !important;
 }
 :global(.rc-virtual-list-holder-inner) {
     background-color: #4b4b4b !important;
+}
+:global(.ant-select-dropdown) {
+  background-color: #4b4b4b !important;
 }

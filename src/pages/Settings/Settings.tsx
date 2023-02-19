@@ -18,6 +18,7 @@ export const Settings: React.FC<SettingsProps> = props => {
     i18n.changeLanguage(lang);
     localStorage.setItem('lang', lang)
   };
+  
   return (
     <div className={style.wrapper}>
       <DropdownProfile
@@ -47,6 +48,14 @@ export const Settings: React.FC<SettingsProps> = props => {
               {
                 value: 'ru',
                 label: 'Русский',
+              },
+              {
+                value: 'de',
+                label: 'German',
+              },
+              {
+                value: 'es',
+                label: 'Spanish',
               },
             ]}
           />
