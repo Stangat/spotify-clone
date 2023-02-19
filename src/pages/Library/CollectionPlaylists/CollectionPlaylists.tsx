@@ -51,7 +51,7 @@ export const CollectionPlaylists: React.FC<CollectionPlaylistsProps> = props => 
               <div>{userLikes?.total} liked songs</div>
             </div>
           </div>
-          {userPlaylists?.items.map(e => <CardItem onClick={() => {navigate(`/playlist/${e.id}`)}} album={e}></CardItem>)}
+          {userPlaylists?.items.map(e => <CardItem key={e.id} onClick={() => {navigate(`/playlist/${e.id}`)}} album={e}></CardItem>)}
         </div>
       </div>
     </div>

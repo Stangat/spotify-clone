@@ -23,7 +23,7 @@ export const CollectionAlbums: React.FC<CollectionAlbumsProps> = props => {
     <div className={style.wrapper}>
       <h1>Albums</h1>
       <div className={style.container}>
-        {userTopAlbums?.items.map(e => <CardItem album={e.album}></CardItem>)}
+        {userTopAlbums?.items.map(e => <CardItem key={e.album.id} album={e.album}></CardItem>)}
       </div>
     </div>
   );

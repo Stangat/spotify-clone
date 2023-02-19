@@ -24,7 +24,7 @@ export const TopArtistBlock: React.FC<TopArtistBlockProps> = props => {
     <div className={styles.wrapper}>
       <h1>Artists</h1>
       <div className={styles.container}>
-        {userTopArtists?.items.map(e => <CardArtist artist={e}></CardArtist>)}
+        {userTopArtists?.items.map(e => <CardArtist key={e.id} artist={e}></CardArtist>)}
       </div>
     </div>
   );
