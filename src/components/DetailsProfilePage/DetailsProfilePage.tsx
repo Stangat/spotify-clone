@@ -7,14 +7,16 @@ import {
 } from '../../../interface/interface';
 import styles from './detailsProfilePage.module.less';
 import { UserOutlined } from '@ant-design/icons';
-import { getFollowedArtists, getUserTopArtistsSpotifyApi, getUserTopTracks } from '../../../api/api';
+import { getFollowedArtists, getUserPlaylistsSpotifyApi, getUserTopArtistsSpotifyApi, getUserTopTracks, getUserTopTracksSpotifyApi } from '../../../api/api';
 import { useEffect, useState} from 'react';
-//import { TopArtistBlock } from '../TopArtistBlock/TopArtistBlock';
-//import { PlaylistBlock } from '../../pages/Library/PlaylistBlock/PlaylistBlock';
 import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
 import { useTranslation } from 'react-i18next';
 import { RowOfCards } from '../RowOfCards/RowOfCards';
 import { CardArtist } from '../CardItem/CardArtist';
+import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
+import { useNavigate } from 'react-router-dom';
+import { TrackRow } from '../Track/TrackRow';
+import { CardItem } from '../CardItem/CardItem';
 
 type DetailsProfilePageProps = {
   token: string;
@@ -40,15 +42,24 @@ type DetailsProfilePageProps = {
 };
 
 export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
-  const { t } = useTranslation();
-  const [followedArtists, setFollowedArtists] = useState<SpotifyApi.UsersFollowedArtistsResponse>();
   const [topArtists, setTopArtists] = useState<SpotifyApi.UsersTopArtistsResponse>();
-  const [topArtistsSortedList, setTopArtistsSortedList] = useState<SpotifyApi.ArtistObjectFull[]>();
-
+  const [followedArtists, setFollowedArtists] = useState<SpotifyApi.UsersFollowedArtistsResponse>();
+  const [topTracksSpotifyApi, setTopTracksSpotifyApi] = useState<SpotifyApi.UsersTopTracksResponse>();
+  const [userPlaylists, setUserPlaylists] = useState<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  
   const getTopTracksUserHandler = async () => {
     const response = await getUserTopTracks({ token: props.token, limit: 4 });
+    const response2 = await getUserTopTracksSpotifyApi(props.token, 4);
+    setTopTracksSpotifyApi(response2);
     props.setTopTracks(response);
   };
+
+  const getUserPlaylists = async () => {
+    const response = await getUserPlaylistsSpotifyApi(props.token);
+    setUserPlaylists(response);
+  }
 
   const getFollowedArtistsList = async () => {
     const response = await getFollowedArtists(props.token);
@@ -57,8 +68,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
 
   const getUserTopArtistList = async () => {
     const response = await getUserTopArtistsSpotifyApi(props.token);
-    const forSort =  [...response.items];
-    setTopArtistsSortedList(forSort.sort((l, r) => r.popularity - l.popularity))
+    response.items.sort((l, r) => r.popularity - l.popularity)
     setTopArtists(response);
   }
 
@@ -66,6 +76,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
     getTopTracksUserHandler();
     getFollowedArtistsList();
     getUserTopArtistList();
+    getUserPlaylists();
   }, []);
 
   return (
@@ -87,35 +98,72 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
       <div className={styles.bodyWrapper}>
         <div className={styles.dropDown}><DropDownCopy /></div>
         <div className={styles.followingContainer}>
-          <RowOfCards title={'Top artists this month'}>{topArtistsSortedList?.map((e, i) => i < 8 ? <CardArtist style={{boxShadow: 'none',}} key={e.id} artist={e}></CardArtist> : '')}</RowOfCards>
+          <RowOfCards title={'Top artists this month'} subtitle={`${t('visible')}`}>
+            {topArtists?.items && topArtists?.items?.map((e, i) => i < 8 ? <CardArtist style={{boxShadow: 'none',}} key={e.id} artist={e}></CardArtist> : '')}
+          </RowOfCards>
+        </div>
+        <div className={styles.subblockContainer}>
+          <div className={styles.blockHeader}>
+            <div>
+              <h2>{t('topTrack')}</h2>
+              <p>{t('visible')}</p>
+            </div>
+            <p className={styles.showAll}onClick={() => { navigate(`/top_tracks`);}}>
+               {t('showAll')}
+              {/* пока пусть будет так, но нужyо писать роуты на все show all в этой странице */}
+            </p>
+          </div>
+          <div className={styles.topTracksContainer}>
+              {topTracksSpotifyApi?.items && topTracksSpotifyApi?.items.map((e)=> <TrackRow key={e.id} track={e}></TrackRow>)}
+          </div>
+          {/* <TopTracksBlock
+            topTracks={props.topTracks}
+            profile={props.profile}
+            playlists={props.playlists}
+            setPlaylists={props.setPlaylists}
+            token={props.token}
+            setIsPlaying={props.setIsPlaying}
+            isPlaying={props.isPlaying}
+            player={props.player}
+            setSongName={props.setSongName}
+            setArtistName={props.setArtistName}
+            setCoverUrl={props.setCoverUrl}
+            trackDuration={props.trackDuration}
+            setTrackDuration={props.setTrackDuration}
+            trackId={props.trackId}
+            setTrackId={props.setTrackId}
+            albumTracks={props.albumTracks}
+            setAlbumTracks={props.setAlbumTracks}
+            shuffle={props.shuffle}
+            setShuffle={props.setShuffle}
+          />  */} 
+          {/* ЛИБО ТО ЛИБО ЭТО */}
+        </div>
+        <div className={styles.subblockContainer}>
+          <div className={styles.blockHeader + ' ' + styles.withoutVisibility}>
+            <h2>{'Public Playlists'}</h2>
+            <p className={styles.showAll} onClick={() => {/*смотри коммент выше*/}}> {t('showAll')}
+            </p>
+          </div>
+          <div>
+            <RowOfCards>
+              {userPlaylists?.items && userPlaylists?.items.map((e, i) => (i < 8 ? <CardItem key={e.id} album={e}></CardItem> : ''))}
+            </RowOfCards>
+          </div>
+        </div>
+        <div className={styles.subblockContainer}>
+          <div className={styles.blockHeader + ' ' + styles.withoutVisibility}>
+            <h2>{'Following'}</h2>
+            <p className={styles.showAll} onClick={() => {/*смотри коммент выше*/}}> {t('showAll')}
+            </p>
+          </div>
+          <div>
+            <RowOfCards>
+              {followedArtists?.artists.items && followedArtists.artists.items.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
+            </RowOfCards>
+          </div>
         </div>
       </div>
-      {/* <TopArtistBlock topArtists={props.topArtists} /> */}
-      {/* <TopTracksBlock
-        topTracks={props.topTracks}
-        topArtists={props.topArtists}
-        setTopArtists={props.setTopArtists}
-        profile={props.profile}
-        playlists={props.playlists}
-        setPlaylists={props.setPlaylists}
-        token={props.token}
-        setIsPlaying={props.setIsPlaying}
-        isPlaying={props.isPlaying}
-        player={props.player}
-        setSongName={props.setSongName}
-        setArtistName={props.setArtistName}
-        setCoverUrl={props.setCoverUrl}
-        trackDuration={props.trackDuration}
-        setTrackDuration={props.setTrackDuration}
-        trackId={props.trackId}
-        setTrackId={props.setTrackId}
-        albumTracks={props.albumTracks}
-        setAlbumTracks={props.setAlbumTracks}
-        shuffle={props.shuffle}
-        setShuffle={props.setShuffle}
-      /> */}
-      {/* <
-       playlists={props.playlists} /> */}
     </div>
   );
 };

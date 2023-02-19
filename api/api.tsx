@@ -298,3 +298,15 @@ export async function getFollowedArtists(token: string): Promise<SpotifyApi.User
   const followedArtists = await res.json();
   return followedArtists;
 }
+
+export async function getUserTopTracksSpotifyApi(token: string, limit?: number): Promise<SpotifyApi.UsersTopTracksResponse>{
+  const res = await fetch(`${baseUrl}/me/top/tracks` + (limit ? `?limit=${limit}`: ''), {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const topTracks = await res.json();
+  return topTracks;
+}

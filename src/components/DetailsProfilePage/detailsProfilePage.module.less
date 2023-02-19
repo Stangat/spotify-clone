@@ -84,45 +84,73 @@
   position: relative;
 }
 
-// .descriptionTopArtist {
-//   color: #4b4b4b;
-//   font-weight: 600;
-//   cursor: pointer;
-// }
+/*Styles for TopTrackBlock----------START----------*/
+.playlistsUser {
+  display: flex;
+}
 
-// .topArtisDescription {
-//   color:white;
-//   font-size: 20px;
-// }
+.trackBlock {
+  display: flex;
+  align-items: center;
+  gap:10px;
+  color: white;
+  font-weight: 600;
+}
 
-// .playlistsUser {
-//   display: flex;
-// }
+.playPauseButton {
+  color: #1ad760;
+  font-size: 32px;
+  transition: 0.2s;
+}
 
-// .trackBlock {
-//   display: flex;
-//   align-items: center;
-//   gap:10px;
-//   color: white;
-//   font-weight: 600;
-// }
+.playPauseButton:active {
+  transform: translateY(2px);
+}
 
-// .topTracksDescription {
-//   display: flex;
-//   justify-content: space-between;
-// }
+.cardsTopBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+/*Styles for TopTrackBlock----------END----------*/
 
-// .playPauseButton {
-//   color: #1ad760;
-//   font-size: 32px;
-//   transition: 0.2s;
-// }
+.blockHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-// .playPauseButton:active {
-//   transform: translateY(2px);
-// }
+  &.withoutVisibility {
+    align-items: flex-end;
+  }
 
-// .cardsTopBlock {
-//   display: flex;
-//   flex-wrap: wrap;
-// }
+
+  h2 {
+    margin-bottom: 16px;
+    color: white;
+    padding-left: 5px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+    
+  }
+  p {
+    margin-top: -10px;
+    font-size: 0.875rem;
+    color: #6a6a6a;
+    padding-left: 5px;
+  }
+  .showAll {
+    cursor: pointer;
+    display: block;
+    margin-top: 0;
+    padding-right: 20px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.subblockContainer {
+  padding-top: 40px;
+}
