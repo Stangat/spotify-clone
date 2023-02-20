@@ -26,10 +26,10 @@ const timeSvg = () => {
 
 export const PlaylistTop: FC<{playlist: SpotifyApi.PlaylistObjectFull | undefined}>= (props) => {
   const { t } = useTranslation();
-  const lastImg = props.playlist?.images[props.playlist?.images.length - 1];
+  const img = props.playlist?.images[0];
 
   return (
-  <div className={style.about} style={{backgroundImage: `url(${lastImg ? lastImg.url : ''}`}}>
+  <div className={style.about} style={{backgroundImage: `url(${img ? img.url : ''}`}}>
     <div className={style.aboutCover}></div>
     <div className={style.aboutContent}>
       <h2>{t('playlist')}</h2>

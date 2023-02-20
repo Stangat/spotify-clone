@@ -1,6 +1,6 @@
 import { FC, startTransition, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { getCategories } from '../../../api/api';
+import { getCategories, getFeaturedPlaylistsSpotifyApi } from '../../../api/api';
 import { CategoryContent } from '../../components/CategoryContent/CategoryContent';
 import { CustomHeader } from '../../components/Header/CustomHeader';
 import { GenreCard } from '../../components/GenreCard/GenreCard';

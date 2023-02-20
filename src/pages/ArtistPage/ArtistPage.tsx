@@ -7,6 +7,7 @@ import { ArtistAlbums, ArtistType, ProfileType } from '../../../interface/interf
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './artistPage.module.less';
 import { useTranslation } from 'react-i18next';
+import { CardItem } from '../../components/CardItem/CardItem';
 
 type ArtistPageProps = {
   token: string;
@@ -50,38 +51,7 @@ export const ArtistPage: React.FC<ArtistPageProps> = props => {
       <div className={style.artistAlbum}>
         <p className={style.artistFollowers}>{t('several')}</p>
         <div className={style.cardAlbum}>
-          {artistAlbum?.items.map(album => {
-            return (
-              <Card
-                key={album.id}
-                hoverable
-                style={{
-                  maxWidth: 205,
-                  margin: '1%',
-                  background: '#181818',
-                  boxShadow: '0px 0px 5px 0px black',
-                  border: 'none',
-                  padding: '2%',
-                }}
-                cover={
-                  <img alt={album.label} src={album.images[0].url} style={{ boxShadow: '0px 0px 5px 0px black' }} />
-                }
-                onClick={() => {
-                  navigate(`/album/${album.id}`);
-                }}
-              >
-                <Meta
-                  title={<div style={{ color: 'white' }}>{album.name}</div>}
-                  description={
-                    <div style={{ color: 'white' }}>
-                      Date of release: <br />
-                      {album.release_date}
-                    </div>
-                  }
-                />
-              </Card>
-            );
-          })}
+          {artistAlbum?.items.map(e => <CardItem album={e}></CardItem>)}
         </div>
       </div>
     </div>

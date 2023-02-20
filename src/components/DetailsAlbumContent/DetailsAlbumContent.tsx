@@ -88,14 +88,15 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                 key={props.id}
                 className={styles.blockImage}
                 style={{
-                  backgroundImage: `url(${album.images[0].url})`,
+                  borderColor: '#000000',
+                  backgroundImage: `url(${album.images ? album.images[0].url : ''})`,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
                 }}
               >
                 <div className={styles.boxBlur}>
-                  <img className={styles.imageAlbum} key={album.id} alt={album.label} src={album.images[1].url} />
+                  <img className={styles.imageAlbum} key={album.id} alt={album.label} src={album.images ? album.images[1].url : ''} />
                   <div className={styles.descriptionAlbumTracks}>
                     <p className={styles.typeAlbum}>{album.type}</p>
                     {album.name.length > 17 ? (

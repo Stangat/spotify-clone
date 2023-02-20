@@ -72,7 +72,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
   return (
     <div className={commonstyle.searchBody}>
       <div className={style.hat}>
-        <section className={style.topResultContainer}>
+        <section className={style.topResultContainer} onClick={() => navigate(`/${topResult?.type}/${topResult?.id}`)}>
           <h2 className={style.header}>{t('topResult')}</h2>
           <div className={style.topResult}>
             <div
@@ -84,7 +84,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
               {' '}
             </div>
             <div className={style.topResult__content}>
-              <a href={`/${topResult?.type}/${topResult?.id}`}>{topResult?.name}</a>
+              <p>{topResult?.name}</p>
               <div>
                 <span>{topResult?.type}</span>
               </div>

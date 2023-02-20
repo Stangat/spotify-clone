@@ -68,7 +68,7 @@ export default function App() {
     setToken(token || '');
   }, []);
 
-  const LIMIT = 10;
+  const LIMIT = 16;
   const OFFSET = (page - 1) * LIMIT;
   const getAlbumsHandler = async () => {
     const response = await getAlbums({ limit: LIMIT, offset: OFFSET, token: token });

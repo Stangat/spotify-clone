@@ -59,7 +59,7 @@ export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbu
 }
 
 export async function getAlbumTracks(data: getTracksType): Promise<IResponseTracksType> {
-  const res = await fetch(`${baseUrl}/albums/${data.id}/tracks?market=ES`, {
+  const res = await fetch(`${baseUrl}/albums/${data.id}/tracks?market=US`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
@@ -321,4 +321,16 @@ export async function getSingleAlbumSpotifyApi(token: string, id: string): Promi
   });
   const album = await res.json();
   return album;
+}
+
+export async function getFeaturedPlaylistsSpotifyApi(token: string): Promise<SpotifyApi.SingleAlbumResponse>{
+  const res = await fetch(`${baseUrl}/browse/featured-playlists?market=US`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const featuredPlaylists = await res.json();
+  return featuredPlaylists;
 }
