@@ -147,7 +147,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
           </div>
           <div>
             <RowOfCards>
-              {userPlaylists?.items && userPlaylists?.items.map((e, i) => (i < 8 ? <CardItem key={e.id} album={e}></CardItem> : ''))}
+              {userPlaylists?.items && userPlaylists?.items.map((e, i) => (i < 8 ? <CardItem key={e.id} album={e} onClick={() => navigate(`/playlist/${e.id}`)}></CardItem> : ''))}
             </RowOfCards>
           </div>
         </div>
