@@ -2,14 +2,9 @@
  background-color: #121212 !important; 
 }
 
-:global(.ant-layout-sider) {
-  background-color: #000;
-}
-
 :global(.ant-layout-sider-children) {
   background-color: #000;
-  position: fixed;
-  width: 200px;
+  height: 100% !important;
 }
 
 .titleBlock {
@@ -23,7 +18,7 @@
     flex-basis: 80%;
     display: block;
     height: 35px;
-    padding-left: 8px;
+    padding-left: 6px;
   }
   svg {
     flex-basis: 20%;
@@ -33,4 +28,13 @@
 .menuItemCreate {
   background: red;
   margin-top: 20px;
+}
+
+@media (max-width: 575px) {
+  .titleBlock p {
+    display: none;
+  }
+  .titleBlock svg {
+    flex-basis: 80%;
+  }
 }

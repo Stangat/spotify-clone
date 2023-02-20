@@ -1,7 +1,7 @@
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
@@ -15,7 +15,7 @@ function getItem(
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: 'group',
+  type?: 'group'
 ): MenuItem {
   return {
     key,
@@ -26,37 +26,47 @@ function getItem(
   } as MenuItem;
 }
 
-
 export const SideBar: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const items: MenuItem[] = [
-    getItem(`${t('home')}`, '', <HomeFilled/>),
-    getItem(`${t('search')}`, 'search', <SearchOutlined/>),
+    getItem(`${t('home')}`, '', <HomeFilled />),
+    getItem(`${t('search')}`, 'search', <SearchOutlined />),
     getItem(`${t('library')}`, 'collection/playlists', <ContainerOutlined />),
-    getItem(`${t('create')}`, 'playlists', <PlusCircleFilled/>),
-    getItem(`${t('liked')}`, 'collection/tracks',  <HeartFilled />),
+    getItem(`${t('create')}`, 'playlists', <PlusCircleFilled />),
+    getItem(`${t('liked')}`, 'collection/tracks', <HeartFilled />),
   ];
-  
+
   return (
-    <Sider>
-      <Link to={'/'}>
-        <div  className={styles.titleBlock}>
-          {<SpotifySvg />}
-          <p>Spotify Clone</p>
-        </div>
-      </Link>
-      <Menu
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        theme="dark"
-        items={items}
-        onClick={({key}) => {
-          navigate(key);
+    <div>
+      <Sider
+        collapsible
+        collapsed={isCollapsed}
+        onCollapse={() => {
+          setIsCollapsed(!isCollapsed);
         }}
-        style={{ backgroundColor: 'black' }}
-      />
-    </Sider>
+        breakpoint={'sm'}
+      >
+        <Link to={'/'}>
+          <div className={styles.titleBlock}>
+            {<SpotifySvg />}
+            <p>Spotify Clone</p>
+          </div>
+        </Link>
+        <Menu
+          defaultSelectedKeys={['1']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          theme="dark"
+          items={items}
+          onClick={({ key }) => {
+            navigate(key);
+          }}
+          style={{ backgroundColor: 'black' }}
+        />
+      </Sider>
+    </div>
   );
 };

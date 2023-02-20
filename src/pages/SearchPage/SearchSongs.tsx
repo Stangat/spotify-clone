@@ -67,6 +67,7 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
           e.preview_url ? (
             <TrackRow
               track={e}
+              key={e.id}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
               player={props.player}

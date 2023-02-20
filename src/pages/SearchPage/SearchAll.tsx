@@ -99,6 +99,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
                 e.preview_url ? (
                   <TrackRow
                     album={false}
+                    key={e.id}
                     track={e}
                     isPlaying={props.isPlaying}
                     setIsPlaying={props.setIsPlaying}
