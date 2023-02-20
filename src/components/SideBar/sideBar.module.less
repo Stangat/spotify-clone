@@ -1,15 +1,10 @@
 :global(.ant-menu-item-selected) {
- background-color: #121212 !important; 
-}
-
-:global(.ant-layout-sider) {
-  background-color: #000;
+  background-color: #121212 !important;
 }
 
 :global(.ant-layout-sider-children) {
   background-color: #000;
-  position: fixed;
-  width: 200px;
+  height: 100% !important;
 }
 
 .titleBlock {
@@ -20,10 +15,8 @@
   p {
     display: block;
     flex-basis: 80%;
-
     margin: 0;
     padding-left: 8px;
-    
     color: white;
     font-size: 1.2rem;
   }
@@ -35,4 +28,13 @@
 .menuItemCreate {
   background: red;
   margin-top: 20px;
+}
+
+@media (max-width: 575px) {
+  .titleBlock p {
+    display: none;
+  }
+   .titleBlock svg {
+    flex-basis: 80%;
+  } 
 }
