@@ -2,10 +2,8 @@ export const SpotifySvg: React.FC = () => (
   <svg
     style={{ color: 'white' }}
     xmlns="http://www.w3.org/2000/svg"
-    width="40"
-    height="40"
     fill="currentColor"
-    viewBox="0 0 20 20"
+    viewBox="0 0 18 18"
   >
     {' '}
     <path

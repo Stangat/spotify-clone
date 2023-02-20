@@ -2,12 +2,13 @@ import React from 'react';
 import { Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import style from './cardItem.module.less'
-import { textTransform } from '@mui/system';
 const { Meta } = Card;
 
 type CardItemProps = {
   artist: SpotifyApi.ArtistObjectFull;
   onClick?: () => void;
+  className?: string; 
+  style?: React.CSSProperties;
 };
 
 export const CardArtist: React.FC<CardItemProps> = props => {
@@ -22,19 +23,19 @@ export const CardArtist: React.FC<CardItemProps> = props => {
     <Card
       hoverable
       key={props.artist.id}
-      style={{
+      style={Object.assign({}, {
         background: '#181818',
         boxShadow: '0px 0px 5px 0px black',
         border: 'none',
         padding: '16px',
         width: '188px'
-      }}
+      }, props.style || {})}
       cover={
         <div style={{
           margin: '0 auto',
           width: '155px',
           height: '155px',
-          boxShadow: '0px 0px 5px 0px black',
+          boxShadow: '0 8px 24px rgb(0 0 0 / 50%)',
           backgroundColor: '#000000',
           backgroundImage: `url(${link})`,
           backgroundSize: 'cover',

@@ -2,6 +2,8 @@ import { Layout } from 'antd';
 import { AlbumType, ITrackTypes, PlaylistsType, ProfileType, TopArtistsType } from '../../../interface/interface';
 import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsProfilePage';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
+import style from './profilePage.module.less';
+
 
 type ProfilePageProps = {
   token: string;
@@ -26,8 +28,6 @@ type ProfilePageProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
-  topArtists: TopArtistsType | undefined;
-  setTopArtists: (topArtists: TopArtistsType | undefined) => void;
   topTracks: TopArtistsType | undefined;
   setTopTracks: (topTracks: TopArtistsType | undefined) => void;
   shuffle: boolean;
@@ -39,17 +39,17 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
     <div style={{ background: '#121212', width: '100%' }}>
       <Layout hasSider style={{ background: '#121212', marginBottom: '10%' }}>
         <Layout style={{ background: '#121212', display: 'flex' }}>
-          <DropdownProfile
-            setToken={props.setToken}
-            profile={props.profile}
-            setProfile={props.setProfile}
-            token={props.token}
-          />
+          <div className={style.header}>
+            <DropdownProfile
+              setToken={props.setToken}
+              profile={props.profile}
+              setProfile={props.setProfile}
+              token={props.token}
+            />
+          </div>
           <DetailsProfilePage
             topTracks={props.topTracks}
             setTopTracks={props.setTopTracks}
-            topArtists={props.topArtists}
-            setTopArtists={props.setTopArtists}
             profile={props.profile}
             playlists={props.playlists}
             setPlaylists={props.setPlaylists}
