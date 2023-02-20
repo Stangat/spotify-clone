@@ -64,7 +64,7 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
   return (
     <Dropdown menu={{ items, onClick }} className={styles.dropDownContainer}>
       <a onClick={e => e.preventDefault()}>
-        <Avatar size="large" icon={<UserOutlined />} src={props.profile?.images[0].url}/>
+        <Avatar size="large" icon={<UserOutlined />}/>
         <Space
           style={{
             color: 'white',

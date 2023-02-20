@@ -68,7 +68,6 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
             <TrackRow
               key={e.id}
               track={e}
-              key={e.id}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
               player={props.player}
