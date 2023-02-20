@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAlbumTracks, getTrack } from '../../../api/api';
+import { getAlbumTracks, getSingleAlbumSpotifyApi, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
@@ -26,7 +26,8 @@ type DetailsAlbumContentProps = {
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
+  const [album, setAlbum] = useState<SpotifyApi.SingleAlbumResponse>();
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
 
   const timeSvg = () => {
@@ -58,6 +59,8 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   const getTracksHandler = async () => {
     const response = (await getAlbumTracks({ id: props.id, token: props.token })).items;
+    const response2 = await getSingleAlbumSpotifyApi(props.token, props.id); 
+    setAlbum(response2);
     setTracks(response);
   };
 
@@ -75,10 +78,12 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   return (
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
-        {props.albums.map(album => {
-          if (album.id === props.id) {
+        {/* {props.albums.map(album => { */}
+           {/* if (album.id === props.id) {
             // TODO req
-            return (
+            // return ( */}
+            {
+              album ?
               <div
                 key={props.id}
                 className={styles.blockImage}
@@ -116,9 +121,11 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                   </div>
                 </div>
               </div>
-            );
+              : ''
+            }
+            {/* );
           }
-        })}
+        })} */}
       </div>
       <div className={styles.albumBody}>
         <div className={styles.tracksHeader}>

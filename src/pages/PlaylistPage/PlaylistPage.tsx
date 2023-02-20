@@ -47,7 +47,7 @@ export const PlaylistTop: FC<{playlist: SpotifyApi.PlaylistObjectFull | undefine
 
 
 export const PlaylisPage: FC<PlaylistProps> = (props) => {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const { id } = useParams(); 
   const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()]
   const [playlist, setPlaylist] = useState<SpotifyApi.PlaylistObjectFull>();

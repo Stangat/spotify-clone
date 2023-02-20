@@ -310,3 +310,15 @@ export async function getUserTopTracksSpotifyApi(token: string, limit?: number):
   const topTracks = await res.json();
   return topTracks;
 }
+
+export async function getSingleAlbumSpotifyApi(token: string, id: string): Promise<SpotifyApi.SingleAlbumResponse>{
+  const res = await fetch(`${baseUrl}/albums/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const album = await res.json();
+  return album;
+}
