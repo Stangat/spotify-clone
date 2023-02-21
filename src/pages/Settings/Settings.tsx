@@ -16,17 +16,19 @@ export const Settings: React.FC<SettingsProps> = props => {
 
   const changeLanguageHandler = (lang: 'ru' | 'en') => {
     i18n.changeLanguage(lang);
-    localStorage.setItem('lang', lang)
+    localStorage.setItem('lang', lang);
   };
-  
+
   return (
     <div className={style.wrapper}>
-      <DropdownProfile
-        setToken={props.setToken}
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-      />
+      <div className={style.header}>
+        <DropdownProfile
+          setToken={props.setToken}
+          profile={props.profile}
+          setProfile={props.setProfile}
+          token={props.token}
+        />
+      </div>
       <div className={style.wrapperChoose}>
         <span className={style.titleBlock}>{t('settings')}</span>
         <div className={style.blockChoose}>
@@ -36,7 +38,7 @@ export const Settings: React.FC<SettingsProps> = props => {
           </div>
           <Select
             showSearch
-            placeholder= {t('select')}
+            placeholder={t('select')}
             optionFilterProp="children"
             onChange={changeLanguageHandler}
             filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}

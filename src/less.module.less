@@ -29,6 +29,36 @@ body {
   background-color: #000;
   min-height: 100vh;
 }
+:global(.ant-dropdown-trigger) {
+  display: flex !important;
+  justify-content: end !important;
+  align-items: center !important;
+}
+:global(.ant-dropdown-menu) {
+  //background-image: linear-gradient(to top, #28292b, #353a3d, #444d4c, #565f5a, #6e7167);
+  opacity: 0.6 !important;
+  background-color: #282828 !important;
+}
+:global(.ant-dropdown-menu-item) {
+  color: white !important;
+  font-weight: 600 !important;
+}
 .app {
   width: 100%;
+}
+
+@media (max-width: 640px) {
+  :global(.ant-pagination-simple-pager) {
+    display: none !important;
+  }
+  :global(.ant-space-item) {
+    display: none !important;
+  }
+  .searchContainer {
+    width: 0;
+  }
+
+  .search {
+    width: 100px;
+  }
 }
