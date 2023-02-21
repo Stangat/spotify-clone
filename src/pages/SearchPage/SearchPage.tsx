@@ -96,7 +96,6 @@ export const SearchPage: React.FC<SearchPageProps> = props => {
             path="/:query/*"
             element={
               <Search
-                key={uuidv4()}
                 token={props.token}
                 isPlaying={props.isPlaying}
                 setIsPlaying={props.setIsPlaying}

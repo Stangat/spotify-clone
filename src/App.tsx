@@ -146,7 +146,7 @@ export default function App() {
             }
           />
           <Route
-            path="profile/:id"
+            path="profile/:id/*"
             element={
               <ProfilePage
                 topTracks={topTracks}
@@ -212,7 +212,7 @@ export default function App() {
             element={ <Library token={token}setToken={setToken} profile={profile} setProfile={setProfile}/> }
           />
           <Route
-            path="playlist/:id"
+            path="playlist/:id/*"
             element={
               <PlaylisPage
                 setIsPlaying={setIsPlaying}
@@ -230,7 +230,7 @@ export default function App() {
             }
           />
           <Route
-            path="top_tracks"
+            path="profile/:id/tracks"
             element={
               <TopTracksUserPage
                 token={token}
