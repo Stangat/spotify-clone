@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { getAlbumTracks, getSingleAlbumSpotifyApi, getTrack } from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -29,6 +30,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   const { t } = useTranslation();
   const [album, setAlbum] = useState<SpotifyApi.SingleAlbumResponse>();
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
+  const navigate = useNavigate();
 
   const timeSvg = () => {
     return (
@@ -191,9 +193,12 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
                     )}
 
                     <p className={styles.artistName}>
-                      {track.artists.map(artist => {
-                        return artist.name;
-                      })}
+                      {track.artists.map((e, i, a) => (
+                        <Fragment key={e.id}>
+                          <a key={e.id} onClick={()=> navigate(`/artist/${e.id}`)}>{e.name}</a>
+                          {`${i !== a.length - 1 ? ', ' : ''}`}
+                        </Fragment>
+                      ))}
                     </p>
                   </div>
                 </div>

@@ -94,7 +94,7 @@ export default function App() {
     <ConfigProvider theme={{ token: { fontFamily: `'Inter', sans-serif !important`, },}}>
     <div className={style.app}>
       <Layout hasSider style={{width: '100%'}}>
-        <SideBar />
+        <SideBar playlists={playlists}/>
         <Routes>
           <Route
             path="/"

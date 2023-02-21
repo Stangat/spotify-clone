@@ -15,19 +15,20 @@ type ArtistPageProps = {
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
 };
+
 export const ArtistPage: React.FC<ArtistPageProps> = props => {
-  const { t} = useTranslation();
-  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [artist, setArtist] = useState<ArtistType>();
   const [artistAlbum, setArtistAlbum] = useState<ArtistAlbums>();
-  const params: any = useParams();
+  const { id } = useParams();
 
   const getArtistHandler = async () => {
-    const response = await getArtist({ id: params.id, token: props.token });
+    const response = await getArtist({ id: id || '', token: props.token });
     setArtist(response);
   };
+
   const getArtistAlbumsHandler = async () => {
-    const response = await getArtistAlbum({ id: params.id, token: props.token });
+    const response = await getArtistAlbum({ id: id  || '', token: props.token });
     setArtistAlbum(response);
   };
 
@@ -36,20 +37,30 @@ export const ArtistPage: React.FC<ArtistPageProps> = props => {
     getArtistHandler();
     getArtistAlbumsHandler();
   }, []);
+
   return (
     <div className={style.wrapper}>
-      <DropdownProfile
-        setToken={props.setToken}
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-      />
-      <div className={style.blockTop}>
-        <p className={style.artistName}>{artist?.name}</p>
-        <p className={style.artistFollowers}>{t('followers')}: {artist?.followers.total}</p>
+      <div className={style.header}>
+        <DropdownProfile
+          setToken={props.setToken}
+          profile={props.profile}
+          setProfile={props.setProfile}
+          token={props.token}
+        />
+      </div>
+      <div className={style.forBg}>
+        <div className={style.blockTop}>
+          <div className={style.artistImg}>
+            <img src={artist?.images ? artist?.images[0].url : ''} alt='img'></img>
+          </div>
+          <div className={style.artistTextContentBlock}>
+            <h1 className={style.artistName}>{artist?.name}</h1>
+            <p className={style.artistFollowers}>{t('followers')}: {artist?.followers.total}</p>
+          </div>
+        </div>
       </div>
       <div className={style.artistAlbum}>
-        <p className={style.artistFollowers}>{t('several')}</p>
+        <h2 className={style.title}>{t('several')}</h2>
         <div className={style.cardAlbum}>
           {artistAlbum?.items.map(e => <CardItem album={e}></CardItem>)}
         </div>

@@ -36,3 +36,36 @@
   background: red;
   margin-top: 20px;
 }
+
+.userPlaylists {
+  hr {
+    background-color: #282828;
+    border: none;
+    height: 1px;
+    margin: 8px 24px;
+  }
+  ul {
+    padding: 0;
+    li {
+      height: 32px;
+      padding: 0 24px;
+      a {
+        text-decoration: none;
+        color: #b3b3b3;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        white-space: unset;
+        word-break: break-all;
+        user-select: none;
+        overflow: hidden;
+
+        &:hover {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

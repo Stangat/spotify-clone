@@ -1,12 +1,14 @@
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getUserPlaylists } from '../../../api/api';
+import { PlaylistsType } from '../../../interface/interface';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -27,9 +29,10 @@ function getItem(
 }
 
 
-export const SideBar: React.FC = () => {
+export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playlists}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const items: MenuItem[] = [
     getItem(`${t('home')}`, '', <HomeFilled/>),
     getItem(`${t('search')}`, 'search', <SearchOutlined/>),
@@ -57,6 +60,12 @@ export const SideBar: React.FC = () => {
         }}
         style={{ backgroundColor: 'black' }}
       />
+      <div className={styles.userPlaylists}>
+        <hr />
+        <ul>
+          {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)}><a>{e.name}</a></li> : '')) : ''}
+        </ul>
+      </div>
     </Sider>
   );
 };

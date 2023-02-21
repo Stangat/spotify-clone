@@ -3,7 +3,7 @@ import style from './trackRow.module.less';
 import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import { getTrack, getTracksPLaylist, getUserSavedTracks } from '../../../api/api';
 import { ITrackTypes, TrackPlaylist } from '../../../interface/interface';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // const PlayButton: FC = () => {
 //   return (
@@ -41,6 +41,7 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
   const token = window.localStorage.getItem('token');
   const { id } = useParams();
   const { query } = useParams();
+  const navigate = useNavigate();
 
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
@@ -146,7 +147,7 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
           <div className={style.artists}>
             {props.track?.artists.map((e, i, a) => (
               <Fragment key={e.id}>
-                <a key={e.id}>{e.name}</a>
+                <a key={e.id} onClick={()=> navigate(`/artist/${e.id}`)}>{e.name}</a>
                 {`${i !== a.length - 1 ? ', ' : ''}`}
               </Fragment>
             ))}
