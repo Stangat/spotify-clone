@@ -33,9 +33,10 @@ const TYPES: { [key: string]: typesOfSearchQuery[] } = {
 };
 
 export const Search: FC<SearchProps> = props => {
+  const temp = { all: !0, songs: !0, playlists: !0, albums: !0, artists: !0};
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const [currentTag, setCurrentTag] = useState<string>('all');
-  const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>({ all: !0 });
+  const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>(temp);
   const { query } = useParams();
   const navigate = useNavigate();
 
