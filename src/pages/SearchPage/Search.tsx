@@ -42,7 +42,6 @@ export const Search: FC<SearchProps> = props => {
   const getResultOfSearching = async (types?: typesOfSearchQuery[]) => {
     const response = await getSearchResults(props.token, types || TYPES.all, query || '');
     const isAvailable: { [key: string]: boolean } = { all: !0 };
-    console.log('response: ', response);
     setItems(response);
     try {
       if (response) {
@@ -72,6 +71,7 @@ export const Search: FC<SearchProps> = props => {
   };
 
   useEffect(() => {
+    setCurrentTag('all');
     const timeOutId = setTimeout(() => getResultOfSearching(), 500);
     return () => clearTimeout(timeOutId);
   }, [query]);
@@ -102,6 +102,7 @@ export const Search: FC<SearchProps> = props => {
             <SearchAll
               token={props.token}
               items={items}
+              isAvailable={availableTags}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
               player={props.player}
