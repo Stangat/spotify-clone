@@ -37,16 +37,16 @@ const TYPES: { [key: string]: typesOfSearchQuery[] } = {
 export const Search: FC<SearchProps> = props => {
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const [currentTag, setCurrentTag] = useState<string>('all');
-  //const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>({ all: !0 });
+  const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>({ all: !0 });
   const { query } = useParams();
   const navigate = useNavigate();
 
   const getResultOfSearching = async (types?: typesOfSearchQuery[]) => {
     const response = await getSearchResults(props.token, types || TYPES.all, query || '');
     const isAvailable: { [key: string]: boolean } = { all: !0 };
-
+    console.log('response: ', response);
     setItems(response);
-    /*try {
+    try {
       if (response) {
         let key: keyof typeof response;
         for (key in response) {
@@ -70,7 +70,7 @@ export const Search: FC<SearchProps> = props => {
       }
     } catch (err) {
       console.log(err);
-    }*/
+    }
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const Search: FC<SearchProps> = props => {
         {Object.keys(TYPES).map(e => {
           return (
             <span
-              // style={{ display: `${!availableTags[e] ? 'none' : 'inline-block'}` }}
+              style={{ display: `${!availableTags[e] ? 'none' : 'inline-block'}` }}
               className={style.searchTag + `${currentTag === e ? ' ' + style.activeTag : ''}`}
               onClick={() => {
                 setCurrentTag(e);
@@ -103,7 +103,6 @@ export const Search: FC<SearchProps> = props => {
           element={
             <SearchAll
               token={props.token}
-              key={uuidv4()}
               items={items}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
@@ -126,7 +125,6 @@ export const Search: FC<SearchProps> = props => {
           element={
             <SearchSongs
               token={props.token}
-              key={uuidv4()}
               items={items}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
