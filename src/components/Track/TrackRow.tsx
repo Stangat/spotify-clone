@@ -1,19 +1,19 @@
-import { FC, Fragment, ReactNode } from 'react';
+import { FC, Fragment, ReactNode, useEffect, useState } from 'react';
 import style from './trackRow.module.less';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
-import { getTrack, getTracksPLaylist, getUserSavedTracks } from '../../../api/api';
-import { ITrackTypes, TrackPlaylist } from '../../../interface/interface';
+import { PlayCircleFilled, PauseCircleFilled, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import {
+  checkUserSavedTracksSpotifyApi,
+  getTrack,
+  getTracksPLaylist,
+  getUserSavedTracks,
+  removeUserSavedTracksSpotifyApi,
+  saveTrackForCurrentUserSpotifyApi,
+} from '../../../api/api';
+import { ITrackTypes } from '../../../interface/interface';
 import { useParams } from 'react-router-dom';
 
-// const PlayButton: FC = () => {
-//   return (
-//     <svg className={style.play} fill="#ffffff" height="24" width="24" viewBox="0 0 24 24">
-//       <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
-//     </svg>
-//   );
-// };
-
 type TrackPoprs = {
+  playlist?: SpotifyApi.PlaylistObjectFull;
   uniqueTracks?: SpotifyApi.TrackObjectFull[];
   track: SpotifyApi.TrackObjectFull | null;
   children?: ReactNode;
@@ -29,6 +29,8 @@ type TrackPoprs = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
@@ -41,6 +43,9 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
   const token = window.localStorage.getItem('token');
   const { id } = useParams();
   const { query } = useParams();
+  const [isSaved, setIsSaved] = useState<boolean>();
+  const [isRemoved, setIsRemoved] = useState<boolean>(false);
+  const pathName = window.location.pathname;
 
   const playingTrackHandler = (url: string) => {
     if (!props.isPlaying) {
@@ -85,80 +90,133 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
     }
   };
 
+  const checkTracksHandler = async () => {
+    if (token && props.track) {
+      const result = await checkUserSavedTracksSpotifyApi(token, props.track.id);
+      setIsSaved(result[0]);
+      if (pathName === '/collection/tracks') {
+        setIsRemoved(!result[0]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkTracksHandler();
+  }, [props.likedSong]);
+
   return (
-    <div className={style.wrapper}>
-      <div className={style.columnPlay}>
-        {/* <PlayButton></PlayButton> */}
-        {props.isPlaying && props.track?.id === props.trackId ? (
-          <PauseCircleFilled
-            className={style.playPauseButton}
-            onClick={() => {
-              if (props.track?.preview_url) {
-                playingTrackHandler(props.track?.preview_url);
-              }
-            }}
-          />
-        ) : (
-          <PlayCircleFilled
-            className={style.playPauseButton}
-            onClick={async () => {
-              if (props.track && props.track?.preview_url && props.track?.name && token) {
-                if (id) {
-                  passTrackToPlayer(props.track, token);
-                  const response = await getTracksPLaylist(token, id ? id : '');
-                  let tracks: SpotifyApi.TrackObjectFull[] = response.items.map(
-                    (item: SpotifyApi.PlaylistTrackObject) => item.track
-                  );
-                  tracks = tracks.filter(track => track?.preview_url !== null);
-                  props.setAlbumTracks(tracks);
-                  shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
-                } else if (query) {
-                  passTrackToPlayer(props.track, token);
-                  const responseTracks = props.uniqueTracks;
-                  if (responseTracks) {
-                    const tracks = responseTracks.filter(item => item.preview_url !== null);
-                    shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
-                    if (tracks) {
+    <>
+      {!isRemoved ? (
+        <div className={style.wrapper}>
+          <div className={style.columnPlay}>
+            {props.isPlaying && props.track?.id === props.trackId ? (
+              <PauseCircleFilled
+                className={style.playPauseButton}
+                onClick={() => {
+                  if (props.track?.preview_url) {
+                    playingTrackHandler(props.track?.preview_url);
+                  }
+                }}
+              />
+            ) : (
+              <PlayCircleFilled
+                className={style.playPauseButton}
+                onClick={async () => {
+                  if (props.track && props.track?.preview_url && props.track?.name && token) {
+                    const trackCheck = await checkUserSavedTracksSpotifyApi(token, props.track.id);
+                    props.setLikedSong(trackCheck[0]);
+                    if (id) {
+                      passTrackToPlayer(props.track, token);
+                      const response = await getTracksPLaylist(token, id ? id : '');
+                      let tracks: SpotifyApi.TrackObjectFull[] = response.items.map(
+                        (item: SpotifyApi.PlaylistTrackObject) => item.track
+                      );
+                      tracks = tracks.filter(track => track?.preview_url !== null);
                       props.setAlbumTracks(tracks);
+                      shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                    } else if (query) {
+                      passTrackToPlayer(props.track, token);
+                      const responseTracks = props.uniqueTracks;
+                      if (responseTracks) {
+                        const tracks = responseTracks.filter(item => item.preview_url !== null);
+                        shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                        if (tracks) {
+                          props.setAlbumTracks(tracks);
+                        }
+                      }
+                    } else {
+                      passTrackToPlayer(props.track, token);
+                      const response: SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(token);
+                      const tracks = response.items.map(item => item.track);
+                      props.setAlbumTracks(tracks);
+                      shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
                     }
                   }
-                } else {
-                  passTrackToPlayer(props.track, token);
-                  const response: SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(token);
-                  const tracks = response.items.map(item => item.track);
-                  props.setAlbumTracks(tracks);
-                  shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                }}
+              />
+            )}
+          </div>
+          <div className={style.columnData}>
+            <img className={style.image} src={props.track?.album.images[0].url} alt="img" />
+            <div>
+              {props.track && props.track.id === props.trackId ? (
+                <span className={style.nameActive}>{props.track?.name}</span>
+              ) : (
+                <span className={style.name}>{props.track?.name}</span>
+              )}
+              <div className={style.artists}>
+                {props.track?.artists.map((e, i, a) => (
+                  <Fragment key={e.id}>
+                    <a key={e.id}>{e.name}</a>
+                    {`${i !== a.length - 1 ? ', ' : ''}`}
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className={style.columnAlbum} hidden={!album}>
+            {props.track?.album.name}
+          </div>
+          {isSaved ? (
+            <HeartFilled
+              className={style.likeSongButtonActive}
+              onClick={async () => {
+                if (props.track?.id === props.trackId) {
+                  props.setLikedSong(false);
                 }
-              }
-            }}
-          />
-        )}
-      </div>
-      <div className={style.columnData}>
-        <img className={style.image} src={props.track?.album.images[0].url} alt="img" />
-        <div>
-          {props.track && props.track.id === props.trackId ? (
-            <span className={style.nameActive}>{props.track?.name}</span>
+                if (token && props.track) {
+                  await removeUserSavedTracksSpotifyApi(token, props.track.id);
+                  if (id) {
+                    setIsSaved(false);
+                  } else {
+                    setIsRemoved(true);
+                  }
+                }
+              }}
+            />
           ) : (
-            <span className={style.name}>{props.track?.name}</span>
+            <HeartOutlined
+              className={style.likeSongButton}
+              onClick={async () => {
+                if (props.track?.id === props.trackId) {
+                  props.setLikedSong(true);
+                }
+                if (token && props.track) {
+                  if (id) {
+                    setIsSaved(true);
+                    await saveTrackForCurrentUserSpotifyApi(token, props.track.id, { id: [props.track.id] });
+                  }
+                }
+              }}
+            />
           )}
-          {/* <span className={style.name}>{props.track?.name}</span> */}
-          <div className={style.artists}>
-            {props.track?.artists.map((e, i, a) => (
-              <Fragment key={e.id}>
-                <a key={e.id}>{e.name}</a>
-                {`${i !== a.length - 1 ? ', ' : ''}`}
-              </Fragment>
-            ))}
+          <div className={style.columnDuration}>
+            {time.minutes + ':' + (String(time.seconds).length == 1 ? '0' + time.seconds : time.seconds)}
           </div>
         </div>
-      </div>
-      <div className={style.columnAlbum} hidden={!album}>
-        {props.track?.album.name}
-      </div>
-      <div className={style.columnDuration}>
-        {time.minutes + ':' + (String(time.seconds).length == 1 ? '0' + time.seconds : time.seconds)}
-      </div>
-    </div>
+      ) : (
+        ''
+      )}
+    </>
   );
 };
