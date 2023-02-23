@@ -55,7 +55,6 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   useEffect(() => {
     getTracksHandler();
-    // checkTracksHandler();
   }, []);
 
   return (
