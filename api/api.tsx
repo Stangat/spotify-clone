@@ -288,7 +288,7 @@ export async function getUserAlbumsSpotifyApi(token: string): Promise<SpotifyApi
 }
 
 export async function getFollowedArtists(token: string): Promise<SpotifyApi.UsersFollowedArtistsResponse> {
-  const res = await fetch(`${baseUrl}/me/following?type=artist`, {
+  const res = await fetch(`${baseUrl}/me/following?type=artist&limit=30`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

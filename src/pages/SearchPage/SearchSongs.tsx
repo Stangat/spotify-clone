@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ITrackTypes } from '../../../interface/interface';
 import { TrackRow } from "../../components/Track/TrackRow";
 //import { FIELDS } from "../PlaylistPage/PlaylistPage";
@@ -29,7 +29,7 @@ const timeSvg = () => {
 
 export const SearchSongs: FC<SearchSongsProps> = props => {
   const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
   const { query } = useParams();
 
@@ -44,7 +44,8 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
           }
           return accumulator;
         }, []);
-        setUniqueTracks(tracksWithoutDubl);
+        console.log(tracksWithoutDubl);
+        tracksWithoutDubl.length && setUniqueTracks(tracksWithoutDubl);
       }
     }
   };
@@ -52,6 +53,8 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
   useEffect(() => {
     uniqueTracksHandler();
   }, []);
+  
+  console.log(uniqueTracks.length);
 
   return (
     <div className={style.searchBody}>
