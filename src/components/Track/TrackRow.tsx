@@ -186,9 +186,10 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
                 }
                 if (token && props.track) {
                   await removeUserSavedTracksSpotifyApi(token, props.track.id);
-                  if (id) {
+                  if (id || query) {
                     setIsSaved(false);
-                  } else {
+                  }
+                  if (pathName === '/collection/tracks') {
                     setIsRemoved(true);
                   }
                 }
@@ -198,14 +199,14 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
             <HeartOutlined
               className={style.likeSongButton}
               onClick={async () => {
-                if (props.track?.id === props.trackId) {
-                  props.setLikedSong(true);
-                }
                 if (token && props.track) {
-                  if (id) {
+                  if (id || query) {
                     setIsSaved(true);
                     await saveTrackForCurrentUserSpotifyApi(token, props.track.id, { id: [props.track.id] });
                   }
+                }
+                if (props.track?.id === props.trackId) {
+                  props.setLikedSong(true);
                 }
               }}
             />
