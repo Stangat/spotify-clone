@@ -99,9 +99,9 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
             </div>
           ))}
         </div>
-        {userSavedSongs?.items.map(e => (
+        {userSavedSongs?.items.map((e, index) => (
           <TrackRow
-            key={e.track?.id}
+            key={index}
             track={e.track}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
