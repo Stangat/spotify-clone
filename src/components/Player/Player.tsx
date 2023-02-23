@@ -24,6 +24,8 @@ type PlayerProps = {
   setTrackId: (trackId: string) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const Player: React.FC<PlayerProps> = ({
@@ -38,15 +40,26 @@ export const Player: React.FC<PlayerProps> = ({
   trackDuration,
   albumTracks,
   setAlbumTracks,
+  trackId,
   setTrackId,
   setSongName,
   setArtistName,
   shuffle,
   setShuffle,
+  likedSong,
+  setLikedSong,
 }) => {
   return (
     <div className={style.playerContainer}>
-      <SongBlock coverUrl={coverUrl} artistName={artistName} songName={songName} />
+      <SongBlock
+        coverUrl={coverUrl}
+        artistName={artistName}
+        songName={songName}
+        trackId={trackId}
+        token={token}
+        likedSong={likedSong}
+        setLikedSong={setLikedSong}
+      />
       <PlayerControls
         token={token}
         player={player}
@@ -62,6 +75,7 @@ export const Player: React.FC<PlayerProps> = ({
         setArtistName={setArtistName}
         shuffle={shuffle}
         setShuffle={setShuffle}
+        setLikedSong={setLikedSong}
       />
       <VolumeBlock player={player} />
     </div>
