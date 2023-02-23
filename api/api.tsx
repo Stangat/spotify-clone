@@ -59,7 +59,7 @@ export async function getAlbums(data: getAlbumsPropsType): Promise<IResponseAlbu
 }
 
 export async function getAlbumTracks(data: getTracksType): Promise<IResponseTracksType> {
-  const res = await fetch(`${baseUrl}/albums/${data.id}/tracks?market=US`, {
+  const res = await fetch(`${baseUrl}/albums/${data.id}/tracks?market=ES`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${data.token}`,
@@ -237,7 +237,7 @@ export async function getSearchResults(
 }
 
 export async function getUserSavedTracks(token: string) {
-  const res = await fetch(`${baseUrl}/me/tracks`, {
+  const res = await fetch(`${baseUrl}/me/tracks?market=ES`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -299,7 +299,7 @@ export async function getUserAlbumsSpotifyApi(token: string): Promise<SpotifyApi
 }
 
 export async function getFollowedArtists(token: string): Promise<SpotifyApi.UsersFollowedArtistsResponse> {
-  const res = await fetch(`${baseUrl}/me/following?type=artist`, {
+  const res = await fetch(`${baseUrl}/me/following?type=artist&limit=30`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -338,7 +338,7 @@ export async function getSingleAlbumSpotifyApi(token: string, id: string): Promi
 }
 
 export async function getFeaturedPlaylistsSpotifyApi(token: string): Promise<SpotifyApi.SingleAlbumResponse> {
-  const res = await fetch(`${baseUrl}/browse/featured-playlists?market=US`, {
+  const res = await fetch(`${baseUrl}/browse/featured-playlists?market=ES`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
