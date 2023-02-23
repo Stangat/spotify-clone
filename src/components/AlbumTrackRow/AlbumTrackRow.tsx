@@ -34,9 +34,6 @@ type AlbumTrackRowProps = {
 };
 
 export const AlbumTrackRow: React.FC<AlbumTrackRowProps> = props => {
-  // const { t } = useTranslation();
-  // const [album, setAlbum] = useState<SpotifyApi.SingleAlbumResponse>();
-  // const [tracks, setTracks] = useState<ITrackTypes[]>([]);
   const [isSaved, setIsSaved] = useState<boolean>();
 
   const timeCorrection = (duration: number) => {
