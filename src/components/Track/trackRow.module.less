@@ -9,6 +9,9 @@
   border-radius: 4px;
   &:hover {
     background-color: hsla(0,0%,100%,.1);
+    .likeSongButton {
+      visibility: visible;
+    }
   }
 }
 
@@ -82,4 +85,14 @@
   font-size: 1em;
   color: white;
   color: #1ad760;
+}
+
+.likeSongButton {
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.likeSongButtonActive {
+  color: #1ad760;
+  cursor: pointer;
 }
