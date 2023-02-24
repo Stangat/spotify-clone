@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { AlbumType, ProfileType } from '../../../interface/interface';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
+import { PaginationHeader } from '../../components/Pagination/Pagination';
 
 type HomePageProps = {
   token: string;
@@ -27,10 +28,8 @@ export const HomePage: React.FC<HomePageProps> = props => {
         setProfile={props.setProfile}
         token={props.token}
         setToken={props.setToken}
-        page={props.page}
-        setPage={props.setPage}
-        totalAlbums={props.totalAlbums}
       />
+      <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
       <HomeContent
         token={props.token}
         totalAlbums={props.totalAlbums}
