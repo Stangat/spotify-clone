@@ -6,6 +6,7 @@ import {
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import styles from './details.module.less';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { AlbumTrackRow } from '../AlbumTrackRow/AlbumTrackRow';
 
 type DetailsAlbumContentProps = {
@@ -34,6 +35,7 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
   const { t } = useTranslation();
   const [album, setAlbum] = useState<SpotifyApi.SingleAlbumResponse>();
   const [tracks, setTracks] = useState<ITrackTypes[]>([]);
+  const navigate = useNavigate();
 
   const timeSvg = () => {
     return (

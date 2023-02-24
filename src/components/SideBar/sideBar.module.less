@@ -2,9 +2,15 @@
   background-color: #121212 !important;
 }
 
+:global(.ant-layout-sider) {
+  background-color: #000;
+}
+
 :global(.ant-layout-sider-children) {
   background-color: #000;
   height: 100% !important;
+  position: fixed;
+  width: 200px;
 }
 
 .titleBlock {
@@ -30,11 +36,35 @@
   margin-top: 20px;
 }
 
-@media (max-width: 575px) {
-  .titleBlock p {
-    display: none;
+.userPlaylists {
+  hr {
+    background-color: #282828;
+    border: none;
+    height: 1px;
+    margin: 8px 24px;
   }
-   .titleBlock svg {
-    flex-basis: 80%;
-  } 
+  ul {
+    padding: 0;
+    li {
+      height: 32px;
+      padding: 0 24px;
+      a {
+        text-decoration: none;
+        color: #b3b3b3;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        white-space: unset;
+        word-break: break-all;
+        user-select: none;
+        overflow: hidden;
+
+        &:hover {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }

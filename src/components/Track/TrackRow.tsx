@@ -1,16 +1,22 @@
 import { FC, Fragment, ReactNode, useEffect, useState } from 'react';
 import style from './trackRow.module.less';
 import { PlayCircleFilled, PauseCircleFilled, HeartOutlined, HeartFilled } from '@ant-design/icons';
-import {
-  checkUserSavedTracksSpotifyApi,
+import { checkUserSavedTracksSpotifyApi,
   getTrack,
   getTracksPLaylist,
   getUserSavedTracks,
   removeUserSavedTracksSpotifyApi,
-  saveTrackForCurrentUserSpotifyApi,
-} from '../../../api/api';
-import { ITrackTypes } from '../../../interface/interface';
-import { useParams } from 'react-router-dom';
+  saveTrackForCurrentUserSpotifyApi, } from '../../../api/api';
+import { ITrackTypes, TrackPlaylist } from '../../../interface/interface';
+import { useParams, useNavigate } from 'react-router-dom';
+
+// const PlayButton: FC = () => {
+//   return (
+//     <svg className={style.play} fill="#ffffff" height="24" width="24" viewBox="0 0 24 24">
+//       <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
+//     </svg>
+//   );
+// };
 
 type TrackPoprs = {
   playlist?: SpotifyApi.PlaylistObjectFull;

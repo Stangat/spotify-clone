@@ -34,12 +34,14 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
   const { id } = useParams();
   return (
     <div className={style.wrapper}>
-      <DropdownProfile
-        setToken={props.setToken}
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-      />
+       <div className={style.header}>
+        <DropdownProfile
+          setToken={props.setToken}
+          profile={props.profile}
+          setProfile={props.setProfile}
+          token={props.token}
+        />
+      </div>
       <DetailsAlbumContent
         token={props.token}
         id={id || ''}

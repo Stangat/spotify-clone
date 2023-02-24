@@ -70,7 +70,7 @@ export const PlaylisPage: FC<PlaylistProps> = props => {
 
   useEffect(() => {
     getPlaylistHandler();
-  }, []);
+  }, [id]);
 
   return (
     <div className={style.wrapper}>
