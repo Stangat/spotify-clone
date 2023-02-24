@@ -26,6 +26,8 @@ type DetailsAlbumPageProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
@@ -56,6 +58,8 @@ export const DetailsAlbumPage: React.FC<DetailsAlbumPageProps> = props => {
         setAlbumTracks={props.setAlbumTracks}
         shuffle={props.shuffle}
         setShuffle={props.setShuffle}
+        likedSong={props.likedSong}
+        setLikedSong={props.setLikedSong}
       />
     </div>
   );

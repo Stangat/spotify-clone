@@ -6,13 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import {
-  AlbumType,
-  PlaylistsType,
-  ProfileType,
-  ITrackTypes,
-  TopArtistsType,
-} from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -26,9 +20,8 @@ import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { getAlbums, getUserPlaylists } from '../api/api';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { Library } from './pages/Library/Library';
-
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -49,6 +42,7 @@ export default function App() {
   const [shuffle, setShuffle] = useState(false);
   const [page, setPage] = useState(1);
   const [totalAlbums, setTotalAlbums] = useState(0);
+  const [likedSong, setLikedSong] = useState<boolean>();
 
   useEffect(() => {
     const hash: string = window.location.hash;
@@ -91,220 +85,232 @@ export default function App() {
   }
 
   return (
-    <ConfigProvider theme={{ token: { fontFamily: `'Inter', sans-serif !important`, },}}>
-    <div className={style.app}>
-      <Layout hasSider style={{width: '100%'}}>
-        <SideBar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              token ? (
-                <HomePage
+    <ConfigProvider theme={{ token: { fontFamily: `'Inter', sans-serif !important` } }}>
+      <div className={style.app}>
+        <Layout hasSider style={{ width: '100%' }}>
+          <SideBar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                token ? (
+                  <HomePage
+                    setToken={setToken}
+                    profile={profile}
+                    setProfile={setProfile}
+                    token={token}
+                    albums={albums}
+                    setALbums={setALbums}
+                    page={page}
+                    setPage={setPage}
+                    totalAlbums={totalAlbums}
+                    setTotalAlbums={setTotalAlbums}
+                  />
+                ) : (
+                  <Login />
+                )
+              }
+            />
+            <Route
+              path="album/:id"
+              element={
+                <DetailsAlbumPage
                   setToken={setToken}
                   profile={profile}
                   setProfile={setProfile}
                   token={token}
                   albums={albums}
-                  setALbums={setALbums}
-                  page={page}
-                  setPage={setPage}
-                  totalAlbums={totalAlbums}
-                  setTotalAlbums={setTotalAlbums}
+                  setIsPlaying={setIsPlaying}
+                  isPlaying={isPlaying}
+                  player={player}
+                  songName={songName}
+                  artistName={artistName}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  setCoverUrl={setCoverURL}
+                  trackDuration={trackDuration}
+                  setTrackDuration={setTrackDuration}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  albumTracks={albumTracks}
+                  setAlbumTracks={setAlbumTracks}
+                  shuffle={shuffle}
+                  setShuffle={setShuffle}
+                  likedSong={likedSong}
+                  setLikedSong={setLikedSong}
                 />
-              ) : (
-                <Login />
-              )
-            }
-          />
-          <Route
-            path="album/:id"
-            element={
-              <DetailsAlbumPage
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                token={token}
-                albums={albums}
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}
-                songName={songName}
-                artistName={artistName}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                trackDuration={trackDuration}
-                setTrackDuration={setTrackDuration}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                albumTracks={albumTracks}
-                setAlbumTracks={setAlbumTracks}
-                shuffle={shuffle}
-                setShuffle={setShuffle}
-              />
-            }
-          />
-          <Route
-            path="profile/:id/*"
-            element={
-              <ProfilePage
-                topTracks={topTracks}
-                setTopTracks={setTopTracks}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                playlists={playlists}
-                setPlaylists={setPlaylists}
-                token={token}
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}
-                songName={songName}
-                artistName={artistName}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                coverUrl={coverUrl}
-                setCoverUrl={setCoverURL}
-                albums={albums}
-                trackDuration={trackDuration}
-                setTrackDuration={setTrackDuration}
-                albumTracks={albumTracks}
-                setAlbumTracks={setAlbumTracks}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                shuffle={shuffle}
-                setShuffle={setShuffle}
-              />
-            }
-          />
-          <Route
-            path="artist/:id"
-            element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
-          />
-          <Route
-            path="settings"
-            element={<Settings token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
-          />
-          <Route
-            path="search/*"
-            element={<SearchPage
+              }
+            />
+            <Route
+              path="profile/:id"
+              element={
+                <ProfilePage
+                  topTracks={topTracks}
+                  setTopTracks={setTopTracks}
+                  setToken={setToken}
+                  profile={profile}
+                  setProfile={setProfile}
+                  playlists={playlists}
+                  setPlaylists={setPlaylists}
+                  token={token}
+                  setIsPlaying={setIsPlaying}
+                  isPlaying={isPlaying}
+                  player={player}
+                  songName={songName}
+                  artistName={artistName}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  coverUrl={coverUrl}
+                  setCoverUrl={setCoverURL}
+                  albums={albums}
+                  trackDuration={trackDuration}
+                  setTrackDuration={setTrackDuration}
+                  albumTracks={albumTracks}
+                  setAlbumTracks={setAlbumTracks}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  shuffle={shuffle}
+                  setShuffle={setShuffle}
+                />
+              }
+            />
+            <Route
+              path="artist/:id"
+              element={<ArtistPage token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            />
+            <Route
+              path="settings"
+              element={<Settings token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            />
+            <Route
+              path="search/*"
+              element={
+                <SearchPage
+                  token={token}
+                  setToken={setToken}
+                  profile={profile}
+                  setProfile={setProfile}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+                  player={player}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  setCoverUrl={setCoverURL}
+                  setTrackDuration={setTrackDuration}
+                  setAlbumTracks={setAlbumTracks}
+                  setShuffle={setShuffle}
+                  likedSong={likedSong}
+                  setLikedSong={setLikedSong}
+                />
+              }
+            />
+            <Route
+              path="collection/*"
+              element={<Library token={token} setToken={setToken} profile={profile} setProfile={setProfile} />}
+            />
+            <Route
+              path="playlist/:id"
+              element={
+                <PlaylisPage
+                  setIsPlaying={setIsPlaying}
+                  isPlaying={isPlaying}
+                  player={player}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  setCoverUrl={setCoverURL}
+                  setTrackDuration={setTrackDuration}
+                  setAlbumTracks={setAlbumTracks}
+                  setShuffle={setShuffle}
+                  likedSong={likedSong}
+                  setLikedSong={setLikedSong}
+                />
+              }
+            />
+            <Route
+              path="top_tracks"
+              element={
+                <TopTracksUserPage
+                  token={token}
+                  setToken={setToken}
+                  profile={profile}
+                  setProfile={setProfile}
+                  setTopTracks={setTopTracks}
+                  topTracks={topTracks}
+                  playlists={playlists}
+                  setPlaylists={setPlaylists}
+                  setIsPlaying={setIsPlaying}
+                  isPlaying={isPlaying}
+                  player={player}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  setCoverUrl={setCoverURL}
+                  trackDuration={trackDuration}
+                  setTrackDuration={setTrackDuration}
+                  albumTracks={albumTracks}
+                  setAlbumTracks={setAlbumTracks}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  shuffle={shuffle}
+                  setShuffle={setShuffle}
+                />
+              }
+            />
+            <Route
+              path="collection/tracks"
+              element={
+                <LikedSongs
+                  token={token}
+                  setToken={setToken}
+                  profile={profile}
+                  setProfile={setProfile}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+                  player={player}
+                  trackId={trackId}
+                  setTrackId={setTrackId}
+                  setSongName={setSongName}
+                  setArtistName={setArtistName}
+                  setCoverUrl={setCoverURL}
+                  setTrackDuration={setTrackDuration}
+                  setAlbumTracks={setAlbumTracks}
+                  setShuffle={setShuffle}
+                  likedSong={likedSong}
+                  setLikedSong={setLikedSong}
+                />
+              }
+            />
+          </Routes>
+          <Footer>
+            <Player
               token={token}
-              setToken={setToken}
-              profile={profile}
-              setProfile={setProfile}
-              isPlaying={isPlaying}
               setIsPlaying={setIsPlaying}
+              isPlaying={isPlaying}
               player={player}
-              trackId={trackId}
-              setTrackId={setTrackId}
+              songName={songName}
+              artistName={artistName}
               setSongName={setSongName}
               setArtistName={setArtistName}
+              coverUrl={coverUrl}
               setCoverUrl={setCoverURL}
+              trackDuration={trackDuration}
               setTrackDuration={setTrackDuration}
+              albums={albums}
+              albumTracks={albumTracks}
               setAlbumTracks={setAlbumTracks}
-              setShuffle={setShuffle}
-            />
-          }
-          />
-          <Route
-            path="collection/*"
-            element={ <Library token={token}setToken={setToken} profile={profile} setProfile={setProfile}/> }
-          />
-          <Route
-            path="playlist/:id/*"
-            element={
-              <PlaylisPage
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                setTrackDuration={setTrackDuration}
-                setAlbumTracks={setAlbumTracks}
-                setShuffle={setShuffle}
-              />
-            }
-          />
-          <Route
-            path="profile/:id/tracks"
-            element={
-              <TopTracksUserPage
-                token={token}
-                setToken={setToken}
-                profile={profile}
-                setProfile={setProfile}
-                setTopTracks={setTopTracks}
-                topTracks={topTracks}
-                playlists={playlists}
-                setPlaylists={setPlaylists}
-                setIsPlaying={setIsPlaying}
-                isPlaying={isPlaying}
-                player={player}
-                setSongName={setSongName}
-                setArtistName={setArtistName}
-                setCoverUrl={setCoverURL}
-                trackDuration={trackDuration}
-                setTrackDuration={setTrackDuration}
-                albumTracks={albumTracks}
-                setAlbumTracks={setAlbumTracks}
-                trackId={trackId}
-                setTrackId={setTrackId}
-                shuffle={shuffle}
-                setShuffle={setShuffle}
-              />
-            }
-          />
-          <Route
-            path="collection/tracks"
-            element={<LikedSongs
-              token={token}
-              setToken={setToken}
-              profile={profile}
-              setProfile={setProfile}
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              player={player}
               trackId={trackId}
               setTrackId={setTrackId}
-              setSongName={setSongName}
-              setArtistName={setArtistName}
-              setCoverUrl={setCoverURL}
-              setTrackDuration={setTrackDuration}
-              setAlbumTracks={setAlbumTracks}
+              shuffle={shuffle}
               setShuffle={setShuffle}
+              likedSong={likedSong}
+              setLikedSong={setLikedSong}
             />
-          }
-          />
-        </Routes>
-        <Footer>
-          <Player
-            token={token}
-            setIsPlaying={setIsPlaying}
-            isPlaying={isPlaying}
-            player={player}
-            songName={songName}
-            artistName={artistName}
-            setSongName={setSongName}
-            setArtistName={setArtistName}
-            coverUrl={coverUrl}
-            setCoverUrl={setCoverURL}
-            trackDuration={trackDuration}
-            setTrackDuration={setTrackDuration}
-            albums={albums}
-            albumTracks={albumTracks}
-            setAlbumTracks={setAlbumTracks}
-            trackId={trackId}
-            setTrackId={setTrackId}
-            shuffle={shuffle}
-            setShuffle={setShuffle}
-          />
-        </Footer>
-      </Layout>
-    </div>
+          </Footer>
+        </Layout>
+      </div>
     </ConfigProvider>
   );
 }

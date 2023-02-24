@@ -22,6 +22,8 @@ type SearchProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 const TYPES: { [key: string]: typesOfSearchQuery[] } = {
@@ -113,6 +115,8 @@ export const Search: FC<SearchProps> = props => {
               setTrackDuration={props.setTrackDuration}
               setAlbumTracks={props.setAlbumTracks}
               setShuffle={props.setShuffle}
+              likedSong={props.likedSong}
+              setLikedSong={props.setLikedSong}
             ></SearchAll>
           }
         />
@@ -133,6 +137,8 @@ export const Search: FC<SearchProps> = props => {
               setTrackDuration={props.setTrackDuration}
               setAlbumTracks={props.setAlbumTracks}
               setShuffle={props.setShuffle}
+              likedSong={props.likedSong}
+              setLikedSong={props.setLikedSong}
             ></SearchSongs>
           }
         />

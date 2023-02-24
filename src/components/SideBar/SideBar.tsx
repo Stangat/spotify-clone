@@ -48,6 +48,7 @@ export const SideBar: React.FC = () => {
           setIsCollapsed(!isCollapsed);
         }}
         breakpoint={'sm'}
+        trigger={null}
       >
         <Link to={'/'}>
           <div className={styles.titleBlock}>

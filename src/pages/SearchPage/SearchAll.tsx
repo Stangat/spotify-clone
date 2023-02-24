@@ -24,6 +24,8 @@ type SearchAllProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const SearchAll: React.FC<SearchAllProps> = props => {
@@ -113,6 +115,8 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
                     setAlbumTracks={props.setAlbumTracks}
                     setShuffle={props.setShuffle}
                     uniqueTracks={uniqueTracks}
+                    likedSong={props.likedSong}
+                    setLikedSong={props.setLikedSong}
                   ></TrackRow>
                 ) : (
                   ''
