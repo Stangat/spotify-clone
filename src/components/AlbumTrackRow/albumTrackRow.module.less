@@ -97,6 +97,17 @@
   color: #a0a0a0;
   margin: 0;
   margin-top: 2px;
+  a {
+    color: #6a6a6a;
+    text-decoration: none;
+    font-weight: 400;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  p { 
+    color: #6a6a6a;
+  }
 }
 
 .trackName {
@@ -162,7 +173,7 @@
 }
 
 .trackDurationContainer {
-  width: 150px;
+  flex-basis: 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;

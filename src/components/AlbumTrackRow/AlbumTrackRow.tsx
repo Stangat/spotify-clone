@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   checkUserSavedTracksSpotifyApi,
   getAlbumTracks,
@@ -9,6 +9,7 @@ import {
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
 import { PlayCircleFilled, PauseCircleFilled, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import styles from './albumTrackRow.module.less';
+import { useNavigate } from 'react-router-dom';
 
 type AlbumTrackRowProps = {
   token: string;
@@ -35,6 +36,7 @@ type AlbumTrackRowProps = {
 
 export const AlbumTrackRow: React.FC<AlbumTrackRowProps> = props => {
   const [isSaved, setIsSaved] = useState<boolean>();
+  const navigate = useNavigate();
 
   const timeCorrection = (duration: number) => {
     const min = Math.trunc(duration / 60000);
@@ -129,9 +131,12 @@ export const AlbumTrackRow: React.FC<AlbumTrackRowProps> = props => {
             )}
 
             <p className={styles.artistName}>
-              {props.track.artists.map(artist => {
-                return artist.name;
-              })}
+              {props.track.artists.map((e, i, a) => (
+                <Fragment key={e.id}>
+                  <a key={e.id} onClick={()=> navigate(`/artist/${e.id}`)}>{e.name}</a>
+                  {`${i !== a.length - 1 ? ', ' : ''}`}
+                </Fragment>
+              ))}
             </p>
           </div>
         </div>

@@ -49,7 +49,6 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
   const token = window.localStorage.getItem('token');
   const { id } = useParams();
   const { query } = useParams();
-  const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState<boolean>();
   const [isRemoved, setIsRemoved] = useState<boolean>(false);
   const pathName = window.location.pathname;
