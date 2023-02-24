@@ -24,6 +24,8 @@ type LikedSongsPageProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const LikedSongs: React.FC<LikedSongsPageProps> = ({
@@ -41,7 +43,9 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
   setCoverUrl,
   setTrackDuration,
   setAlbumTracks,
-  setShuffle
+  setShuffle,
+  likedSong,
+  setLikedSong,
 }) => {
   const { t } = useTranslation();
   const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
@@ -95,9 +99,9 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
             </div>
           ))}
         </div>
-        {userSavedSongs?.items.map(e => (
+        {userSavedSongs?.items.map((e, index) => (
           <TrackRow
-            key={e.track?.id}
+            key={index}
             track={e.track}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
@@ -110,6 +114,8 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
             setTrackDuration={setTrackDuration}
             setAlbumTracks={setAlbumTracks}
             setShuffle={setShuffle}
+            likedSong={likedSong}
+            setLikedSong={setLikedSong}
           ></TrackRow>
         ))}
       </div>

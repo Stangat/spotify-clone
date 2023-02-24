@@ -655,3 +655,7 @@ export type UserAlbumsType = {
     };
   }>;
 };
+
+export interface ITrackSaveData {
+  id: string[];
+}

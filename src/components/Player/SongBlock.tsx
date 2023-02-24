@@ -1,14 +1,30 @@
 import style from './player.module.less';
-import { HeartOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { PictureInPictureAlt } from '@mui/icons-material';
+import {
+  removeUserSavedTracksSpotifyApi,
+  saveTrackForCurrentUserSpotifyApi,
+} from '../../../api/api';
 
 type SongBlockProps = {
+  token: string;
   artistName: string;
   songName: string;
   coverUrl: string;
+  trackId: string;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
-export const SongBlock: React.FC<SongBlockProps> = ({ artistName, songName, coverUrl }) => {
+export const SongBlock: React.FC<SongBlockProps> = ({
+  token,
+  artistName,
+  songName,
+  coverUrl,
+  trackId,
+  likedSong,
+  setLikedSong,
+}) => {
   return (
     <div className={style.songBlockContainer}>
       <div className={style.coverContainer}>
@@ -29,7 +45,23 @@ export const SongBlock: React.FC<SongBlockProps> = ({ artistName, songName, cove
         <p className={style.artistName}>{artistName}</p>
       </div>
       <div className={style.songInteractionContainer}>
-        <HeartOutlined style={{ padding: '5px', fontSize: '16px' }} />
+        {likedSong ? (
+          <HeartFilled
+            className={style.likeSongButtonActive}
+            onClick={async () => {
+              await removeUserSavedTracksSpotifyApi(token, trackId);
+              setLikedSong(false);
+            }}
+          />
+        ) : (
+          <HeartOutlined
+            className={style.likeSongButton}
+            onClick={async () => {
+              setLikedSong(true);
+              await saveTrackForCurrentUserSpotifyApi(token, trackId, { id: [trackId] });
+            }}
+          />
+        )}
         <PictureInPictureAlt style={{ fontSize: '16px', marginLeft: '10px' }} />
       </div>
     </div>

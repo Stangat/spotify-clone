@@ -1,10 +1,13 @@
-import { Fragment, useEffect, useState } from 'react';
-import { getAlbumTracks, getSingleAlbumSpotifyApi, getTrack } from '../../../api/api';
+import { useEffect, useState } from 'react';
+import {
+  getAlbumTracks,
+  getSingleAlbumSpotifyApi,
+} from '../../../api/api';
 import { AlbumType, ITrackTypes } from '../../../interface/interface';
-import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 import styles from './details.module.less';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { AlbumTrackRow } from '../AlbumTrackRow/AlbumTrackRow';
 
 type DetailsAlbumContentProps = {
   token: string;
@@ -24,6 +27,8 @@ type DetailsAlbumContentProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => {
@@ -43,34 +48,11 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
 
   const FIELDS = ['#', 'TITLE', timeSvg()];
 
-  const playingTrackHandler = (url: string) => {
-    if (!props.isPlaying) {
-      props.player.src = url;
-      props.player.play();
-      props.setIsPlaying(true);
-    } else {
-      if (props.player.src !== url) {
-        props.player.src = url;
-        props.player.play();
-      } else {
-        props.player.pause();
-        props.setIsPlaying(false);
-      }
-    }
-  };
-
   const getTracksHandler = async () => {
     const response = (await getAlbumTracks({ id: props.id, token: props.token })).items;
-    const response2 = await getSingleAlbumSpotifyApi(props.token, props.id); 
+    const response2 = await getSingleAlbumSpotifyApi(props.token, props.id);
     setAlbum(response2);
     setTracks(response);
-  };
-
-  const timeCorrection = (duration: number) => {
-    const min = Math.trunc(duration / 60000);
-    const sec = Math.trunc(((duration / 60000) % 1) * 60);
-
-    return `${min}:${sec < 10 ? `0${sec}` : sec}`;
   };
 
   useEffect(() => {
@@ -81,52 +63,59 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
     <div className={styles.detailsContentContainer}>
       <div key={props.id}>
         {/* {props.albums.map(album => { */}
-           {/* if (album.id === props.id) {
+        {/* if (album.id === props.id) {
             // TODO req
             // return ( */}
-            {
-              album ?
-              <div
-                key={props.id}
-                className={styles.blockImage}
-                style={{
-                  borderColor: '#000000',
-                  backgroundImage: `url(${album.images ? album.images[0].url : ''})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                }}
-              >
-                <div className={styles.boxBlur}>
-                  <img className={styles.imageAlbum} key={album.id} alt={album.label} src={album.images ? album.images[1].url : ''} />
-                  <div className={styles.descriptionAlbumTracks}>
-                    <p className={styles.typeAlbum}>{album.type}</p>
-                    {album.name.length > 17 ? (
-                      <p className={styles.albumNameMini}>{album.name}</p>
-                    ) : (
-                      <p className={styles.albumName}>{album.name}</p>
-                    )}
-                    <div className={styles.descriptionBottom}>
-                      <div className={styles.detailsContainer}>
-                        {album.artists.map(artist => {
-                          return (
-                            <p className={styles.name} key={artist.id}>
-                              {`${artist.name}`}
-                            </p>
-                          );
-                        })}
-                      </div>
-                      <p className={styles.date}>{`• ${album.release_date.slice(0, 4)} •`}</p>
-                      <p className={styles.songs}>
-                        {album.total_tracks < 10 ? `${album.total_tracks} ${t('song')}` : `${album.total_tracks} ${t('songs')}`}
-                      </p>
-                    </div>
+        {album ? (
+          <div
+            key={props.id}
+            className={styles.blockImage}
+            style={{
+              borderColor: '#000000',
+              backgroundImage: `url(${album.images ? album.images[0].url : ''})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className={styles.boxBlur}>
+              <img
+                className={styles.imageAlbum}
+                key={album.id}
+                alt={album.label}
+                src={album.images ? album.images[1].url : ''}
+              />
+              <div className={styles.descriptionAlbumTracks}>
+                <p className={styles.typeAlbum}>{album.type}</p>
+                {album.name.length > 17 ? (
+                  <p className={styles.albumNameMini}>{album.name}</p>
+                ) : (
+                  <p className={styles.albumName}>{album.name}</p>
+                )}
+                <div className={styles.descriptionBottom}>
+                  <div className={styles.detailsContainer}>
+                    {album.artists.map(artist => {
+                      return (
+                        <p className={styles.name} key={artist.id}>
+                          {`${artist.name}`}
+                        </p>
+                      );
+                    })}
                   </div>
+                  <p className={styles.date}>{`• ${album.release_date.slice(0, 4)} •`}</p>
+                  <p className={styles.songs}>
+                    {album.total_tracks < 10
+                      ? `${album.total_tracks} ${t('song')}`
+                      : `${album.total_tracks} ${t('songs')}`}
+                  </p>
                 </div>
               </div>
-              : ''
-            }
-            {/* );
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
+        {/* );
           }
         })} */}
       </div>
@@ -139,74 +128,32 @@ export const DetailsAlbumContent: React.FC<DetailsAlbumContentProps> = props => 
           ))}
         </div>
         <div className={styles.tracksBlock}>
-          {tracks && tracks.map((track, index) => {
-            return (
-              <div className={styles.trackBlock} key={track.id}>
-                <div className={styles.artistDesc}>
-                  {props.isPlaying && track.id === props.trackId ? (
-                    <PauseCircleFilled
-                      className={styles.playPauseButton}
-                      key={index}
-                      onClick={() => {
-                        if (track.preview_url) {
-                          playingTrackHandler(track.preview_url);
-                        }
-                      }}
-                    />
-                  ) : (
-                    <PlayCircleFilled
-                      className={styles.playPauseButton}
-                      key={index}
-                      onClick={async () => {
-                        if (track.preview_url) {
-                          playingTrackHandler(track.preview_url);
-                        }
-                        props.setSongName(track.name);
-                        props.setArtistName(track.artists[0].name);
-                        const currentTrack = await getTrack(props.token, track.id);
-                        const url = await currentTrack.album.images[0].url;
-                        props.setCoverUrl(url);
-                        props.player.preload = 'metadata';
-                        props.player.onloadedmetadata = () => {
-                          props.setTrackDuration(props.player.duration);
-                        };
-                        props.setTrackId(track.id);
-                        const response = await getAlbumTracks({ id: props.id, token: props.token });
-                        props.setAlbumTracks(response.items);
-                        const shuffled = localStorage.getItem('shuffled');
-                        if (shuffled !== 'true') {
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        } else {
-                          localStorage.setItem('shuffled', '');
-                          props.setShuffle(false);
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        }
-                      }}
-                    />
-                  )}
-
-                  <div>
-                    {track.id === props.trackId ? (
-                      <p className={styles.trackNameActive}>{track.name}</p>
-                    ) : (
-                      <p className={styles.trackName}>{track.name}</p>
-                    )}
-
-                    <p className={styles.artistName}>
-                      {track.artists.map((e, i, a) => (
-                        <Fragment key={e.id}>
-                          <a key={e.id} onClick={()=> navigate(`/artist/${e.id}`)}>{e.name}</a>
-                          {`${i !== a.length - 1 ? ', ' : ''}`}
-                        </Fragment>
-                      ))}
-                    </p>
-                  </div>
-                </div>
-
-                {<p className={styles.trackDuration}>{timeCorrection(track.duration_ms)}</p>}
-              </div>
-            );
-          })}
+          {tracks &&
+            tracks.map((track, index) => (
+              <AlbumTrackRow
+                key={index}
+                token={props.token}
+                track={track}
+                id={props.id || ''}
+                albums={props.albums}
+                setIsPlaying={props.setIsPlaying}
+                isPlaying={props.isPlaying}
+                player={props.player}
+                setSongName={props.setSongName}
+                setArtistName={props.setArtistName}
+                setCoverUrl={props.setCoverUrl}
+                trackDuration={props.trackDuration}
+                setTrackDuration={props.setTrackDuration}
+                trackId={props.trackId}
+                setTrackId={props.setTrackId}
+                albumTracks={props.albumTracks}
+                setAlbumTracks={props.setAlbumTracks}
+                shuffle={props.shuffle}
+                setShuffle={props.setShuffle}
+                likedSong={props.likedSong}
+                setLikedSong={props.setLikedSong}
+              />
+            ))}
         </div>
       </div>
     </div>

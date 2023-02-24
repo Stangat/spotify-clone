@@ -42,6 +42,8 @@ type SearchPageProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const SearchPage: React.FC<SearchPageProps> = props => {
@@ -108,6 +110,8 @@ export const SearchPage: React.FC<SearchPageProps> = props => {
                 setTrackDuration={props.setTrackDuration}
                 setAlbumTracks={props.setAlbumTracks}
                 setShuffle={props.setShuffle}
+                likedSong={props.likedSong}
+                setLikedSong={props.setLikedSong}
               ></Search>
             }
           ></Route>

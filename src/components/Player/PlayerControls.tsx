@@ -3,7 +3,7 @@ import { StepBackwardOutlined, StepForwardOutlined, PlayCircleFilled, PauseCircl
 import { Progress } from 'antd';
 import { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import { ITrackTypes } from '../../../interface/interface';
-import { getTrack } from '../../../api/api';
+import { checkUserSavedTracksSpotifyApi, getTrack } from '../../../api/api';
 import { RepeatComponent } from './Repeat';
 import { ShuffleComponent } from './Shuffle';
 
@@ -22,6 +22,7 @@ type PlayerControlsProps = {
   setArtistName: (ArtistName: string) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -38,6 +39,7 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
   setArtistName,
   shuffle,
   setShuffle,
+  setLikedSong,
 }) => {
   const [currentTime, setCurrentTime] = useState('00:00');
   const [progress, setProgress] = useState(0);
@@ -85,6 +87,8 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({
       const trackId = currAlbumTracksParsed[index].id;
       const trackSongName = currAlbumTracksParsed[index].name;
       const trackArtistName = currAlbumTracksParsed[index].artists[0].name;
+      const trackCheck = await checkUserSavedTracksSpotifyApi(token, trackId);
+      setLikedSong(trackCheck[0]);
       setSongName(trackSongName);
       setArtistName(trackArtistName);
       const currentTrack = await getTrack(token, trackId);

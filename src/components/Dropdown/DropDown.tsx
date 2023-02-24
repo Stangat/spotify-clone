@@ -32,7 +32,6 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
   }, []);
 
   const onClick: MenuProps['onClick'] = e => {
-    //console.log('click ', e);
     switch (e.key) {
       case '1':
         navigate(`/profile/${props.profile?.id}`);
