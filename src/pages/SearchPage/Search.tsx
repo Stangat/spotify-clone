@@ -22,6 +22,8 @@ type SearchProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 const TYPES: { [key: string]: typesOfSearchQuery[] } = {
@@ -33,16 +35,16 @@ const TYPES: { [key: string]: typesOfSearchQuery[] } = {
 };
 
 export const Search: FC<SearchProps> = props => {
+  const temp = { all: !0, songs: !0, playlists: !0, albums: !0, artists: !0};
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const [currentTag, setCurrentTag] = useState<string>('all');
-  const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>({ all: !0 });
+  const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>(temp);
   const { query } = useParams();
   const navigate = useNavigate();
 
   const getResultOfSearching = async (types?: typesOfSearchQuery[]) => {
     const response = await getSearchResults(props.token, types || TYPES.all, query || '');
     const isAvailable: { [key: string]: boolean } = { all: !0 };
-    console.log('response: ', response);
     setItems(response);
     try {
       if (response) {
@@ -72,6 +74,7 @@ export const Search: FC<SearchProps> = props => {
   };
 
   useEffect(() => {
+    setCurrentTag('all');
     const timeOutId = setTimeout(() => getResultOfSearching(), 500);
     return () => clearTimeout(timeOutId);
   }, [query]);
@@ -102,6 +105,7 @@ export const Search: FC<SearchProps> = props => {
             <SearchAll
               token={props.token}
               items={items}
+              isAvailable={availableTags}
               isPlaying={props.isPlaying}
               setIsPlaying={props.setIsPlaying}
               player={props.player}
@@ -113,6 +117,8 @@ export const Search: FC<SearchProps> = props => {
               setTrackDuration={props.setTrackDuration}
               setAlbumTracks={props.setAlbumTracks}
               setShuffle={props.setShuffle}
+              likedSong={props.likedSong}
+              setLikedSong={props.setLikedSong}
             ></SearchAll>
           }
         />
@@ -133,6 +139,8 @@ export const Search: FC<SearchProps> = props => {
               setTrackDuration={props.setTrackDuration}
               setAlbumTracks={props.setAlbumTracks}
               setShuffle={props.setShuffle}
+              likedSong={props.likedSong}
+              setLikedSong={props.setLikedSong}
             ></SearchSongs>
           }
         />

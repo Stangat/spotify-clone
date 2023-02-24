@@ -1,12 +1,13 @@
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { ContainerOutlined, HeartFilled, HomeFilled, SearchOutlined, PlusCircleFilled } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React from 'react';
 import Sider from 'antd/es/layout/Sider';
 import { SpotifySvg } from '../../assets/logo';
 import styles from './sideBar.module.less';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PlaylistsType } from '../../../interface/interface';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -26,11 +27,10 @@ function getItem(
   } as MenuItem;
 }
 
-export const SideBar: React.FC = () => {
+
+export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playlists}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const items: MenuItem[] = [
     getItem(`${t('home')}`, '', <HomeFilled />),
     getItem(`${t('search')}`, 'search', <SearchOutlined />),
@@ -41,15 +41,7 @@ export const SideBar: React.FC = () => {
 
   return (
     <div>
-      <Sider
-        collapsible
-        collapsed={isCollapsed}
-        onCollapse={() => {
-          setIsCollapsed(!isCollapsed);
-        }}
-        breakpoint={'sm'}
-        trigger={null}
-      >
+      <Sider>
         <Link to={'/'}>
           <div className={styles.titleBlock}>
             {<SpotifySvg />}

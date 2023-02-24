@@ -24,6 +24,9 @@ type SearchAllProps = {
   setTrackDuration: (trackDuration: number) => void;
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
+  isAvailable:  { [key: string]: boolean };
 };
 
 export const SearchAll: React.FC<SearchAllProps> = props => {
@@ -41,6 +44,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
 
   const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const [fourTracks, setFourTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
+  const [notFound, setNotFound] = useState<boolean>();
   const { query } = useParams();
 
   const uniqueTracksHandler = async () => {
@@ -67,12 +71,24 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
 
   useEffect(() => {
     uniqueTracksHandler();
-  }, []);
+    const flag = Object.entries(props.isAvailable).reduce((acc, curr) => acc = acc + Number(curr[1]), 0) < 2 ? !0 : !1;
+    setNotFound(flag);
+  }, [props.isAvailable]);
+
+
+  if (notFound) return (
+    <div className={commonstyle.searchBody + ' ' + style.notFound}>
+      <h2>{`No results found for "${query}"`}</h2>
+      <p>Please make sure your words are spelled correctly or use less or different keywords.</p>
+    </div>
+  );
 
   return (
     <div className={commonstyle.searchBody}>
       <div className={style.hat}>
-        <section className={style.topResultContainer} onClick={() => navigate(`/${topResult?.type}/${topResult?.id}`)}>
+        <section className={style.topResultContainer}
+        hidden={!props.isAvailable['artists']}
+        onClick={() => navigate(`/${topResult?.type}/${topResult?.id}`)}>
           <h2 className={style.header}>{t('topResult')}</h2>
           <div className={style.topResult}>
             <div
@@ -91,7 +107,8 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
             </div>
           </div>
         </section>
-        <section className={style.songsBlockContainer}>
+        <section className={style.songsBlockContainer}
+        hidden={!props.isAvailable['songs']}>
           <h2 className={style.header}>{t('upSongs')}</h2>
           <div className={style.songsBlock}>
             <div>
@@ -113,6 +130,8 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
                     setAlbumTracks={props.setAlbumTracks}
                     setShuffle={props.setShuffle}
                     uniqueTracks={uniqueTracks}
+                    likedSong={props.likedSong}
+                    setLikedSong={props.setLikedSong}
                   ></TrackRow>
                 ) : (
                   ''
@@ -123,17 +142,17 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
         </section>
       </div>
       {
-        <RowOfCards title={'Albums'}>
+        <RowOfCards title={'Albums'} hidden={!props.isAvailable['albums']}>
           {props.items?.albums?.items.map((e, i) => (i < 8 ? <CardItem key={e.id} album={e}></CardItem> : ''))}
         </RowOfCards>
       }
       {
-        <RowOfCards title={'Artists'}>
+        <RowOfCards title={'Artists'} hidden={!props.isAvailable['artists']}>
           {props.items?.artists?.items.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
         </RowOfCards>
       }
       {
-        <RowOfCards title={'Playlists'}>
+        <RowOfCards title={'Playlists'} hidden={!props.isAvailable['playlists']}>
           {props.items?.playlists?.items.map((e, i) =>
             i < 8 ? (
               <CardItem

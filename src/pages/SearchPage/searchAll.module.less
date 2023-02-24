@@ -46,6 +46,7 @@
           text-decoration: none;
           color: #ffffff;
           font-size: 1.8em;
+          margin: 0;
           font-weight: 700;
         }
 
@@ -75,9 +76,30 @@
 .songsBlockContainer {
   width: 70%;
   position: relative;
+  flex-grow: 1;
   .songsBlock {
     width: 100%;
     height: 100%;
     padding-top: 12px;
   } 
+}
+
+.notFound {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 40vh;
+
+  h2 { 
+    margin: 0;
+    font-size: 2em;
+    font-weight: 700;
+    overflow-wrap: break-word;
+  }
+  p {
+    margin: 0;
+    padding: 10px 0 30px;
+  }
 }

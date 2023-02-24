@@ -6,13 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import {
-  AlbumType,
-  PlaylistsType,
-  ProfileType,
-  ITrackTypes,
-  TopArtistsType,
-} from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -26,9 +20,8 @@ import { TopTracksUserPage } from './pages/TopTracksUserPage/TopTracksUserPage';
 import { LikedSongs } from './pages/LikedSongs/LikedSongs';
 import { getAlbums, getUserPlaylists } from '../api/api';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { Library } from './pages/Library/Library';
-
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -49,6 +42,7 @@ export default function App() {
   const [shuffle, setShuffle] = useState(false);
   const [page, setPage] = useState(1);
   const [totalAlbums, setTotalAlbums] = useState(0);
+  const [likedSong, setLikedSong] = useState<boolean>();
 
   useEffect(() => {
     const hash: string = window.location.hash;
@@ -94,7 +88,7 @@ export default function App() {
     <ConfigProvider theme={{ token: { fontFamily: `'Inter', sans-serif !important`, },}}>
     <div className={style.app}>
       <Layout hasSider style={{width: '100%'}}>
-        <SideBar />
+        <SideBar playlists={playlists}/>
         <Routes>
           <Route
             path="/"
@@ -142,6 +136,8 @@ export default function App() {
                 setAlbumTracks={setAlbumTracks}
                 shuffle={shuffle}
                 setShuffle={setShuffle}
+                likedSong={likedSong}
+                setLikedSong={setLikedSong}
               />
             }
           />
@@ -204,6 +200,8 @@ export default function App() {
               setTrackDuration={setTrackDuration}
               setAlbumTracks={setAlbumTracks}
               setShuffle={setShuffle}
+              likedSong={likedSong}
+              setLikedSong={setLikedSong}
             />
           }
           />
@@ -226,6 +224,8 @@ export default function App() {
                 setTrackDuration={setTrackDuration}
                 setAlbumTracks={setAlbumTracks}
                 setShuffle={setShuffle}
+                likedSong={likedSong}
+                setLikedSong={setLikedSong}
               />
             }
           />
@@ -276,6 +276,8 @@ export default function App() {
               setTrackDuration={setTrackDuration}
               setAlbumTracks={setAlbumTracks}
               setShuffle={setShuffle}
+              likedSong={likedSong}
+              setLikedSong={setLikedSong}
             />
           }
           />
@@ -301,6 +303,8 @@ export default function App() {
             setTrackId={setTrackId}
             shuffle={shuffle}
             setShuffle={setShuffle}
+            likedSong={likedSong}
+            setLikedSong={setLikedSong}
           />
         </Footer>
       </Layout>
