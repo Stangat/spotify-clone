@@ -14,7 +14,7 @@ type HeaderHomeProps = {
 
 export const HeaderHome: FC<HeaderHomeProps> = props => {
   return (
-      <Header className={style.header}>
+      <Header className={style.header} style={{justifyContent: 'flex-end'}}>
         <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken}/>
       </Header>
   );

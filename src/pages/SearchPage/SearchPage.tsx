@@ -66,7 +66,9 @@ export const SearchPage: React.FC<SearchPageProps> = props => {
 
   return (
     <div className={style.wrapper}>
-      <CustomHeader profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken}>
+      <CustomHeader profile={props.profile} setProfile={props.setProfile}
+      token={props.token} setToken={props.setToken}
+      style={{justifyContent: 'space-between' }}>
         <div className={style.searchContainer}>
           <input
             className={style.search}

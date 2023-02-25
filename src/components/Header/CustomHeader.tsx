@@ -10,11 +10,12 @@ type HeaderProps = {
   setToken: (token:string)=>void
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
+  style?: React.CSSProperties;
 };
 
 export const CustomHeader: FC<HeaderProps> = ({children, ...props}) => {
   return (
-    <Header className={style.header}>
+    <Header className={style.header} style={props.style || {}}>
       {children}
       <DropdownProfile profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken}/>
     </Header>
