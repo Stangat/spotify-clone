@@ -105,6 +105,7 @@ export default function App() {
                     setPage={setPage}
                     totalAlbums={totalAlbums}
                     setTotalAlbums={setTotalAlbums}
+                    limit={LIMIT}
                   />
                 ) : (
                   <Login />
