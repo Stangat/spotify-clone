@@ -1,25 +1,22 @@
-import { PauseCircleFilled, PlayCircleFilled } from '@mui/icons-material';
 import { Layout } from 'antd';
 import { useEffect } from 'react';
-import { getTrack, getUserTopTracks } from '../../../api/api';
+import { getUserTopTracks } from '../../../api/api';
 import {
-  ArtistTopUserType,
   ITrackTypes,
-  PlaylistsType,
   ProfileType,
-  TopArtistsType,
 } from '../../../interface/interface';
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
-import styles from './topTracksUserPage.module.less';
+import style from './topTracksUserPage.module.less';
+import { useTranslation } from 'react-i18next';
+import { TrackRow } from '../../components/Track/TrackRow';
 
 type TopTracksUserPageProps = {
   token: string;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
   setToken: (token: string) => void;
-  setTopTracks: (topTracks: TopArtistsType | undefined) => void;
-  playlists: PlaylistsType | undefined;
-  setPlaylists: (playlist: PlaylistsType) => void;
+  topTracks: SpotifyApi.UsersTopTracksResponse | undefined;
+  setTopTracks: (topTracks: SpotifyApi.UsersTopTracksResponse | undefined) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
@@ -30,35 +27,29 @@ type TopTracksUserPageProps = {
   setTrackDuration: (trackDuration: number) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
-  albumTracks: ITrackTypes[];
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
-  topTracks: TopArtistsType | undefined;
-  shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
   const getTopTracksUserHandler = async () => {
-    const response = await getUserTopTracks({ token: props.token, limit: 50 });
+    const response: SpotifyApi.UsersTopTracksResponse = await getUserTopTracks({ token: props.token, limit: 50 });
     props.setTopTracks(response);
     localStorage.setItem('albumTracks', JSON.stringify(response.items));
   };
 
-  const playingTrackHandler = (url: string) => {
-    if (!props.isPlaying) {
-      props.player.src = url;
-      props.player.play();
-      props.setIsPlaying(true);
-    } else {
-      if (props.player.src !== url) {
-        props.player.src = url;
-        props.player.play();
-      } else {
-        props.player.pause();
-        props.setIsPlaying(false);
-      }
-    }
+  const { t } = useTranslation();
+  const timeSvg = () => {
+    return (
+      <svg role="img" height="16" width="16" aria-hidden="true" fill="#cecece" viewBox="0 0 16 16">
+        <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
+        <path d="M8 3.25a.75.75 0 0 1 .75.75v3.25H11a.75.75 0 0 1 0 1.5H7.25V4A.75.75 0 0 1 8 3.25z"></path>
+      </svg>
+    );
   };
+  const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
 
   useEffect(() => {
     getTopTracksUserHandler();
@@ -68,64 +59,45 @@ export const TopTracksUserPage: React.FC<TopTracksUserPageProps> = props => {
     <div style={{ background: '#121212', width: '100%' }}>
       <Layout hasSider style={{ background: '#121212', marginBottom: '10%' }}>
         <Layout style={{ background: '#121212', display: 'flex' }}>
-          <DropdownProfile
-            setToken={props.setToken}
-            profile={props.profile}
-            setProfile={props.setProfile}
-            token={props.token}
-          />
-          <div className={styles.topTracksUserPageContainer}>
-            {props.topTracks?.items.map((track: ArtistTopUserType, index: number) => {
-              return (
-                <div className={styles.trackBlock} key={track.id}>
-                  {props.isPlaying && track.id === props.trackId ? (
-                    <PauseCircleFilled
-                      className={styles.playPauseButton}
-                      key={index}
-                      onClick={() => {
-                        playingTrackHandler(track.preview_url);
-                      }}
-                    />
-                  ) : (
-                    <PlayCircleFilled
-                      className={styles.playPauseButton}
-                      key={index}
-                      onClick={async () => {
-                        playingTrackHandler(track.preview_url);
-                        const currentTrack = await getTrack(props.token, track.id);
-                        props.setSongName(track.name);
-                        props.setArtistName(track.artists[0].name);
-                        const url = await currentTrack.album.images[0].url;
-                        props.setCoverUrl(url);
-                        props.player.preload = 'metadata';
-                        props.player.onloadedmetadata = () => {
-                          props.setTrackDuration(props.player.duration);
-                        };
-                        props.setTrackId(track.id);
-                        const response = await getUserTopTracks({ token: props.token, limit: 50 });
-                        props.setAlbumTracks(response.items);
-                        const shuffled = localStorage.getItem('shuffled');
-                        if (shuffled !== 'true') {
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        } else {
-                          localStorage.setItem('shuffled', '');
-                          props.setShuffle(false);
-                          localStorage.setItem('albumTracks', JSON.stringify(response.items));
-                        }
-                      }}
-                    />
-                  )}
-                  <div>
-                    <p>{track.name}</p>
-                    <p className={styles.descriptionTopArtist}>
-                      {track.artists.map(artist => {
-                        return artist.name;
-                      })}
-                    </p>
-                  </div>
+          <div className={style.header}>
+            <DropdownProfile
+              setToken={props.setToken}
+              profile={props.profile}
+              setProfile={props.setProfile}
+              token={props.token}
+            />
+          </div>
+          <div className={style.topTracksUserPageContainer}>
+            <div>
+              <p className={style.headerParagraph}>Top tracks this month</p>
+              <p className={style.headerSubParagraph}>Only visible to you</p>
+            </div>
+            <div className={style.tracksHeader}>
+              {FIELDS.map((e, i) => (
+                <div key={i} className={style['column' + i]}>
+                  {e}
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            {props.topTracks?.items.map((track, index: number) => (
+              <TrackRow
+                key={index}
+                track={track}
+                isPlaying={props.isPlaying}
+                setIsPlaying={props.setIsPlaying}
+                player={props.player}
+                trackId={props.trackId}
+                setTrackId={props.setTrackId}
+                setSongName={props.setSongName}
+                setArtistName={props.setArtistName}
+                setCoverUrl={props.setCoverUrl}
+                setTrackDuration={props.setTrackDuration}
+                setAlbumTracks={props.setAlbumTracks}
+                setShuffle={props.setShuffle}
+                likedSong={props.likedSong}
+                setLikedSong={props.setLikedSong}
+              ></TrackRow>
+            ))}
           </div>
         </Layout>
       </Layout>
