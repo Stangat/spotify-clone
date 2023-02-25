@@ -11,15 +11,15 @@ type DropdownProfileType = {
   token: string;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
-  setToken: (token:string)=>void
+  setToken: (token: string) => void;
 };
 
 export const DropdownProfile: React.FC<DropdownProfileType> = props => {
   const { t } = useTranslation();
   const logout = () => {
-    props.setToken("")
-    window.localStorage.removeItem("token")
-  }
+    props.setToken('');
+    window.localStorage.removeItem('token');
+  };
   const navigate = useNavigate();
 
   const getProfileHandler = async () => {
@@ -40,7 +40,9 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
         navigate(`/settings`);
         break;
       case '3':
-        {logout()}
+        {
+          logout();
+        }
         break;
       default:
         break;
@@ -61,10 +63,21 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
       key: '3',
     },
   ];
+
   return (
     <Dropdown menu={{ items, onClick }} className={styles.dropDownContainer}>
       <a onClick={e => e.preventDefault()}>
-        <Avatar size="large" icon={<UserOutlined />}/>
+        <Avatar
+          size="large"
+          src={
+            props.profile?.images !== undefined && props.profile?.images.length > 0
+              ? props.profile.images[0].url
+              : undefined
+          }
+          icon={
+            props.profile?.images === undefined || props.profile?.images.length === 0 ? <UserOutlined /> : undefined
+          }
+        />
         <Space
           style={{
             color: 'white',

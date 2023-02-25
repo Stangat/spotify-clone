@@ -40,30 +40,26 @@ export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playl
   ];
 
   return (
-    <Sider>
-      <Link to={'/'}>
-        <div  className={styles.titleBlock}>
-          {<SpotifySvg />}
-          <p>Spotify Clone</p>
-        </div>
-      </Link>
-      <Menu
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        theme="dark"
-        items={items}
-        onClick={({key}) => {
-          navigate(key);
-        }}
-        style={{ backgroundColor: 'black' }}
-      />
-      <div className={styles.userPlaylists}>
-        <hr />
-        <ul>
-          {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)}><a>{e.name}</a></li> : '')) : ''}
-        </ul>
-      </div>
-    </Sider>
+    <div>
+      <Sider>
+        <Link to={'/'}>
+          <div className={styles.titleBlock}>
+            {<SpotifySvg />}
+            <p>Spotify Clone</p>
+          </div>
+        </Link>
+        <Menu
+          defaultSelectedKeys={['1']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          theme="dark"
+          items={items}
+          onClick={({ key }) => {
+            navigate(key);
+          }}
+          style={{ backgroundColor: 'black' }}
+        />
+      </Sider>
+    </div>
   );
 };
