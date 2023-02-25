@@ -1,22 +1,17 @@
 import { FC, Fragment, ReactNode, useEffect, useState } from 'react';
 import style from './trackRow.module.less';
 import { PlayCircleFilled, PauseCircleFilled, HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { checkUserSavedTracksSpotifyApi,
+import {
+  checkUserSavedTracksSpotifyApi,
   getTrack,
   getTracksPLaylist,
   getUserSavedTracks,
+  getUserTopTracks,
   removeUserSavedTracksSpotifyApi,
-  saveTrackForCurrentUserSpotifyApi, } from '../../../api/api';
-import { ITrackTypes, TrackPlaylist } from '../../../interface/interface';
-import { useParams, useNavigate } from 'react-router-dom';
-
-// const PlayButton: FC = () => {
-//   return (
-//     <svg className={style.play} fill="#ffffff" height="24" width="24" viewBox="0 0 24 24">
-//       <path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path>
-//     </svg>
-//   );
-// };
+  saveTrackForCurrentUserSpotifyApi,
+} from '../../../api/api';
+import { ITrackTypes } from '../../../interface/interface';
+import { useParams } from 'react-router-dom';
 
 type TrackPoprs = {
   playlist?: SpotifyApi.PlaylistObjectFull;
@@ -131,13 +126,19 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
                   if (props.track && props.track?.preview_url && props.track?.name && token) {
                     const trackCheck = await checkUserSavedTracksSpotifyApi(token, props.track.id);
                     props.setLikedSong(trackCheck[0]);
-                    if (id) {
+                    if (pathName === `/playlist/${id}`) {
                       passTrackToPlayer(props.track, token);
                       const response = await getTracksPLaylist(token, id ? id : '');
                       let tracks: SpotifyApi.TrackObjectFull[] = response.items.map(
                         (item: SpotifyApi.PlaylistTrackObject) => item.track
                       );
                       tracks = tracks.filter(track => track?.preview_url !== null);
+                      props.setAlbumTracks(tracks);
+                      shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                    } else if (pathName === `/profile/${id}/tracks`) {
+                      passTrackToPlayer(props.track, token);
+                      const response: SpotifyApi.UsersTopTracksResponse = await getUserTopTracks({ token, limit: 50 });
+                      const tracks: SpotifyApi.TrackObjectFull[] = response.items.map(item => item);
                       props.setAlbumTracks(tracks);
                       shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
                     } else if (query) {
@@ -183,41 +184,41 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
           <div className={style.columnAlbum} hidden={!album}>
             {props.track?.album.name}
           </div>
-          {isSaved ? (
-            <HeartFilled
-              className={style.likeSongButtonActive}
-              onClick={async () => {
-                if (props.track?.id === props.trackId) {
-                  props.setLikedSong(false);
-                }
-                if (token && props.track) {
-                  await removeUserSavedTracksSpotifyApi(token, props.track.id);
-                  if (id || query) {
-                    setIsSaved(false);
-                  }
-                  if (pathName === '/collection/tracks') {
-                    setIsRemoved(true);
-                  }
-                }
-              }}
-            />
-          ) : (
-            <HeartOutlined
-              className={style.likeSongButton}
-              onClick={async () => {
-                if (token && props.track) {
-                  if (id || query) {
-                    setIsSaved(true);
-                    await saveTrackForCurrentUserSpotifyApi(token, props.track.id, { id: [props.track.id] });
-                  }
-                }
-                if (props.track?.id === props.trackId) {
-                  props.setLikedSong(true);
-                }
-              }}
-            />
-          )}
           <div className={style.columnDuration}>
+            {isSaved ? (
+              <HeartFilled
+                className={style.likeSongButtonActive}
+                onClick={async () => {
+                  if (props.track?.id === props.trackId) {
+                    props.setLikedSong(false);
+                  }
+                  if (token && props.track) {
+                    await removeUserSavedTracksSpotifyApi(token, props.track.id);
+                    if (id || query) {
+                      setIsSaved(false);
+                    }
+                    if (pathName === '/collection/tracks') {
+                      setIsRemoved(true);
+                    }
+                  }
+                }}
+              />
+            ) : (
+              <HeartOutlined
+                className={style.likeSongButton}
+                onClick={async () => {
+                  if (props.track?.id === props.trackId) {
+                    props.setLikedSong(true);
+                  }
+                  if (token && props.track) {
+                    if (id || query) {
+                      await saveTrackForCurrentUserSpotifyApi(token, props.track.id, { id: [props.track.id] });
+                      setIsSaved(true);
+                    }
+                  }
+                }}
+              />
+            )}
             {time.minutes + ':' + (String(time.seconds).length == 1 ? '0' + time.seconds : time.seconds)}
           </div>
         </div>

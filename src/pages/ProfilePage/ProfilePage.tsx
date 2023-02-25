@@ -28,8 +28,8 @@ type ProfilePageProps = {
   setAlbumTracks: (albumTracks: ITrackTypes[]) => void;
   trackId: string;
   setTrackId: (trackId: string) => void;
-  topTracks: TopArtistsType | undefined;
-  setTopTracks: (topTracks: TopArtistsType | undefined) => void;
+  topTracks: SpotifyApi.UsersTopTracksResponse | undefined;
+  setTopTracks: (topTracks: SpotifyApi.UsersTopTracksResponse | undefined) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
 };
