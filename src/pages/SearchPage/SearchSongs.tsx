@@ -51,7 +51,6 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
           }
           return accumulator;
         }, []);
-        console.log(tracksWithoutDubl);
         tracksWithoutDubl.length && setUniqueTracks(tracksWithoutDubl);
       }
     }
@@ -60,8 +59,6 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
   useEffect(() => {
     uniqueTracksHandler();
   }, []);
-  
-  console.log(uniqueTracks.length);
 
   return (
     <div className={style.searchBody}>

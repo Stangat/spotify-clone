@@ -65,7 +65,6 @@ export const PlaylisPage: FC<PlaylistProps> = props => {
     } else {
       console.log('!token || !id in playlist req', token, id);
     }
-    console.log(1);
   };
 
   useEffect(() => {

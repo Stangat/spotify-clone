@@ -1,9 +1,13 @@
 import { width } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getFeaturedPlaylistsSpotifyApi, getRecentlyPlayedTracks } from '../../../api/api';
 import { AlbumType, ProfileType } from '../../../interface/interface';
+import { CardItem } from '../../components/CardItem/CardItem';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
 import { PaginationHeader } from '../../components/Pagination/Pagination';
+import { RowOfCards } from '../../components/RowOfCards/RowOfCards';
 
 type HomePageProps = {
   token: string;
@@ -20,9 +24,40 @@ type HomePageProps = {
 };
 
 export const HomePage: React.FC<HomePageProps> = props => {
+  const [featuredPlaylists, setFeaturedPlaylists] = useState<SpotifyApi.ListOfFeaturedPlaylistsResponse>();
+  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState<SpotifyApi.UsersRecentlyPlayedTracksResponse>();
+  const navigate = useNavigate();
+
+  const handleRows = async () => {
+    const res = await getFeaturedPlaylistsSpotifyApi(props.token);
+    const res2 = await getRecentlyPlayedTracks(props.token);
+    setFeaturedPlaylists(res);
+    setRecentlyPlayedTracks(res2);
+  };
+
+  useEffect(() => {
+    handleRows();
+  }, []);
+
   return (
     <div style={{ width: '100%' }}>
       <HeaderHome profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken} />
+      <RowOfCards title={featuredPlaylists?.message}>
+        {featuredPlaylists?.playlists
+        && featuredPlaylists?.playlists?.items.map((e, i) => i < 8 ? 
+        <CardItem key={e.id} album={e} 
+        onClick={() => {
+          navigate(`/playlist/${e.id}`);
+        }}></CardItem> : '')}
+      </RowOfCards>
+      <RowOfCards title={featuredPlaylists?.message}>
+        {featuredPlaylists?.playlists
+        && featuredPlaylists?.playlists?.items.map((e, i) => i < 8 ? 
+        <CardItem key={e.id} album={e} 
+        onClick={() => {
+          navigate(`/playlist/${e.id}`);
+        }}></CardItem> : '')}
+      </RowOfCards>
       <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} limit={props.limit}/>
       <HomeContent
         token={props.token}
