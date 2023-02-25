@@ -38,7 +38,6 @@ export const CardItem: React.FC<CardItemProps> = props => {
       key={props.album.id}
       style={{
         background: '#181818',
-        boxShadow: '0px 0px 5px 0px black',
         border: 'none',
         padding: '16px',
         width: '188px'
@@ -48,7 +47,7 @@ export const CardItem: React.FC<CardItemProps> = props => {
           margin: '0 auto',
           width: '155px',
           height: '155px',
-          boxShadow: '0px 0px 5px 0px black',
+          boxShadow: '0 8px 24px rgb(0 0 0 / 50%)',
           borderRadius: '4%',
           backgroundColor: '#000000',
           backgroundImage: `url(${link})`,

@@ -119,34 +119,11 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                 style={{display: topTracksSpotifyApi?.items && topTracksSpotifyApi?.items.length > 4 ? 'inline-block' : 'none'}} 
                 onClick={() => { navigate(`tracks`, {replace: false});}}>
                   {t('showAll')}
-                  {/* пока пусть будет так, но нужyо писать роуты на все show all в этой странице */}
                 </p>
               </div>
               <div className={styles.topTracksContainer}>
                   {/* {topTracksSpotifyApi?.items && topTracksSpotifyApi?.items.map((e)=> <TrackRow key={e.id} track={e}></TrackRow>)} */}
               </div>
-              {/* <TopTracksBlock
-                topTracks={props.topTracks}
-                profile={props.profile}
-                playlists={props.playlists}
-                setPlaylists={props.setPlaylists}
-                token={props.token}
-                setIsPlaying={props.setIsPlaying}
-                isPlaying={props.isPlaying}
-                player={props.player}
-                setSongName={props.setSongName}
-                setArtistName={props.setArtistName}
-                setCoverUrl={props.setCoverUrl}
-                trackDuration={props.trackDuration}
-                setTrackDuration={props.setTrackDuration}
-                trackId={props.trackId}
-                setTrackId={props.setTrackId}
-                albumTracks={props.albumTracks}
-                setAlbumTracks={props.setAlbumTracks}
-                shuffle={props.shuffle}
-                setShuffle={props.setShuffle}
-              />  */} 
-              {/* ЛИБО ТО ЛИБО ЭТО */}
             </div>
             <div className={styles.subblockContainer}>
               <div className={styles.blockHeader + ' ' + styles.withoutVisibility}>

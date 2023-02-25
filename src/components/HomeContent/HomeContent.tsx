@@ -5,6 +5,7 @@ import { AlbumType } from '../../../interface/interface';
 import { CardItem } from '../CardItem/CardItem';
 import styles from './homeContent.module.less';
 import { useTranslation } from 'react-i18next';
+import { PaginationHeader } from '../Pagination/Pagination';
 
 type HomeContentProps = {
   token: string;
@@ -12,6 +13,9 @@ type HomeContentProps = {
   setTotalAlbums: (totalAlbums: number) => void;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
+  page: number;
+  setPage: (page: number) => void;
+  limit: number;
 };
 
 export const HomeContent: React.FC<HomeContentProps> = props => {
@@ -19,13 +23,15 @@ export const HomeContent: React.FC<HomeContentProps> = props => {
 
   return (
     <div className={styles.mainContentContainer}>
-      <h2 className={styles.titleAlbums}>{t('releases')}</h2>
+      <div className={styles.hat}>
+        <h2 className={styles.titleAlbums}>{t('releases')}</h2>
+        <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} limit={props.limit}/>
+      </div>
       <div className={styles.wrapper}
         style={{
           backgroundColor: '#121212',
           color: 'white',
           fontWeight: 600,
-          marginBottom: '10%',
         }}
       >
         {props.albums.map(album => {
