@@ -1,8 +1,9 @@
 import { width } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFeaturedPlaylistsSpotifyApi, getRecentlyPlayedTracks } from '../../../api/api';
+import { getFeaturedPlaylistsSpotifyApi, getRecentlyPlayedTracks, getRelatedArtists, getUserTopArtistsSpotifyApi } from '../../../api/api';
 import { AlbumType, ProfileType } from '../../../interface/interface';
+import { CardArtist } from '../../components/CardItem/CardArtist';
 import { CardItem } from '../../components/CardItem/CardItem';
 import { HeaderHome } from '../../components/Header/Header';
 import { HomeContent } from '../../components/HomeContent/HomeContent';
@@ -25,14 +26,17 @@ type HomePageProps = {
 
 export const HomePage: React.FC<HomePageProps> = props => {
   const [featuredPlaylists, setFeaturedPlaylists] = useState<SpotifyApi.ListOfFeaturedPlaylistsResponse>();
-  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState<SpotifyApi.UsersRecentlyPlayedTracksResponse>();
+  const [favoriteArtists, setFavoriteArtists] = useState<SpotifyApi.UsersTopArtistsResponse>();
+  const [relatedArtists, setRelatedArtists] = useState<SpotifyApi.ArtistsRelatedArtistsResponse>();
   const navigate = useNavigate();
 
   const handleRows = async () => {
     const res = await getFeaturedPlaylistsSpotifyApi(props.token);
-    const res2 = await getRecentlyPlayedTracks(props.token);
+    const res2 = await getUserTopArtistsSpotifyApi(props.token);
+    const res3 = await getRelatedArtists(props.token, res2.items[0].id);
     setFeaturedPlaylists(res);
-    setRecentlyPlayedTracks(res2);
+    setFavoriteArtists(res2);
+    setRelatedArtists(res3);
   };
 
   useEffect(() => {
@@ -40,7 +44,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
   }, []);
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', padding: '0 32px 160px' }}>
       <HeaderHome profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken} />
       <RowOfCards title={featuredPlaylists?.message}>
         {featuredPlaylists?.playlists
@@ -50,22 +54,22 @@ export const HomePage: React.FC<HomePageProps> = props => {
           navigate(`/playlist/${e.id}`);
         }}></CardItem> : '')}
       </RowOfCards>
-      <RowOfCards title={featuredPlaylists?.message}>
-        {featuredPlaylists?.playlists
-        && featuredPlaylists?.playlists?.items.map((e, i) => i < 8 ? 
-        <CardItem key={e.id} album={e} 
-        onClick={() => {
-          navigate(`/playlist/${e.id}`);
-        }}></CardItem> : '')}
-      </RowOfCards>
-      <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} limit={props.limit}/>
       <HomeContent
         token={props.token}
         totalAlbums={props.totalAlbums}
         setTotalAlbums={props.setTotalAlbums}
         albums={props.albums}
         setALbums={props.setALbums}
+        page={props.page} 
+        setPage={props.setPage}
+        limit={props.limit}
       />
+      <RowOfCards title='Your favorite artists'>
+        {favoriteArtists?.items && favoriteArtists?.items?.map((e, i) => i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : '')}
+      </RowOfCards>
+      <RowOfCards title={`More like ${favoriteArtists?.items[0].name}`}>
+        {relatedArtists?.artists && relatedArtists?.artists?.map((e, i) => i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : '')}
+      </RowOfCards>
     </div>
   );
 };

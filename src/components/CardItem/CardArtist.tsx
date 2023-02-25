@@ -25,7 +25,6 @@ export const CardArtist: React.FC<CardItemProps> = props => {
       key={props.artist.id}
       style={Object.assign({}, {
         background: '#181818',
-        boxShadow: '0px 0px 5px 0px black',
         border: 'none',
         padding: '16px',
         width: '188px'

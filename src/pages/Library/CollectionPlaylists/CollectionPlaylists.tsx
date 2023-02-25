@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { getUserLikedTracksSpotifyApi, getUserPlaylistsSpotifyApi } from '../../../../api/api';
 import { CardItem } from '../../../components/CardItem/CardItem';
 import style from './collectionPlaylists.module.less';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 type CollectionPlaylistsProps = {
   // playlists: PlaylistsType | undefined;
@@ -16,18 +19,23 @@ export const CollectionPlaylists: React.FC<CollectionPlaylistsProps> = props => 
   const navigate = useNavigate();
   const [userPlaylists, setUserPlaylists] = useState<SpotifyApi.ListOfCurrentUsersPlaylistsResponse>();
   const [userLikes, setUserLikes] = useState<SpotifyApi.UsersSavedTracksResponse>();
+  const [readyFlag, setReadyFlag] = useState<boolean>(false);
   const token = localStorage.getItem('token') || props.token;
+  const antIcon = <LoadingOutlined style={{ fontSize: 80 }} spin />;
 
   const  getUserData = async () => {
     const response = await getUserPlaylistsSpotifyApi(token);
     const likes = await getUserLikedTracksSpotifyApi(token);
     setUserPlaylists(response);
     setUserLikes(likes);
+    setReadyFlag(!0);
   };
 
   useEffect(() => {
     getUserData();
   }, []);
+
+  if (!readyFlag) return (<Spin indicator={antIcon} style={{width: '100%', height: '40%', display: 'flex', alignItems: 'center', justifyContent: 'center',}}></Spin>)
 
   return (
     <div className={style.wrapper}>

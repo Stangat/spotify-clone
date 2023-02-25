@@ -402,3 +402,15 @@ export async function getRecentlyPlayedTracks(token: string): Promise<SpotifyApi
   const recentlyPlayedTracks = await res.json();
   return recentlyPlayedTracks;
 }
+
+export async function getRelatedArtists(token: string, id: string): Promise<SpotifyApi.ArtistsRelatedArtistsResponse> {
+  const res = await fetch(`${baseUrl}/artists/${id}/related-artists?market=US`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const iamtired = await res.json();
+  return iamtired;
+}

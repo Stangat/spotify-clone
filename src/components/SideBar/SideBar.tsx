@@ -35,7 +35,6 @@ export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playl
     getItem(`${t('home')}`, '', <HomeFilled />),
     getItem(`${t('search')}`, 'search', <SearchOutlined />),
     getItem(`${t('library')}`, 'collection/playlists', <ContainerOutlined />),
-    getItem(`${t('create')}`, 'playlists', <PlusCircleFilled />),
     getItem(`${t('liked')}`, 'collection/tracks', <HeartFilled />),
   ];
 
@@ -59,6 +58,12 @@ export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playl
           }}
           style={{ backgroundColor: 'black' }}
         />
+        <div className={styles.userPlaylists}>
+          <hr />
+          <ul>
+            {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)}><a>{e.name}</a></li> : '')) : ''}
+          </ul>
+        </div>
       </Sider>
     </div>
   );
