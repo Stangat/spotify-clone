@@ -7,29 +7,23 @@ import { PaginationHeader } from '../../components/Pagination/Pagination';
 
 type HomePageProps = {
   token: string;
-  setToken: (token:string)=>void
+  setToken: (token: string) => void;
   albums: AlbumType[];
   setALbums: (albums: AlbumType[]) => void;
   profile: ProfileType | undefined;
   setProfile: (profile: ProfileType) => void;
-  page:number,
-  setPage:(page:number)=>void
-  totalAlbums: number,
-  setTotalAlbums:(totalAlbums: number)=>void
+  page: number;
+  setPage: (page: number) => void;
+  totalAlbums: number;
+  setTotalAlbums: (totalAlbums: number) => void;
+  limit: number;
 };
-
-
 
 export const HomePage: React.FC<HomePageProps> = props => {
   return (
-    <div style={{width: '100%'}}>      
-      <HeaderHome
-        profile={props.profile}
-        setProfile={props.setProfile}
-        token={props.token}
-        setToken={props.setToken}
-      />
-      <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} />
+    <div style={{ width: '100%' }}>
+      <HeaderHome profile={props.profile} setProfile={props.setProfile} token={props.token} setToken={props.setToken} />
+      <PaginationHeader page={props.page} setPage={props.setPage} totalAlbums={props.totalAlbums} limit={props.limit}/>
       <HomeContent
         token={props.token}
         totalAlbums={props.totalAlbums}
