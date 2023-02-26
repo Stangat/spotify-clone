@@ -14,9 +14,7 @@ import { DropDownCopy } from '../DropDownCopy/DropDownCopy';
 import { useTranslation } from 'react-i18next';
 import { RowOfCards } from '../RowOfCards/RowOfCards';
 import { CardArtist } from '../CardItem/CardArtist';
-import { TopTracksBlock } from '../TopTracksBlock/TopTracksBlock';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { TrackRow } from '../Track/TrackRow';
 import { CardItem } from '../CardItem/CardItem';
 
 type DetailsProfilePageProps = {
@@ -134,7 +132,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                 </p>
               </div>
               <div>
-                <RowOfCards>
+                <RowOfCards styles={userPlaylists?.items && userPlaylists?.items.length < 8 ? {justifyContent: 'start'} : {justifyContent: 'space-between'}}>
                   {userPlaylists?.items && userPlaylists?.items.map((e, i) => (i < 8 ? <CardItem key={e.id} album={e} onClick={() => navigate(`/playlist/${e.id}`)}></CardItem> : ''))}
                 </RowOfCards>
               </div>
