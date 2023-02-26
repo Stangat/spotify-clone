@@ -7,7 +7,6 @@ import { CardItem } from '../../components/CardItem/CardItem';
 import { CardArtist } from '../../components/CardItem/CardArtist';
 import style from './search.module.less';
 import { ITrackTypes } from '../../../interface/interface';
-import { v4 as uuidv4 } from 'uuid';
 
 type SearchProps = {
   token: string;
@@ -35,17 +34,29 @@ const TYPES: { [key: string]: typesOfSearchQuery[] } = {
 };
 
 export const Search: FC<SearchProps> = props => {
-  const temp = { all: !0, songs: !0, playlists: !0, albums: !0, artists: !0};
+  const temp = { all: !0, songs: !0, playlists: !0, albums: !0, artists: !0 };
   const [items, setItems] = useState<SpotifyApi.SearchResponse>();
   const [currentTag, setCurrentTag] = useState<string>('all');
   const [availableTags, setAvailableTags] = useState<{ [key: string]: boolean }>(temp);
   const { query } = useParams();
   const navigate = useNavigate();
+  const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
 
   const getResultOfSearching = async (types?: typesOfSearchQuery[]) => {
     const response = await getSearchResults(props.token, types || TYPES.all, query || '');
-    const isAvailable: { [key: string]: boolean } = { all: !0 };
     setItems(response);
+    const tracks = response.tracks?.items;
+    if (tracks) {
+      const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
+        if (!accumulator.find(track => track.preview_url === current.preview_url)) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
+      tracksWithoutDubl.length && setUniqueTracks(tracksWithoutDubl);
+    }
+    const isAvailable: { [key: string]: boolean } = { all: !0 };
+
     try {
       if (response) {
         let key: keyof typeof response;
@@ -119,6 +130,7 @@ export const Search: FC<SearchProps> = props => {
               setShuffle={props.setShuffle}
               likedSong={props.likedSong}
               setLikedSong={props.setLikedSong}
+              uniqueTracks={uniqueTracks}
             ></SearchAll>
           }
         />
@@ -141,6 +153,7 @@ export const Search: FC<SearchProps> = props => {
               setShuffle={props.setShuffle}
               likedSong={props.likedSong}
               setLikedSong={props.setLikedSong}
+              uniqueTracks={uniqueTracks}
             ></SearchSongs>
           }
         />

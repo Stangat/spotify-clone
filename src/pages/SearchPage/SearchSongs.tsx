@@ -1,11 +1,8 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from 'react';
 import { ITrackTypes } from '../../../interface/interface';
 import { TrackRow } from '../../components/Track/TrackRow';
-//import { FIELDS } from "../PlaylistPage/PlaylistPage";
 import style from './searchSongs.module.less';
 import { useTranslation } from 'react-i18next';
-import { getSearchResults } from '../../../api/api';
-import { useParams } from 'react-router-dom';
 
 type SearchSongsProps = {
   token: string;
@@ -23,6 +20,7 @@ type SearchSongsProps = {
   setShuffle: (shuffle: boolean) => void;
   likedSong?: boolean;
   setLikedSong: (likedSong: boolean) => void;
+  uniqueTracks: SpotifyApi.TrackObjectFull[];
 };
 
 const timeSvg = () => {
@@ -35,30 +33,8 @@ const timeSvg = () => {
 };
 
 export const SearchSongs: FC<SearchSongsProps> = props => {
-  const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const { t } = useTranslation();
   const FIELDS = ['#', `${t('TITLE')}`, `${t('ALBUM')}`, timeSvg()];
-  const { query } = useParams();
-
-  const uniqueTracksHandler = async () => {
-    if (props.token) {
-      const response = await getSearchResults(props.token, ['track'], query || '');
-      const tracks = response.tracks?.items;
-      if (tracks) {
-        const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
-          if (!accumulator.find(track => track.preview_url === current.preview_url)) {
-            accumulator.push(current);
-          }
-          return accumulator;
-        }, []);
-        tracksWithoutDubl.length && setUniqueTracks(tracksWithoutDubl);
-      }
-    }
-  };
-
-  useEffect(() => {
-    uniqueTracksHandler();
-  }, []);
 
   return (
     <div className={style.searchBody}>
@@ -70,7 +46,7 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
         ))}
       </div>
       <div className={style.songsContainer}>
-        {uniqueTracks.map(e =>
+        {props.uniqueTracks.map(e =>
           e.preview_url ? (
             <TrackRow
               key={e.id}
@@ -86,7 +62,7 @@ export const SearchSongs: FC<SearchSongsProps> = props => {
               setTrackDuration={props.setTrackDuration}
               setAlbumTracks={props.setAlbumTracks}
               setShuffle={props.setShuffle}
-              uniqueTracks={uniqueTracks}
+              uniqueTracks={props.uniqueTracks}
               likedSong={props.likedSong}
               setLikedSong={props.setLikedSong}
             ></TrackRow>

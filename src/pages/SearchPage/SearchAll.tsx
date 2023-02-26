@@ -26,7 +26,8 @@ type SearchAllProps = {
   setShuffle: (shuffle: boolean) => void;
   likedSong?: boolean;
   setLikedSong: (likedSong: boolean) => void;
-  isAvailable:  { [key: string]: boolean };
+  isAvailable: { [key: string]: boolean };
+  uniqueTracks: SpotifyApi.TrackObjectFull[];
 };
 
 export const SearchAll: React.FC<SearchAllProps> = props => {
@@ -42,27 +43,13 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
     }
   }
 
-  const [uniqueTracks, setUniqueTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
-  const [fourTracks, setFourTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const [notFound, setNotFound] = useState<boolean>();
   const { query } = useParams();
 
-  const uniqueTracksHandler = async () => {
+  const topResultsHandler = async () => {
     if (props.token) {
       const response = await getSearchResults(props.token, ['track', 'artist'], query || '');
       getTopResult(response);
-      const tracks = response.tracks?.items;
-      if (tracks) {
-        const tracksWithoutDubl = tracks.reduce((accumulator: SpotifyApi.TrackObjectFull[], current) => {
-          if (!accumulator.find(track => track.preview_url === current.preview_url)) {
-            accumulator.push(current);
-          }
-          return accumulator;
-        }, []);
-        const fourTracks = tracksWithoutDubl.splice(0, 4);
-        setUniqueTracks(tracksWithoutDubl);
-        setFourTracks(fourTracks);
-      }
     }
   };
 
@@ -70,25 +57,28 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
   const link = topResult?.images[0] && topResult?.images[0].url;
 
   useEffect(() => {
-    uniqueTracksHandler();
-    const flag = Object.entries(props.isAvailable).reduce((acc, curr) => acc = acc + Number(curr[1]), 0) < 2 ? !0 : !1;
+    topResultsHandler();
+    const flag =
+      Object.entries(props.isAvailable).reduce((acc, curr) => (acc = acc + Number(curr[1])), 0) < 2 ? !0 : !1;
     setNotFound(flag);
   }, [props.isAvailable]);
 
-
-  if (notFound) return (
-    <div className={commonstyle.searchBody + ' ' + style.notFound}>
-      <h2>{`No results found for "${query}"`}</h2>
-      <p>Please make sure your words are spelled correctly or use less or different keywords.</p>
-    </div>
-  );
+  if (notFound)
+    return (
+      <div className={commonstyle.searchBody + ' ' + style.notFound}>
+        <h2>{`No results found for "${query}"`}</h2>
+        <p>Please make sure your words are spelled correctly or use less or different keywords.</p>
+      </div>
+    );
 
   return (
     <div className={commonstyle.searchBody}>
       <div className={style.hat}>
-        <section className={style.topResultContainer}
-        hidden={!props.isAvailable['artists']}
-        onClick={() => navigate(`/${topResult?.type}/${topResult?.id}`)}>
+        <section
+          className={style.topResultContainer}
+          hidden={!props.isAvailable['artists']}
+          onClick={() => navigate(`/${topResult?.type}/${topResult?.id}`)}
+        >
           <h2 className={style.header}>{t('topResult')}</h2>
           <div className={style.topResult}>
             <div
@@ -107,13 +97,12 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
             </div>
           </div>
         </section>
-        <section className={style.songsBlockContainer}
-        hidden={!props.isAvailable['songs']}>
+        <section className={style.songsBlockContainer} hidden={!props.isAvailable['songs']}>
           <h2 className={style.header}>{t('upSongs')}</h2>
           <div className={style.songsBlock}>
             <div>
-              {fourTracks.map(e =>
-                e.preview_url ? (
+              {props.items?.tracks?.items.map((e, index) =>
+                e.preview_url && index < 4 ? (
                   <TrackRow
                     album={false}
                     key={e.id}
@@ -129,7 +118,7 @@ export const SearchAll: React.FC<SearchAllProps> = props => {
                     setTrackDuration={props.setTrackDuration}
                     setAlbumTracks={props.setAlbumTracks}
                     setShuffle={props.setShuffle}
-                    uniqueTracks={uniqueTracks}
+                    uniqueTracks={props.uniqueTracks}
                     likedSong={props.likedSong}
                     setLikedSong={props.setLikedSong}
                   ></TrackRow>
