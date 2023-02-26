@@ -181,7 +181,7 @@ export const DetailsProfilePage: React.FC<DetailsProfilePageProps> = props => {
                   </p>
                 </div>
                 <div>
-                  <RowOfCards>
+                  <RowOfCards styles={userPlaylists?.items && userPlaylists?.items.length < 8 ? {justifyContent: 'start'} : {justifyContent: 'space-between'}}>
                     {userPlaylists?.items &&
                       userPlaylists?.items.map((e, i) =>
                         i < 8 ? (
