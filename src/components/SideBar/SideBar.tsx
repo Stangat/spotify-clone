@@ -27,8 +27,7 @@ function getItem(
   } as MenuItem;
 }
 
-
-export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playlists}) => {
+export const SideBar: React.FC<{ playlists: PlaylistsType | undefined }> = ({ playlists }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const items: MenuItem[] = [
@@ -61,8 +60,28 @@ export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playl
         <div className={styles.userPlaylists}>
           <hr />
           <ul>
-            {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)} key={e.id}><a>{e.name}</a></li> : '')) : ''}
+            {playlists?.items
+              ? playlists?.items.map((e, i) =>
+                  i < 9 ? (
+                    <li onClick={() => navigate(`/playlist/${e.id}`)} key={e.id}>
+                      <a>{e.name}</a>
+                    </li>
+                  ) : (
+                    ''
+                  )
+                )
+              : ''}
           </ul>
+        </div>
+        <div className={styles.linksToRs}>
+          <a className={styles.rs}>
+            <img src="https://rs.school/images/rs_school_js.svg" alt="" />
+          </a>
+          <div className={styles.autorsLinks}>
+            <a href="https://github.com/senyavitrazov">Arseni Glik</a>
+            <a href="https://github.com/Stangat">Gatilov Stanislav</a>
+            <a href="https://github.com/MarinaZai">Zaitsava Marina</a>
+          </div>
         </div>
       </Sider>
     </div>
