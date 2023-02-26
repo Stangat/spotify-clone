@@ -61,7 +61,7 @@ export const SideBar: React.FC<{playlists: PlaylistsType | undefined}> = ({playl
         <div className={styles.userPlaylists}>
           <hr />
           <ul>
-            {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)}><a>{e.name}</a></li> : '')) : ''}
+            {playlists?.items ? (playlists?.items.map((e, i) => i < 9 ? <li onClick={() => navigate(`/playlist/${e.id}`)} key={e.id}><a>{e.name}</a></li> : '')) : ''}
           </ul>
         </div>
       </Sider>
