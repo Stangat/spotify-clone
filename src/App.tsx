@@ -215,6 +215,10 @@ export default function App() {
               path="playlist/:id/*"
               element={
                 <PlaylisPage
+                  token={token}
+                  setToken={setToken}
+                  profile={profile}
+                  setProfile={setProfile}
                   setIsPlaying={setIsPlaying}
                   isPlaying={isPlaying}
                   player={player}

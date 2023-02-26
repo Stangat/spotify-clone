@@ -30,8 +30,8 @@ type HomePageProps = {
 
 export const HomePage: React.FC<HomePageProps> = props => {
   const [featuredPlaylists, setFeaturedPlaylists] = useState<SpotifyApi.ListOfFeaturedPlaylistsResponse>();
-  const [favoriteArtists, setFavoriteArtists] = useState<SpotifyApi.UsersTopArtistsResponse>();
-  const [relatedArtists, setRelatedArtists] = useState<SpotifyApi.ArtistsRelatedArtistsResponse>();
+  const [favoriteArtists, setFavoriteArtists] = useState<SpotifyApi.UsersTopArtistsResponse | null>();
+  const [relatedArtists, setRelatedArtists] = useState<SpotifyApi.ArtistsRelatedArtistsResponse | null>();
   const navigate = useNavigate();
 
   const [featuredPage, setFeaturedPage] = useState(1);
@@ -44,7 +44,10 @@ export const HomePage: React.FC<HomePageProps> = props => {
   const handleRows = async () => {
     const res = await getFeaturedPlaylistsSpotifyApi(props.token, OFFSET, LIMIT);
     const res2 = await getUserTopArtistsSpotifyApi(props.token);
-    const res3 = await getRelatedArtists(props.token, res2.items[index].id);
+    let res3 = null;
+    if (res2.items[index]) {
+      res3 = await getRelatedArtists(props.token, res2.items[index].id);
+    }
     setFeaturedPlaylists(res);
     setFavoriteArtists(res2);
     setRelatedArtists(res3);
@@ -90,14 +93,18 @@ export const HomePage: React.FC<HomePageProps> = props => {
         setPage={props.setPage}
         limit={props.limit}
       />
+      {favoriteArtists && favoriteArtists.items.length != 0 ? 
       <RowOfCards title="Your favorite artists">
         {favoriteArtists?.items &&
           favoriteArtists?.items?.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
-      </RowOfCards>
+      </RowOfCards> : ''
+      }
+      {relatedArtists &&  favoriteArtists ? 
       <RowOfCards title={`More like ${favoriteArtists?.items[index].name}`}>
         {relatedArtists?.artists &&
           relatedArtists?.artists?.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
-      </RowOfCards>
+      </RowOfCards> : ''
+      }
     </div>
   );
 };
