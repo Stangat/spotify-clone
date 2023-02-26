@@ -4,6 +4,7 @@
 
 :global(.ant-layout-sider) {
   background-color: #000;
+  position: relative;
 }
 
 :global(.ant-layout-sider-children) {
@@ -68,26 +69,31 @@
     }
   }
 }
+
 .linksToRs {
-  background-color: rgb(24, 24, 24);
   width: 80%;
   height: 15%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-left: 1em;
-  margin-right: 1em;
-  padding: 2%;
-  border-radius: 9%;
+  align-items: start;
+  padding-left: 24px;
+  position: absolute;
+  bottom: 60px;
 }
+
 .rs {
   width: 50%;
+  filter: invert(82%);
 }
+
 .autorsLinks {
   display: flex;
   flex-direction: column;
   text-decoration: none;
   a {
     color: #b3b3b3;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

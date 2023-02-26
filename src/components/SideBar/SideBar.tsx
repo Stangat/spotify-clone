@@ -78,7 +78,7 @@ export const SideBar: React.FC<{ playlists: PlaylistsType | undefined }> = ({ pl
             <img src="https://rs.school/images/rs_school_js.svg" alt="" />
           </a>
           <div className={styles.autorsLinks}>
-            <a href="https://github.com/senyavitrazov">Arseni Glik</a>
+            <a href="https://github.com/senyavitrazov">Glik Arseni</a>
             <a href="https://github.com/Stangat">Gatilov Stanislav</a>
             <a href="https://github.com/MarinaZai">Zaitsava Marina</a>
           </div>
