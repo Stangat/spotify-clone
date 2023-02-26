@@ -4,7 +4,6 @@ import { DetailsProfilePage } from '../../components/DetailsProfilePage/DetailsP
 import { DropdownProfile } from '../../components/Dropdown/DropDown';
 import style from './profilePage.module.less';
 
-
 type ProfilePageProps = {
   token: string;
   setToken: (token: string) => void;
@@ -32,6 +31,8 @@ type ProfilePageProps = {
   setTopTracks: (topTracks: SpotifyApi.UsersTopTracksResponse | undefined) => void;
   shuffle: boolean;
   setShuffle: (shuffle: boolean) => void;
+  likedSong?: boolean;
+  setLikedSong: (likedSong: boolean) => void;
 };
 
 export const ProfilePage: React.FC<ProfilePageProps> = props => {
@@ -68,6 +69,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = props => {
             setAlbumTracks={props.setAlbumTracks}
             shuffle={props.shuffle}
             setShuffle={props.setShuffle}
+            likedSong={props.likedSong}
+            setLikedSong={props.setLikedSong}
           />
         </Layout>
       </Layout>
