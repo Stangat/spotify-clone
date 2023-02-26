@@ -337,8 +337,12 @@ export async function getSingleAlbumSpotifyApi(token: string, id: string): Promi
   return album;
 }
 
-export async function getFeaturedPlaylistsSpotifyApi(token: string): Promise<SpotifyApi.ListOfFeaturedPlaylistsResponse> {
-  const res = await fetch(`${baseUrl}/browse/featured-playlists?market=US`, {
+export async function getFeaturedPlaylistsSpotifyApi(
+  token: string,
+  offset: number,
+  limit: number
+): Promise<SpotifyApi.ListOfFeaturedPlaylistsResponse> {
+  const res = await fetch(`${baseUrl}/browse/featured-playlists?market=US&offset=${offset}&limit=${limit}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -389,7 +393,6 @@ export async function checkUserSavedTracksSpotifyApi(
   const result = await res.json();
   return result;
 }
-
 
 export async function getRecentlyPlayedTracks(token: string): Promise<SpotifyApi.UsersRecentlyPlayedTracksResponse> {
   const res = await fetch(`${baseUrl}/me/player/recently-played?market=US`, {
