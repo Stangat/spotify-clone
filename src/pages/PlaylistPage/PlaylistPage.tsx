@@ -4,9 +4,14 @@ import { getPlaylist } from '../../../api/api';
 import { TrackRow } from '../../components/Track/TrackRow';
 import { useTranslation } from 'react-i18next';
 import style from './playlistPage.module.less';
-import { ITrackTypes } from '../../../interface/interface';
+import { ITrackTypes, ProfileType } from '../../../interface/interface';
+import { CustomHeader } from '../../components/Header/CustomHeader';
 
 type PlaylistProps = {
+  token: string;
+  setToken: (token: string) => void;
+  profile: ProfileType | undefined;
+  setProfile: (profile: ProfileType) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   isPlaying: boolean;
   player: HTMLAudioElement;
@@ -73,6 +78,7 @@ export const PlaylisPage: FC<PlaylistProps> = props => {
 
   return (
     <div className={style.wrapper}>
+      <CustomHeader token={props.token} setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} style={{justifyContent: 'end'}}></CustomHeader>
       <PlaylistTop playlist={playlist} />
       <div className={style.playlistControls}></div>
       <div className={style.playlistBody}>

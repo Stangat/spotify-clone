@@ -77,6 +77,7 @@ export const DropdownProfile: React.FC<DropdownProfileType> = props => {
           icon={
             props.profile?.images === undefined || props.profile?.images.length === 0 ? <UserOutlined /> : undefined
           }
+          style={{marginRight: '8px'}}
         />
         <Space
           style={{
