@@ -172,6 +172,8 @@ export default function App() {
                   setTrackId={setTrackId}
                   shuffle={shuffle}
                   setShuffle={setShuffle}
+                  likedSong={likedSong}
+                  setLikedSong={setLikedSong}
                 />
               }
             />

@@ -135,6 +135,12 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
                       tracks = tracks.filter(track => track?.preview_url !== null);
                       props.setAlbumTracks(tracks);
                       shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                    } else if (pathName === `/profile/${id}`) {
+                      passTrackToPlayer(props.track, token);
+                      const response: SpotifyApi.UsersTopTracksResponse = await getUserTopTracks({ token, limit: 4 });
+                      const tracks: SpotifyApi.TrackObjectFull[] = response.items.map(item => item);
+                      props.setAlbumTracks(tracks);
+                      shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
                     } else if (pathName === `/profile/${id}/tracks`) {
                       passTrackToPlayer(props.track, token);
                       const response: SpotifyApi.UsersTopTracksResponse = await getUserTopTracks({ token, limit: 50 });
