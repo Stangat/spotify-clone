@@ -37,12 +37,14 @@ export const HomePage: React.FC<HomePageProps> = props => {
   const [featuredPage, setFeaturedPage] = useState(1);
   const [featuredTotal, setFeaturedTotal] = useState(1);
 
-  const LIMIT = 5;
+  const LIMIT = 7;
   const OFFSET = (featuredPage - 1) * LIMIT;
+  const index =  2;
+
   const handleRows = async () => {
     const res = await getFeaturedPlaylistsSpotifyApi(props.token, OFFSET, LIMIT);
     const res2 = await getUserTopArtistsSpotifyApi(props.token);
-    const res3 = await getRelatedArtists(props.token, res2.items[0].id);
+    const res3 = await getRelatedArtists(props.token, res2.items[index].id);
     setFeaturedPlaylists(res);
     setFavoriteArtists(res2);
     setRelatedArtists(res3);
@@ -92,7 +94,7 @@ export const HomePage: React.FC<HomePageProps> = props => {
         {favoriteArtists?.items &&
           favoriteArtists?.items?.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
       </RowOfCards>
-      <RowOfCards title={`More like ${favoriteArtists?.items[0].name}`}>
+      <RowOfCards title={`More like ${favoriteArtists?.items[index].name}`}>
         {relatedArtists?.artists &&
           relatedArtists?.artists?.map((e, i) => (i < 8 ? <CardArtist key={e.id} artist={e}></CardArtist> : ''))}
       </RowOfCards>
