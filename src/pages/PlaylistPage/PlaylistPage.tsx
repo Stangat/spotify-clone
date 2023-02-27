@@ -75,7 +75,6 @@ export const PlaylisPage: FC<PlaylistProps> = props => {
   useEffect(() => {
     getPlaylistHandler();
   }, [id]);
-
   return (
     <div className={style.wrapper}>
       <CustomHeader token={props.token} setToken={props.setToken} profile={props.profile} setProfile={props.setProfile} style={{justifyContent: 'end'}}></CustomHeader>
