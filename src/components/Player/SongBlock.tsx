@@ -1,6 +1,5 @@
 import style from './player.module.less';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { PictureInPictureAlt } from '@mui/icons-material';
 import {
   removeUserSavedTracksSpotifyApi,
   saveTrackForCurrentUserSpotifyApi,
@@ -62,7 +61,6 @@ export const SongBlock: React.FC<SongBlockProps> = ({
             }}
           />
         )}
-        <PictureInPictureAlt style={{ fontSize: '16px', marginLeft: '10px' }} />
       </div>
     </div>
   );
