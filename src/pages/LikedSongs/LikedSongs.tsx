@@ -49,6 +49,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
 }) => {
   const { t } = useTranslation();
   const [userSavedSongs, setUserSavedSongs] = useState<SpotifyApi.UsersSavedTracksResponse>();
+  const [likedTracks, setLikedTracks] = useState<SpotifyApi.SavedTrackObject[]>();
 
   const timeSvg = () => {
     return (
@@ -62,7 +63,9 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
 
   const getUserSavedTracksHandler = async () => {
     const response: SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(token);
+    const tracks = response.items.filter(element => element.track.preview_url !== null);
     setUserSavedSongs(response);
+    setLikedTracks(tracks);
   };
 
   useEffect(() => {
@@ -99,7 +102,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
             </div>
           ))}
         </div>
-        {userSavedSongs?.items.map((e, index) => (
+        {likedTracks?.map((e, index) => (
           <TrackRow
             key={index}
             track={e.track}
@@ -116,6 +119,7 @@ export const LikedSongs: React.FC<LikedSongsPageProps> = ({
             setShuffle={setShuffle}
             likedSong={likedSong}
             setLikedSong={setLikedSong}
+            likedTracks={likedTracks}
           ></TrackRow>
         ))}
       </div>

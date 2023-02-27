@@ -32,6 +32,7 @@ type TrackPoprs = {
   setShuffle: (shuffle: boolean) => void;
   likedSong?: boolean;
   setLikedSong: (likedSong: boolean) => void;
+  likedTracks?: SpotifyApi.SavedTrackObject[];
 };
 
 export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
@@ -159,10 +160,11 @@ export const TrackRow: FC<TrackPoprs> = ({ album = true, ...props }) => {
                       }
                     } else {
                       passTrackToPlayer(props.track, token);
-                      const response: SpotifyApi.UsersSavedTracksResponse = await getUserSavedTracks(token);
-                      const tracks = response.items.map(item => item.track);
-                      props.setAlbumTracks(tracks);
-                      shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                      if (props.likedTracks) {
+                        const tracks = props.likedTracks.map(element => element.track);
+                        props.setAlbumTracks(tracks);
+                        shuffleAndAlbumTracksLocalStorageHandler<SpotifyApi.TrackObjectFull[]>(tracks);
+                      }
                     }
                   }
                 }}

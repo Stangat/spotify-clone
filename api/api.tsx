@@ -237,7 +237,7 @@ export async function getSearchResults(
 }
 
 export async function getUserSavedTracks(token: string) {
-  const res = await fetch(`${baseUrl}/me/tracks?market=US`, {
+  const res = await fetch(`${baseUrl}/me/tracks?limit=50`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
