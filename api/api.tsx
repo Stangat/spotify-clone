@@ -34,6 +34,7 @@ const baseUrl = 'https://api.spotify.com/v1';
 
 export type typesOfSearchQuery = 'track' | 'playlist' | 'album' | 'artist';
 
+
 export const copyToClipboard = () => {
   navigator.clipboard.writeText(window.location.href).then(
     function () {

@@ -6,7 +6,7 @@ import { SearchPage } from './pages/SearchPage/SearchPage';
 import { useState, useEffect } from 'react';
 import { Login } from './pages/LoginPage/LoginPage';
 import { DetailsAlbumPage } from './pages/DetailsAlbumPage/DetailsAlbumPage';
-import { AlbumType, PlaylistsType, ProfileType, ITrackTypes, TopArtistsType } from '../interface/interface';
+import { AlbumType, PlaylistsType, ProfileType, ITrackTypes} from '../interface/interface';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Settings } from './pages/Settings/Settings';
 
@@ -45,21 +45,50 @@ export default function App() {
   const [likedSong, setLikedSong] = useState<boolean>();
 
   useEffect(() => {
-    const hash: string = window.location.hash;
-    let token: string | null = window.localStorage.getItem('token');
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem('token');
 
     if (!token && hash) {
       token =
         hash
           .substring(1)
           .split('&')
-          .find((elem: string) => elem.startsWith('access_token'))
+          .find(elem => elem.startsWith('access_token'))
           ?.split('=')[1] || '';
       window.location.hash = '';
       window.localStorage.setItem('token', token);
     }
 
     setToken(token || '');
+
+    const handleExpiredToken = () => {
+      alert('Your Spotify access token has expired. Please login again.');
+      window.localStorage.removeItem('token');
+      setToken('');
+    };
+
+    fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('API request failed.');
+        }
+      })
+      .then(data => {
+        //console.log(data);
+      })
+      .catch(error => {
+        if (error.message === 'API request failed.') {
+          handleExpiredToken();
+        } else {
+          console.error(error);
+        }
+      });
   }, []);
 
   const LIMIT = 7;
