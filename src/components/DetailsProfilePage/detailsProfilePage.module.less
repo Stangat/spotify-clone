@@ -1,0 +1,179 @@
+.blockProfileDescription {
+  height: 30vh;
+  max-height: 500px;
+  min-height: 340px;
+  padding: 0 32px 24px;
+
+  display: flex;
+  flex-direction: row;
+
+  background-image: linear-gradient(to top, #28292b, #353a3d, #444d4c, #565f5a, #6e7167);
+
+  .imageContainer {
+    height: 232px;
+    min-width: 232px;
+    width: 232px;
+    align-self: flex-end;
+    margin-right: 24px;
+  }
+}
+
+.descriptionProfile {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  flex: 1;
+
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+
+  > * {
+    display: inline-block;
+  }
+
+  .userNameProfile {
+    width: 100%;
+
+    margin: 0;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    font-size: 55px;
+    font-weight: 900;
+    text-align: left;
+    user-select: none;
+  }
+
+  h2 {
+    margin-top: 4px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .descriptionItems {
+    display: flex;
+    font-size: 0.875rem;
+    font-weight: 400;
+    > *:last-child::before {
+      content: '•';
+      margin: 0px 4px;
+    }
+  }
+}
+
+.bgUnderHat {
+  position: absolute;
+  height: 50px;
+  width: calc(100% - 200px);
+  background-color: rgb(83, 83, 83);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.6)), to(#121212));
+}
+
+.bodyWrapper {
+  padding: 0 32px;
+}
+
+.dropDown {
+  padding: 24px 0;
+}
+
+.followingContainer {
+  position: relative;
+}
+
+/*Styles for TopTrackBlock----------START----------*/
+.playlistsUser {
+  display: flex;
+}
+
+.trackBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: 600;
+}
+
+.playPauseButton {
+  color: #1ad760;
+  font-size: 32px;
+  transition: 0.2s;
+}
+
+.playPauseButton:active {
+  transform: translateY(2px);
+}
+
+.cardsTopBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+/*Styles for TopTrackBlock----------END----------*/
+
+.blockHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.withoutVisibility {
+    align-items: flex-end;
+  }
+
+  h2 {
+    margin-bottom: 16px;
+    color: white;
+    padding-left: 5px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  p {
+    margin-top: -10px;
+    font-size: 0.875rem;
+    color: #6a6a6a;
+    padding-left: 5px;
+  }
+  .showAll {
+    cursor: pointer;
+    display: block;
+    margin-top: 0;
+    padding-right: 20px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.subblockContainer {
+  padding-top: 40px;
+}
+
+.cardsContainer {
+  width: 100%;
+  padding: 32px 32px 70px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(188px, max-content));
+  grid-row-gap: 21px;
+  justify-content: space-between;
+}
+
+.pageHeader {
+  user-select: none;
+  margin-bottom: 0px;
+  color: white;
+  padding-left: 37px;
+}
+
+@media (max-width: 700px) {
+  .imageContainer {
+    display: none;
+  }
+  .bodyWrapper {
+    padding: 0;
+  }
+}

@@ -1,0 +1,114 @@
+.wrapper {
+  width: 100%;
+}
+
+.header {
+  height: 64px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.blockName {
+  font-weight: 800;
+  font-size: 100px;
+  margin: 20px 0;
+  line-height: 85px;
+}
+
+.blockTop {
+  display: flex;
+  padding: 3%;
+  gap: 25px;
+  align-items: center;
+  color: white;
+  background-image: linear-gradient(to top, #0000ef68, #000ea978, #0f007e95, #01014ea0, #010628);
+}
+
+.picture {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to top, #00cbef68, #007ca978, #00587e95, #01374ea0, #0136468b);
+  box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 55%), 0 4px 8px 0 rgb(35 31 32 / 70%);
+}
+
+.heartFilled {
+  font-size: 64px;
+}
+
+.tracksHeader {
+  width: 100%;
+  padding: 0 16px;
+  height: 36px;
+  margin-bottom: 16px;
+  color: #cecece;
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  font-size: 18px;
+  letter-spacing: 0.2em;
+
+  display: flex;
+  align-items: center;
+
+  .column0 {
+    flex-basis: 3%;
+  }
+  .column1 {
+    flex-basis: 50%;
+  }
+  .column2 {
+    flex-basis: 45%;
+  }
+  .column3 {
+    flex-basis: 10%;
+    display: flex;
+    margin: 0 auto;
+    justify-content: end;
+  }
+}
+
+.playlistBody {
+  padding: 0 32px 100px;
+}
+
+.blockData {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.blockCategory {
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.blockUserName {
+  margin: 0;
+  font-weight: 700;
+}
+@media (max-width: 700px) {
+  .picture {
+    width: 110px;
+    height: 250px;
+  }
+  .blockTop {
+    gap: 12px;
+  }
+  .blockName {
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 50px;
+  }
+  .blockUserName {
+    display: none;
+  }
+  .playlistBody {
+    padding: 0;
+  }
+}

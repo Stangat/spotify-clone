@@ -1,0 +1,131 @@
+.wrapper {
+  font-size: 16px;
+  color: rgb(206, 206, 206);
+  display: flex;
+  width: 100%;
+  padding: 0 10px;
+  height: 56px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  &:hover {
+    background-color: hsla(0,0%,100%,.1);
+    .likeSongButton {
+      visibility: visible;
+    }
+  }
+}
+
+
+.columnPlay {
+  flex-basis: 3%;
+  flex-shrink: 0;
+  margin: auto;
+  .play {
+    cursor: pointer;
+  }
+}
+
+.columnData {
+  display: flex;
+  flex-basis: 42%;  
+  flex-grow: 1;
+  align-items: center;
+
+  .image {
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+  }
+  .name {
+    font-size: 16px;
+    font-weight: 600;
+    font-size: 1em;
+    color: white;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .artists {
+    font-size: 0.875em;
+    padding-right: 10px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    a {
+      text-decoration: none;
+      color: rgb(206, 206, 206);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.columnAlbum {
+  flex-basis: 45%;
+  flex-shrink: 1;
+  margin: auto;
+}
+
+.columnDuration {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: 90px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.playPauseButton {
+  margin-right: 15px;
+  font-size: 32px;
+  transition: 0.2s;
+}
+
+.playPauseButton:active {
+  transform: translateY(2px);
+}
+
+.nameActive {
+  font-size: 16px;
+  font-weight: 600;
+  font-size: 1em;
+  color: white;
+  color: #1ad760;
+}
+
+.likeSongButton {
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.likeSongButtonActive {
+  color: #1ad760;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .columnDuration {
+    flex-basis: 40px;
+  }
+  .artists a{
+    display: none;
+  }
+  .nameActive {
+    font-size: 14px;
+  }
+  .columnAlbum {
+    flex-basis: 14%;
+  }
+}
+@media (max-width: 840px) {
+  .columnAlbum {
+    display: none;
+  }
+}

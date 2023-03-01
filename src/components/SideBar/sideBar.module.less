@@ -1,0 +1,118 @@
+:global(.ant-menu-item-selected) {
+  background-color: #121212 !important;
+}
+
+:global(.ant-layout-sider) {
+ background-color: #121212 !important;
+}
+:global(.ant-layout-sider-collapsed) {
+  background-color: #121212 !important;
+  max-width: 60px !important;
+  min-width: 60px !important;
+  width: 60px !important;
+ }
+
+:global(.ant-layout-sider-children) {
+  background-color: #000;
+  height: 100% !important;
+  //position: fixed;
+  //width: 200px;
+}
+
+.titleBlock {
+  margin: 24px 18px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  p {
+    display: block;
+    flex-basis: 80%;
+    margin: 0;
+    padding-left: 8px;
+    color: white;
+    font-size: 1.2rem;
+  }
+  svg {
+    flex-basis: 20%;
+  }
+}
+
+.menuItemCreate {
+  background: red;
+  margin-top: 20px;
+}
+
+.userPlaylists {
+  hr {
+    background-color: #282828;
+    border: none;
+    height: 1px;
+    margin: 8px 24px;
+  }
+  ul {
+    padding: 0;
+    li {
+      height: 32px;
+      padding: 0 24px;
+      a {
+        text-decoration: none;
+        color: #b3b3b3;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        white-space: unset;
+        word-break: break-all;
+        user-select: none;
+        overflow: hidden;
+
+        &:hover {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    display:none;
+  }
+}
+
+.linksToRs {
+  width: 80%;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding-left: 24px;
+  //position: absolute;
+  padding-top: 70px;
+}
+
+.rs {
+  width: 50%;
+  filter: invert(82%);
+}
+
+.autorsLinks {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  a {
+    color: #b3b3b3;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .titleBlock p {
+    display: none;
+  }
+  .linksToRs {
+    display: none;
+  }
+   .titleBlock svg {
+    flex-basis: 80%;
+  }
+}

@@ -1,0 +1,44 @@
+.info {
+  color: white;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  > * {
+    font-size: 14px;
+    color: #cecece;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.name {
+  margin-bottom: 4px;
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 26px;
+  height: 26px;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+}
+
+:global(.ant-card) {
+  
+  transition: background-color 0.2s ease 0s, color 0.2s ease 0s;
+  
+  
+  &:hover {
+   background-color: #282828 !important; 
+  }
+}
+
+:global(.ant-card-body) {
+  padding: 16px 0px 0px !important;
+}
+
+.descr {
+  max-height: 44px;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+}
